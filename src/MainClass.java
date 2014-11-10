@@ -1,3 +1,9 @@
+
+import java.awt.Dimension;
+import java.awt.Toolkit;
+
+import javax.swing.JFrame;
+
 import com.theeyetribe.client.*;
 import com.theeyetribe.client.GazeManager.ApiVersion;
 import com.theeyetribe.client.GazeManager.ClientMode;
@@ -7,6 +13,13 @@ import com.theeyetribe.client.GazeManager;
 public class MainClass {
     public static void main(String[] args)
     {
+    	JFrame frame = new JFrame();
+    	//more initialization code here
+    	Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
+    	frame.setSize(dim.width, dim.height);
+    	frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+    	frame.setVisible(true);
+    	
         final GazeManager gm = GazeManager.getInstance();
         boolean success = gm.activate(ApiVersion.VERSION_1_0, ClientMode.PUSH);
         
@@ -25,7 +38,8 @@ public class MainClass {
             }
         });
     }
-    
+
+
     private static class GazeListener implements IGazeListener
     {
         public void onGazeUpdate(GazeData gazeData)
