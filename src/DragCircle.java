@@ -20,7 +20,7 @@ class DragCircle extends JPanel {
     {
         public void onGazeUpdate(GazeData gazeData)
         {
-            System.out.println(gazeData.smoothedCoordinates.toString());
+            System.out.println(gazeData.smoothedCoordinates.x);
 
             x = (int)gazeData.smoothedCoordinates.x;
             y = (int)gazeData.smoothedCoordinates.y;
@@ -56,8 +56,6 @@ class DragCircle extends JPanel {
 
     private int x;
     private int y;
-    private int width;
-    private int height;
 
     private MouseDrag mouseDrag;
 
@@ -67,23 +65,23 @@ class DragCircle extends JPanel {
         addMouseListener(mouseDrag);
         addMouseMotionListener(mouseDrag);
         
-//        final GazeManager gm = GazeManager.getInstance();
-//        boolean success = gm.activate(ApiVersion.VERSION_1_0, ClientMode.PUSH);
-//        
-//        final GazeListener gazeListener = new GazeListener();
-//        gm.addGazeListener(gazeListener);
-//        
-//        //TODO: Do awesome gaze control wizardry
-//        
-//        Runtime.getRuntime().addShutdownHook(new Thread()
-//        {
-//            @Override
-//            public void run()
-//            {
-//                gm.removeGazeListener(gazeListener);
-//                gm.deactivate();
-//            }
-//        });
+        final GazeManager gm = GazeManager.getInstance();
+        boolean success = gm.activate(ApiVersion.VERSION_1_0, ClientMode.PUSH);
+        
+        final GazeListener gazeListener = new GazeListener();
+        gm.addGazeListener(gazeListener);
+        
+        //TODO: Do awesome gaze control wizardry
+        
+        Runtime.getRuntime().addShutdownHook(new Thread()
+        {
+            @Override
+            public void run()
+            {
+                gm.removeGazeListener(gazeListener);
+                gm.deactivate();
+            }
+        });
     }
 
     @Override
