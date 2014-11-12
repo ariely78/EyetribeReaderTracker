@@ -65,23 +65,23 @@ class DragCircle extends JPanel {
         addMouseListener(mouseDrag);
         addMouseMotionListener(mouseDrag);
         
-        final GazeManager gm = GazeManager.getInstance();
-        boolean success = gm.activate(ApiVersion.VERSION_1_0, ClientMode.PUSH);
-        
-        final GazeListener gazeListener = new GazeListener();
-        gm.addGazeListener(gazeListener);
-        
-        //TODO: Do awesome gaze control wizardry
-        
-        Runtime.getRuntime().addShutdownHook(new Thread()
-        {
-            @Override
-            public void run()
-            {
-                gm.removeGazeListener(gazeListener);
-                gm.deactivate();
-            }
-        });
+//        final GazeManager gm = GazeManager.getInstance();
+//        boolean success = gm.activate(ApiVersion.VERSION_1_0, ClientMode.PUSH);
+//        
+//        final GazeListener gazeListener = new GazeListener();
+//        gm.addGazeListener(gazeListener);
+//        
+//        //TODO: Do awesome gaze control wizardry
+//        
+//        Runtime.getRuntime().addShutdownHook(new Thread()
+//        {
+//            @Override
+//            public void run()
+//            {
+//                gm.removeGazeListener(gazeListener);
+//                gm.deactivate();
+//            }
+//        });
     }
 
     @Override

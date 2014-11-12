@@ -3,5 +3,8 @@
 	<classpathentry kind="src" path="src"/>
 	<classpathentry exported="true" kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="lib" path="C:/Users/Test/Documents/EyetribeReaderTracker/TETJavaClient.jar"/>
+	<classpathentry kind="lib" path="/Users/bensmith/EyetribeReaderTracker/TETJavaClient.jar"/>
+	<classpathentry kind="lib" path="/Users/bensmith/EyetribeReaderTracker/text20.jar"/>
+	<classpathentry kind="lib" path="/Users/bensmith/EyetribeReaderTracker/eyetracking.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
