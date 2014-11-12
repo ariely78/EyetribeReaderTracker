@@ -1,12 +1,10 @@
 
 import java.awt.Dimension;
-import java.awt.Graphics;
 import java.awt.Toolkit;
 import java.io.BufferedReader;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
-
+import java.io.*;
 import javax.swing.JFrame;
 
 public class MainClass {
@@ -20,25 +18,42 @@ public class MainClass {
     	frame.setVisible(true);
     	
     	DragCircle d = new DragCircle();
-    	frame.add(d);
-    	
-        BufferedReader br = new BufferedReader(new FileReader("text.txt"));
-        try {
-            StringBuilder sb = new StringBuilder();
-            String line = br.readLine();
 
-            while (line != null) {
-                sb.append(line);
-                sb.append(System.console().readLine());
-                line = br.readLine();
+        String string="";
+        String file ="text.txt";
+
+        //reading   
+        try{
+            InputStream ips=new FileInputStream(file); 
+            InputStreamReader ipsr=new InputStreamReader(ips);
+            BufferedReader br=new BufferedReader(ipsr);
+            String line;
+            while ((line=br.readLine())!=null){
+                System.out.println(line);
+                string+=line+"\n";
             }
-            String everything = sb.toString();
-        	DrawText dt = new DrawText(everything,100,300);
+        	DrawText dt = new DrawText(string, dim.width, dim.height);
+        	frame.add(dt);
         	dt.repaint();
-        } finally {
-
-            br.close();
+            br.close(); 
+        }       
+        catch (Exception e){
+            System.out.println(e.toString());
         }
+    	frame.add(d);
+
+//        //writing
+//        try {
+//            FileWriter fw = new FileWriter (file);
+//            BufferedWriter bw = new BufferedWriter (fw);
+//            PrintWriter fileOut = new PrintWriter (bw); 
+//                fileOut.println (string+"\n test of read and write !!"); 
+//            fileOut.close();
+//            System.out.println("the file " + file + " is created!"); 
+//        }
+//        catch (Exception e){
+//            System.out.println(e.toString());
+//        }   
     	
     }
 
