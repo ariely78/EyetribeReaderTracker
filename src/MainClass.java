@@ -1,11 +1,17 @@
 
+import java.awt.CardLayout;
+import java.awt.Container;
 import java.awt.Dimension;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
 import java.awt.Toolkit;
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
 import java.io.*;
+
+import javafx.geometry.Insets;
+
 import javax.swing.JFrame;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 
 public class MainClass {
     public static void main(String[] args) throws IOException
@@ -17,11 +23,26 @@ public class MainClass {
     	frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     	frame.setVisible(true);
     	
+        //new container  
+        Container con = frame.getContentPane();    
+        //configure the layout  
+        con.setLayout(new GridBagLayout());  
+            GridBagConstraints c = new GridBagConstraints();  
+//            c.fill = GridBagConstraints.HORIZONTAL;  
+//            c.gridwidth = dim.width;
+//            c.gridheight = dim.height;
+//
+////            c.insets = new Insets(0,0,0,0);  
+//            c.weightx = 0.0;  
+//            c.gridx = 0;  
+//            c.gridy = 0;  
+    	
     	DragCircle d = new DragCircle();
+    	d.setOpaque(false);
+        con.add(d,c);  
 
         String string="";
         String file ="text.txt";
-
         //reading   
         try{
             InputStream ips=new FileInputStream(file); 
@@ -32,16 +53,19 @@ public class MainClass {
                 System.out.println(line);
                 string+=line+"\n";
             }
-        	DrawText dt = new DrawText(string, dim.width, dim.height);
-        	frame.add(dt);
+            DrawText dt = new DrawText(string, 300,400);
+        	dt.setOpaque(false);
         	dt.repaint();
+            //add panels to the container  
+            //con.add(dt, c); 
             br.close(); 
         }       
         catch (Exception e){
             System.out.println(e.toString());
         }
-    	frame.add(d);
-
+ 
+        //add container to the jFrame, positioned in the center  
+        //frame.add("Center",con); 
 //        //writing
 //        try {
 //            FileWriter fw = new FileWriter (file);
