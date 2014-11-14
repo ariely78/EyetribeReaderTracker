@@ -7,8 +7,6 @@ import java.awt.GridBagLayout;
 import java.awt.Toolkit;
 import java.io.*;
 
-import javafx.geometry.Insets;
-
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -19,7 +17,7 @@ public class MainClass {
     	JFrame frame = new JFrame();
     	//more initialization code here
     	Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
-    	frame.setSize(dim.width, dim.height);
+    	frame.setSize(300,700);
     	frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     	frame.setVisible(true);
     	
@@ -38,8 +36,8 @@ public class MainClass {
 //            c.gridy = 0;  
     	
     	DragCircle d = new DragCircle();
-    	d.setOpaque(false);
-        con.add(d,c);  
+//    	d.setOpaque(false);
+//        con.add(d,c);  
 
         String string="";
         String file ="text.txt";
@@ -51,13 +49,17 @@ public class MainClass {
             String line;
             while ((line=br.readLine())!=null){
                 System.out.println(line);
-                string+=line+"\n";
+                string+=line;//+"\n";
             }
-            DrawText dt = new DrawText(string, 300,400);
-        	dt.setOpaque(false);
-        	dt.repaint();
+
+//            DrawText dt = new DrawText(string, 300,400);
+//        	dt.setOpaque(false);
+//        	dt.repaint();
+            
             //add panels to the container  
-            //con.add(dt, c); 
+            d.createPanel(string);
+            frame.add(d);
+            d.repaint();
             br.close(); 
         }       
         catch (Exception e){

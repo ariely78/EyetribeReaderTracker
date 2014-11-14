@@ -1,11 +1,15 @@
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
 import java.awt.Point;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.geom.Ellipse2D;
 
+import javax.swing.JEditorPane;
 import javax.swing.JPanel;
+import javax.swing.text.*;
 
 import com.theeyetribe.client.IGazeListener;
 import com.theeyetribe.client.data.GazeData;
@@ -39,7 +43,15 @@ class DragCircle extends JPanel {
             last = m.getPoint();
             x = last.x;
             y = last.y;
-
+            JEditorPane editor = (JEditorPane) m.getSource();
+            Point pt = new Point(m.getX(), m.getY());
+            int pos = editor.viewToModel(pt);
+            
+            int offs = editor.viewToModel(pt);
+            int start = javax.swing.text.Utilities.getWordStart(editor, offs);
+            int end = javax.swing.text.Utilities.getWordEnd(editor, offs);
+            String word = getText(start, end-start+1);
+            
             repaint();
         }
 
@@ -58,12 +70,14 @@ class DragCircle extends JPanel {
     private int y;
 
     private MouseDrag mouseDrag;
-
+    JEditorPane editorPane;
     public DragCircle() {
+    	editorPane = new JEditorPane();
+
         setBackground(Color.WHITE);
         mouseDrag = new MouseDrag();
-        addMouseListener(mouseDrag);
-        addMouseMotionListener(mouseDrag);
+        editorPane.addMouseListener(mouseDrag);
+        editorPane.addMouseMotionListener(mouseDrag);
         
 //        final GazeManager gm = GazeManager.getInstance();
 //        boolean success = gm.activate(ApiVersion.VERSION_1_0, ClientMode.PUSH);
@@ -84,6 +98,28 @@ class DragCircle extends JPanel {
 //        });
     }
 
+	  public void createPanel(String text) {
+		    this.setLayout(new GridBagLayout());
+
+		    for (int i = 0; i < 1; i++) {
+		      editorPane.setEditable(false);
+		      editorPane.setContentType("text/html");
+
+		      editorPane.setText(text);
+
+		      GridBagConstraints constraints = new GridBagConstraints();
+		      constraints.gridx = 0;
+		      constraints.gridy = i;
+		      constraints.fill = GridBagConstraints.VERTICAL;
+		      constraints.weightx = 1.0;
+		      constraints.insets.bottom = 5;
+
+		      this.add(editorPane, constraints);
+		    }
+
+//		    return panel;
+	}
+	  
     @Override
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
