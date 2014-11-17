@@ -22,10 +22,10 @@ public class MainClass {
     	frame.setVisible(true);
     	
         //new container  
-        Container con = frame.getContentPane();    
+//        Container con = frame.getContentPane();    
         //configure the layout  
-        con.setLayout(new GridBagLayout());  
-            GridBagConstraints c = new GridBagConstraints();  
+//        con.setLayout(new GridBagLayout());  
+//        GridBagConstraints c = new GridBagConstraints();  
 //            c.fill = GridBagConstraints.HORIZONTAL;  
 //            c.gridwidth = dim.width;
 //            c.gridheight = dim.height;
@@ -49,7 +49,7 @@ public class MainClass {
             String line;
             while ((line=br.readLine())!=null){
                 System.out.println(line);
-                string+=line;//+"\n";
+                string+=line+"\n";
             }
 
 //            DrawText dt = new DrawText(string, 300,400);
