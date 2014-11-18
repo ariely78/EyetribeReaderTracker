@@ -31,39 +31,40 @@ public class WordSelection extends JTextArea {
     	txtContent = this;
     	Font font = new Font("Verdana", Font.BOLD, 20);
     	this.setFont(font);
-    	this.setBounds(100, 0,300,500);
-    	this.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-            	txtContent.setCaretPosition(txtContent.viewToModel(e.getPoint()));
-                int caretPosition = txtContent.getCaretPosition();
-                try {
-                    String word = getWord(caretPosition, txtContent);
-//                    JOptionPane.showMessageDialog(null, "Word: "+word + " Letter:" +txtContent.getText(caretPosition-1,1));
-                    DocumentReader.writeToTextFile("output.txt", word+"  "+ txtContent.getText(caretPosition-1,1));
-                } catch (BadLocationException e1) {
-                    e1.printStackTrace();
-                }
-            }
-        });
-        
-//        final GazeManager gm = GazeManager.getInstance();
-//        boolean success = gm.activate(ApiVersion.VERSION_1_0, ClientMode.PUSH);
-//        
-//        final GazeListener gazeListener = new GazeListener();
-//        gm.addGazeListener(gazeListener);
-//        
-//        //TODO: Do awesome gaze control wizardry
-//        
-//        Runtime.getRuntime().addShutdownHook(new Thread()
-//        {
+    	this.setBounds(100, 0, 300, 500);
+    	
+//    	this.addMouseListener(new MouseAdapter() {
 //            @Override
-//            public void run()
-//            {
-//                gm.removeGazeListener(gazeListener);
-//                gm.deactivate();
+//            public void mouseClicked(MouseEvent e) {
+//            	txtContent.setCaretPosition(txtContent.viewToModel(e.getPoint()));
+//                int caretPosition = txtContent.getCaretPosition();
+//                try {
+//                    String word = getWord(caretPosition, txtContent);
+//                    JOptionPane.showMessageDialog(null, "Word: "+word + " Letter:" +txtContent.getText(caretPosition-1,1));
+//                    DocumentReader.writeToTextFile("output.txt", word+"  "+ txtContent.getText(caretPosition-1,1));
+//                } catch (BadLocationException e1) {
+//                    e1.printStackTrace();
+//                }
 //            }
 //        });
+        
+        final GazeManager gm = GazeManager.getInstance();
+        boolean success = gm.activate(ApiVersion.VERSION_1_0, ClientMode.PUSH);
+        
+        final GazeListener gazeListener = new GazeListener();
+        gm.addGazeListener(gazeListener);
+        
+        //TODO: Do awesome gaze control wizardry
+        
+        Runtime.getRuntime().addShutdownHook(new Thread()
+        {
+            @Override
+            public void run()
+            {
+                gm.removeGazeListener(gazeListener);
+                gm.deactivate();
+            }
+        });
 
     }
     
