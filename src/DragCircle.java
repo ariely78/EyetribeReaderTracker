@@ -89,6 +89,4 @@ class DragCircle extends JPanel {
         super.paintComponent(g);
         g.drawOval(x, y, 5, 5);
     }
-    
-
 }
