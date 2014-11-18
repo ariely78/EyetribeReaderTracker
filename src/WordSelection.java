@@ -1,14 +1,15 @@
 import javax.swing.*;
 import javax.swing.text.BadLocationException;
 
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.Point;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
 import com.sun.javafx.geom.Point2D;
-import com.sun.javafx.scene.paint.GradientUtils.Point;
 import com.theeyetribe.client.IGazeListener;
 import com.theeyetribe.client.GazeManager;
 import com.theeyetribe.client.GazeManager.ApiVersion;
@@ -28,6 +29,9 @@ public class WordSelection extends JTextArea {
 	    this.setEditable(false);
 	    this.setText(text);
     	txtContent = this;
+    	Font font = new Font("Verdana", Font.BOLD, 20);
+    	this.setFont(font);
+    	this.setBounds(100, 0,300,500);
     	this.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
@@ -85,7 +89,7 @@ public class WordSelection extends JTextArea {
     @SuppressWarnings("unused")
 	private class GazeListener implements IGazeListener
     {
-    	JTextArea txtContent;
+
         public void onGazeUpdate(GazeData gazeData)
         {   
             System.out.println(gazeData.smoothedCoordinates.x);
@@ -97,14 +101,14 @@ public class WordSelection extends JTextArea {
 //            this.setCaretPoint(gazeData.smoothedCoordinates);
         }
         
-        public void setCaretPoint(java.awt.Point pt)
+        public void setCaretPoint(Point2D pointGaze)
         {
-
-        	this.txtContent.setCaretPosition(this.txtContent.viewToModel(pt));
+        	Point pt = new Point((int)pointGaze.x, (int)pointGaze.y);
+        	txtContent.setCaretPosition(txtContent.viewToModel(pt));
             int caretPosition = txtContent.getCaretPosition();
             try {
                 String word = getWord(caretPosition, txtContent);
-                JOptionPane.showMessageDialog(null, "Word: "+word + "Letter:" +txtContent.getText(caretPosition,1));
+                DocumentReader.writeToTextFile("output.txt", word+"  "+ txtContent.getText(caretPosition-1,1));
             } catch (BadLocationException e1) {
                 e1.printStackTrace();
             }
