@@ -15,11 +15,14 @@ public class MainClass {
     	
     	
         final WordSelection txtContent = new WordSelection(DocumentReader.readTextFile("text.txt"));
-    	Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
         JFrame frame = new JFrame();
+    	Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
+
         frame.setSize(dim.width, dim.height);
+
+
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.add(txtContent);
+        frame.add(txtContent.txtContent);
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
     	

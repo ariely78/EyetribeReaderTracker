@@ -1,22 +1,21 @@
 import javax.swing.*;
 import javax.swing.text.BadLocationException;
 
+import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Point;
+import java.awt.Toolkit;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
-import com.sun.javafx.geom.Point2D;
-import com.sun.jmx.snmp.Timestamp;
 import com.theeyetribe.client.IGazeListener;
 import com.theeyetribe.client.GazeManager;
 import com.theeyetribe.client.GazeManager.ApiVersion;
 import com.theeyetribe.client.GazeManager.ClientMode;
 import com.theeyetribe.client.data.GazeData;
-import com.theeyetribe.client.IGazeListener;
 
 /**
  * Gets word from right clicked area
@@ -40,15 +39,16 @@ public class WordSelection extends JPanel {
             {
               super.paintComponent(g);
               g.setColor(g.getColor().RED);
-              g.fillOval(x, y, 25, 25);
+              g.fillOval(x, y, 10,10);
 //              g.drawLine(last.x, last.y, x, y);
             }   
       };
     	txtContent.setEditable(false);
     	txtContent.setText(text);
-    	Font font = new Font("Verdana", Font.BOLD, 30);
+    	Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
+    	txtContent.setBounds(0,0, dim.width, dim.height);
+    	Font font = new Font("Verdana", Font.BOLD, 50);
     	txtContent.setFont(font);
-    	txtContent.setBounds(textareaX, 0, 300, 500);
     	
     	txtContent.addMouseMotionListener(new MouseAdapter() {
             @Override
@@ -147,11 +147,11 @@ public class WordSelection extends JPanel {
             x = (int)gazeData.smoothedCoordinates.x-textareaX;
             y = (int)gazeData.smoothedCoordinates.y-textareaY;
         
-            
+       	 txtContent.repaint(x,y,10,10);
+
             if((gazeData.timeStamp - lastTimeStamp) > 0){
-            	 txtContent.repaint(x-25,y-25,50,50);
             	lastTimeStamp = gazeData.timeStamp;
-//                this.setCaretPoint(gazeData);
+                this.setCaretPoint(gazeData);
             }
         }
         
