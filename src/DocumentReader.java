@@ -20,7 +20,7 @@ public class DocumentReader {
             String line;
             while ((line=br.readLine())!=null){
                 System.out.println(line);
-                string+=line+"\n";
+                string+=line+"\n\n\n";
             }
             br.close(); 
         }       

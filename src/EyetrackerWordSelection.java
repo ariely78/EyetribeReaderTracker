@@ -22,8 +22,8 @@ public class EyetrackerWordSelection extends JTextArea {
     private int y;
     int textareaX = 0;
     int textareaY = 0;
-    int WordReadingTime = 200;
-    int textSize = 20;
+    int WordReadingTime = 0;
+    int textSize = 50;
     public String fileName;
     JTextArea txtContent;
     private Point last;
@@ -32,7 +32,7 @@ public class EyetrackerWordSelection extends JTextArea {
     public EyetrackerWordSelection(String text){
     	setLast(new Point(0,0));
     	txtContent =  this;
-
+    	this.setAlignmentX(CENTER_ALIGNMENT);
     	this.setEditable(false);
     	this.setText(text);
     	Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
