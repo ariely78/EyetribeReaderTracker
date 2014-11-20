@@ -24,7 +24,7 @@ public class EyetrackerWordSelection extends JTextArea {
     int textareaY = 0;
     int WordReadingTime = 200;
     int textSize = 20;
-    String fileName;
+    public String fileName;
     JTextArea txtContent;
     private Point last;
 	private long lastTimeStamp = 0;
@@ -95,7 +95,7 @@ public class EyetrackerWordSelection extends JTextArea {
             int caretPosition = getCaretPosition();
             try {
                 String word = getWord(caretPosition, txtContent);
-                DocumentReader.writeToTextFile("output.txt", word+"  "
+                DocumentReader.writeToTextFile(fileName+".txt", word+"  "
                 				+ txtContent.getText(caretPosition-1,1)
                 				+ " " +gazeData.timeStampString);
             } catch (BadLocationException e1) {
