@@ -63,7 +63,7 @@ public class EyetrackerWordSelection extends JTextArea {
     public void setCaretPoint(int caretPosition)
     {
         try {
-            String word = getWord(caretPosition, this);
+            String word = WordManipulation.getWord(caretPosition, this);
             DocumentReader.writeToTextFile("output.txt", word+"  "
             				+ this.getText(caretPosition-1,1)
             				+ " " +System.currentTimeMillis());
@@ -94,7 +94,7 @@ public class EyetrackerWordSelection extends JTextArea {
         	txtContent.setCaretPosition(viewToModel(pt));
             int caretPosition = getCaretPosition();
             try {
-                String word = getWord(caretPosition, txtContent);
+                String word = WordManipulation.getWord(caretPosition, txtContent);
                 DocumentReader.writeToTextFile(fileName+".txt", word+"  "
                 				+ txtContent.getText(caretPosition-1,1)
                 				+ " " +gazeData.timeStampString);
@@ -102,23 +102,6 @@ public class EyetrackerWordSelection extends JTextArea {
                 e1.printStackTrace();
             }
         }
-    }
-    
-    private static String getWord(int caretPosition, JTextArea txtContent) throws BadLocationException {
-        int startIndex;
-        int endIndex;
-        int i = 0;
-        while (!txtContent.getText(caretPosition + i, 1).equals(" ")
-                && !txtContent.getText(caretPosition + i, 1).equals("\n")) {
-            i++;
-        }
-        endIndex = caretPosition + i;
-        int j = 0;
-        while (j < caretPosition && !txtContent.getText(caretPosition - j - 1, 1).equals(" ")) {
-            j++;
-        }
-        startIndex = caretPosition - j;
-        return txtContent.getText(startIndex, endIndex - startIndex);
     }
     
     @Override

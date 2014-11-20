@@ -14,11 +14,11 @@ import javax.swing.JOptionPane;
 public class MainClass {
     public static void main(String[] args) throws IOException
     {
-//    	final MouseWordSelection mousetxtContent = new MouseWordSelection(DocumentReader.readTextFile("text.txt"));
-    	final EyetrackerWordSelection EyetrackerTxtContent = new EyetrackerWordSelection(DocumentReader.readTextFile("text.txt"));
+    	final MouseWordSelection mousetxtContent = new MouseWordSelection(DocumentReader.readTextFile("text.txt"));
+//    	final EyetrackerWordSelection EyetrackerTxtContent = new EyetrackerWordSelection(DocumentReader.readTextFile("text.txt"));
 
         final JFrame frame = new JFrame();
-        final JButton startButton = new JButton("Start Test");
+        final JButton startButton = new JButton("Start Eyetracker Test");
     	Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
         frame.setSize(dim.width, dim.height);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -41,10 +41,10 @@ public class MainClass {
                 if (Files.notExists(path) && !reply.isEmpty()) {
                   // file is not exist
                 	frame.remove(startButton);                	
-//                	mousetxtContent.fileName = reply;
-//                    frame.add(mousetxtContent);
-                	EyetrackerTxtContent.fileName = reply;
-                    frame.add(EyetrackerTxtContent);
+                	mousetxtContent.fileName = reply;
+                    frame.add(mousetxtContent);
+//                	EyetrackerTxtContent.fileName = reply;
+//                    frame.add(EyetrackerTxtContent);
                 	frame.repaint();
                 } else {
                     if (Files.exists(path)) {

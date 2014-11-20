@@ -21,7 +21,7 @@ public class MouseWordSelection extends JTextArea {
     int textareaX = 0;
     int textareaY = 0;
     int WordReadingTime = 200;
-    int textSize = 60;
+    int textSize = 30;
     public String fileName;
     JTextArea txtContent;
     private Point last;
@@ -60,39 +60,22 @@ public class MouseWordSelection extends JTextArea {
 
                 repaint();
             }
-
-
-            
             @Override
             public void mouseClicked(MouseEvent e) {
             	setCaretPoint(txtContent.viewToModel(e.getPoint()));
             }
         });
     }
-    
-	public void createPanel(String text) {
-	    this.setLayout(new GridBagLayout());
-
-	    for (int i = 0; i < 1; i++) {
-			txtContent.setEditable(false);
-			txtContent.setText(text);
-			
-			GridBagConstraints constraints = new GridBagConstraints();
-			constraints.gridx = 0;
-			constraints.gridy = i;
-			constraints.fill = GridBagConstraints.VERTICAL;
-			constraints.weightx = 1.0;
-			constraints.insets.bottom = 5;
-			this.add(txtContent, constraints);
-	    }
-	}
 	
     public void setCaretPoint(int caretPosition)
     {
         if((System.currentTimeMillis() - lastTimeStamp) > WordReadingTime){
         	lastTimeStamp = System.currentTimeMillis();
 	        try {
-	            String word = getWord(caretPosition, this);
+	            String word = WordManipulation.getWord(caretPosition, this);
+//	            caretPosition = caretPosition-1;
+	            System.out.println(""+word+"    "+this.getText(caretPosition,1));
+	            WordManipulation.changeWordXWordsInfront("Ben", 2, caretPosition, txtContent);
 	            DocumentReader.writeToTextFile(fileName+".txt", word+"  "
 	            				+ this.getText(caretPosition-1,1)
 	            				+ " " +System.currentTimeMillis());
@@ -100,23 +83,6 @@ public class MouseWordSelection extends JTextArea {
 	            e1.printStackTrace();
 	        }
         }
-    }
-	    
-    private static String getWord(int caretPosition, JTextArea txtContent) throws BadLocationException {
-        int startIndex;
-        int endIndex;
-        int i = 0;
-        while (!txtContent.getText(caretPosition + i, 1).equals(" ")
-                && !txtContent.getText(caretPosition + i, 1).equals("\n")) {
-            i++;
-        }
-        endIndex = caretPosition + i;
-        int j = 0;
-        while (j < caretPosition && !txtContent.getText(caretPosition - j - 1, 1).equals(" ")) {
-            j++;
-        }
-        startIndex = caretPosition - j;
-        return txtContent.getText(startIndex, endIndex - startIndex);
     }
     
     @Override
