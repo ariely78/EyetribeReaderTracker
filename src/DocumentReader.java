@@ -5,6 +5,7 @@ import java.io.FileWriter;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
+import java.util.Scanner;
 
 
 public class DocumentReader {
@@ -19,10 +20,20 @@ public class DocumentReader {
             BufferedReader br=new BufferedReader(ipsr);
             String line;
             while ((line=br.readLine())!=null){
+            	
                 System.out.println(line);
                 string+=line+"\n";
             }
-            br.close(); 
+            br.close();
+            
+//            BufferedReader lineReader = new BufferedReader(br);
+//            String line;
+//
+//            while ((line = lineReader.readLine()) != null) {
+//                Scanner scanner = new Scanner(line); 
+//                // use scanner here
+//                line += scanner;
+//            }
         }       
         catch (Exception e){
             System.out.println(e.toString());

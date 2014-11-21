@@ -28,6 +28,8 @@ public class EyetrackerWordSelection extends JTextArea {
     JTextArea txtContent;
     private Point last;
 	private long lastTimeStamp = 0;
+	boolean wordChanged = false;
+	WordManipulation wordChanger = new WordManipulation();
 
     public EyetrackerWordSelection(String text){
     	setLast(new Point(0,0));
@@ -60,18 +62,6 @@ public class EyetrackerWordSelection extends JTextArea {
 
     }
     	
-    public void setCaretPoint(int caretPosition)
-    {
-        try {
-            String word = WordManipulation.getWord(caretPosition, this);
-            DocumentReader.writeToTextFile("output.txt", word+"  "
-            				+ this.getText(caretPosition-1,1)
-            				+ " " +System.currentTimeMillis());
-        } catch (BadLocationException e1) {
-            e1.printStackTrace();
-        }
-    }
-	
 	private class GazeListener implements IGazeListener
     {
         public void onGazeUpdate(GazeData gazeData)
@@ -94,7 +84,14 @@ public class EyetrackerWordSelection extends JTextArea {
         	txtContent.setCaretPosition(viewToModel(pt));
             int caretPosition = getCaretPosition();
             try {
-                String word = WordManipulation.getWord(caretPosition, txtContent);
+            	String word = wordChanger.getWord(caretPosition, txtContent);
+                System.out.println(""+word+"    "+txtContent.getText(caretPosition,1));
+                if(wordChanged && wordChanger.getWord(caretPosition, txtContent).equalsIgnoreCase(wordChanger.wordToInsert))
+                {
+                	wordChanger.changeWordXWordsInfront(wordChanger.wordToInsert, 0, caretPosition, txtContent);
+                	wordChanged = false;
+                }
+                
                 DocumentReader.writeToTextFile(fileName+".txt", word+"  "
                 				+ txtContent.getText(caretPosition-1,1)
                 				+ " " +gazeData.timeStampString);
