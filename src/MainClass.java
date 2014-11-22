@@ -26,6 +26,7 @@ public class MainClass {
         startEyetrackerButton.setLocation(100, 100);
         
     	Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
+    	frame.setTitle("Copyright Ben Smith (c) 2014");
         frame.setSize(dim.width, dim.height);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.add(startEyetrackerButton);
