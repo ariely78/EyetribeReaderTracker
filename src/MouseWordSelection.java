@@ -26,9 +26,9 @@ public class MouseWordSelection extends JTextArea {
     JTextArea txtContent;
     private Point last;
 	private long lastTimeStamp = 0;
-	boolean wordChanged = false;
 	WordManipulation wordChanger = new WordManipulation();
 
+	
     public MouseWordSelection(String text){
     	last = new Point(0,0);
     	txtContent =  this;
@@ -71,24 +71,24 @@ public class MouseWordSelection extends JTextArea {
 	
     public void setCaretPoint(int caretPosition)
     {
+    	//Give reader a chance to move onto next word
         if((System.currentTimeMillis() - lastTimeStamp) > WordReadingTime){
         	lastTimeStamp = System.currentTimeMillis();
 	        try {
 	            String word = wordChanger.getWord(caretPosition, this);
-	            System.out.println("currentword "+wordChanger.getWord(caretPosition, this));
-	            System.out.println("wordToReplace "+wordChanger.wordToReplace);
-	            System.out.println("wordToInsert "+wordChanger.wordToInsert);
+	            wordChanger.ChangeWords(caretPosition,txtContent);
+//	            //only change word if selected word is "to"
+//	        	if(wordChanger.getWord(caretPosition, this).equalsIgnoreCase(wordToActivateChange) && !wordChanged)
+//	        	{
+//	        		wordChanged = wordChanger.changeWordXWordsInfront(swapWord, 2, caretPosition, txtContent);
+//	        	}
+//	        	
+//	            //if we changed a word and the current word selected is same as the word we changed to, change it back!
+//	            if(wordChanged && wordChanger.getWord(caretPosition, this).equalsIgnoreCase(swapWord))
+//	            {
+//	            	wordChanged= wordChanger.swapWordBack(swapWord, 0, caretPosition, txtContent);
+//	            }
 
-	            //if we changed a word and the current word selected is same as the word we changed to, change it back!
-	            if(wordChanged && wordChanger.getWord(caretPosition, this).equalsIgnoreCase(wordChanger.wordToInsert))
-	            {
-	            	wordChanger.changeWordXWordsInfront(wordChanger.wordToReplace, 0, caretPosition, txtContent);
-	            	wordChanged = false;
-	            }
-	          //only change word if selected word is "to"
-	        	if(wordChanger.getWord(caretPosition, this).equalsIgnoreCase("to") && !wordChanged)
-	        		wordChanged = wordChanger.changeWordXWordsInfront("Ben", 2, caretPosition, txtContent);
-	        	
 	            DocumentReader.writeToTextFile(fileName+".txt", word+"  "
 	            				+ this.getText(caretPosition-1,1)
 	            				+ " " +System.currentTimeMillis());

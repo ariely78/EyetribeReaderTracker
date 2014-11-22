@@ -5,10 +5,16 @@ import javax.swing.text.BadLocationException;
 public class WordManipulation {
 	String wordToReplace;
 	String selectedWord;
-	String wordToInsert;
+	String lastWordChanged;
 	int startIndex;
     int endIndex;
-    
+	boolean changeWordBack = false;
+	String swapWord = "Ben";
+	String wordToActivateChange = "to";
+	int timeUntilNextWordChange = 1000;
+	boolean wordChanged = false;
+	private long lastTimeStamp = 0;
+
     public String getWord(int caretPosition, JTextArea txtContent) throws BadLocationException {
         int startIndex;
         int endIndex;
@@ -26,11 +32,10 @@ public class WordManipulation {
         return txtContent.getText(startIndex, endIndex - startIndex);
     }
     
-    public boolean changeWordXWordsInfront(String wordToInsert,
+    public boolean changeWordXWordsInfront(String wordToInsertParam,
     											int numberOfWordsAhead,
 								    			int caretPosition, 
 								    			JTextArea txtContent) throws BadLocationException {
-    	
         int currentWord = 0;
         int i = 0;
 
@@ -49,39 +54,87 @@ public class WordManipulation {
 	        caretPosition+=i+1;
 	        currentWord++;
 	        i = 0;
-        }
-    	this.wordToInsert = wordToInsert;
-        wordToReplace = getWord(caretPosition,txtContent);
-        endIndex = caretPosition + wordToReplace.length()-1;
-        
-        //set caret position to endIndex - length of word we are replacing 
-        //but -1 from that so we get start index of word
-        startIndex = endIndex-(wordToReplace.length()-1);
+	        startIndex = caretPosition;
+	        this.wordToReplace = getWord(startIndex,txtContent);
+	        //set caret position to endIndex - length of word we are replacing 
+	        //but -1 from that so we get start index of word
+	        endIndex = caretPosition + wordToReplace.length()-1;
+	        this.lastWordChanged = getWord(startIndex,txtContent);
 
-        //If the word we are replacing is shorter than the word we are 
-        //inserting then add extra space
-        if(wordToReplace.length() < wordToInsert.length()){
-        	int charsToAdd = wordToInsert.length() - wordToReplace.length();
+        }
+        
+        removeAddSpace(wordToInsertParam, this.wordToReplace, txtContent);
+
+        return true;
+    }
+
+    public boolean swapWordBack(String wordToSwap,
+			int numberOfWordsAhead,
+			int caretPosition, 
+			JTextArea txtContent) throws BadLocationException
+    {
+        int i = 0;
+
+        while (!txtContent.getText(caretPosition + i, 1).equals(" ")){
+        	//come across newline then just return, dont change words between lines
+        	if(txtContent.getText(caretPosition + i, 1).equals("\n"))
+        		return false;
+            System.out.println(""+txtContent.getText(caretPosition+i,1));
+            i++;
+        } 
+
+    	numberOfWordsAhead++;
+    	caretPosition += i;
+        startIndex = caretPosition - wordToSwap.length();
+        endIndex = caretPosition-1;
+	    
+        removeAddSpace(this.lastWordChanged, wordToSwap, txtContent);
+
+        return false;
+    }
+
+	public void ChangeWords(int caretPosition, JTextArea txtContent) throws BadLocationException
+	{
+        if((System.currentTimeMillis() - lastTimeStamp) > timeUntilNextWordChange){
+        	lastTimeStamp = System.currentTimeMillis();
+	        //only change word if selected word is "to"
+	    	if(getWord(caretPosition, txtContent).equalsIgnoreCase(wordToActivateChange) && !this.wordChanged)
+	    	{
+	    		wordChanged = changeWordXWordsInfront(swapWord, 2, caretPosition, txtContent);
+	    	}
+	    	
+	        //if we changed a word and the current word selected is same as the word we changed to, change it back!
+	        if(wordChanged && getWord(caretPosition, txtContent).equalsIgnoreCase(swapWord))
+	        {
+	        	wordChanged = swapWordBack(swapWord, 0, caretPosition, txtContent);
+	        }
+        }
+	}
+	
+	public void removeAddSpace(String wordToInsertParam, String wordToReplaceParam,JTextArea txtContent)
+	{
+		int i = 0;
+        if(wordToReplaceParam.length() < wordToInsertParam.length()){
+        	int charsToAdd = wordToInsertParam.length() - wordToReplaceParam.length();
         	i = 1;
         	while(i <= charsToAdd){
         		txtContent.insert(" ", endIndex + i);
         		i++;
         	}
             //then insert our new word
-            txtContent.replaceRange(wordToInsert, startIndex, startIndex+wordToInsert.length());//endIndex - startIndex);
+            txtContent.replaceRange(wordToInsertParam, startIndex, startIndex + wordToInsertParam.length());//endIndex - startIndex);
 
         } else {
         	//if the word we are replacing is longer than the word we are
         	//inserting then remove the extra space
-        	int charsToRemove = wordToReplace.length() - wordToInsert.length();
+        	int charsToRemove = wordToReplaceParam.length() - wordToInsertParam.length();
         	i = 0;
         	while(i < charsToRemove){
-        		txtContent.insert("", startIndex + wordToInsert.length() + i);
+        		txtContent.insert("", startIndex + wordToInsertParam.length() + i);
         		i++;
         	}
             //then insert our new word
-            txtContent.replaceRange(wordToInsert, startIndex, startIndex+wordToReplace.length());//endIndex - startIndex);
+            txtContent.replaceRange(wordToInsertParam, startIndex, startIndex+wordToReplaceParam.length());//endIndex - startIndex);
         }
-        return true;
-    }
+	}
 }
