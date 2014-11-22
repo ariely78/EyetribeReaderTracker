@@ -3,18 +3,17 @@ import javax.swing.text.BadLocationException;
 
 
 public class WordManipulation {
-	String wordToReplace;
-	String selectedWord;
 	String lastWordChanged;
 	int startIndex;
     int endIndex;
 	boolean changeWordBack = false;
 	String swapWord = "Ben";
 	String wordToActivateChange = "to";
-	int timeUntilNextWordChange = 1000;
+	int timeUntilNextWordChange = 0;
 	boolean wordChanged = false;
 	private long lastTimeStamp = 0;
-
+	int numWordsInfront = 2;
+	
     public String getWord(int caretPosition, JTextArea txtContent) throws BadLocationException {
         int startIndex;
         int endIndex;
@@ -38,6 +37,7 @@ public class WordManipulation {
 								    			JTextArea txtContent) throws BadLocationException {
         int currentWord = 0;
         int i = 0;
+    	String wordToReplace= "";
 
         while (currentWord < numberOfWordsAhead) {
 
@@ -55,7 +55,7 @@ public class WordManipulation {
 	        currentWord++;
 	        i = 0;
 	        startIndex = caretPosition;
-	        this.wordToReplace = getWord(startIndex,txtContent);
+	        wordToReplace = getWord(startIndex,txtContent);
 	        //set caret position to endIndex - length of word we are replacing 
 	        //but -1 from that so we get start index of word
 	        endIndex = caretPosition + wordToReplace.length()-1;
@@ -63,13 +63,12 @@ public class WordManipulation {
 
         }
         
-        removeAddSpace(wordToInsertParam, this.wordToReplace, txtContent);
+        removeAddSpace(wordToInsertParam, wordToReplace, txtContent);
 
         return true;
     }
 
     public boolean swapWordBack(String wordToSwap,
-			int numberOfWordsAhead,
 			int caretPosition, 
 			JTextArea txtContent) throws BadLocationException
     {
@@ -83,7 +82,6 @@ public class WordManipulation {
             i++;
         } 
 
-    	numberOfWordsAhead++;
     	caretPosition += i;
         startIndex = caretPosition - wordToSwap.length();
         endIndex = caretPosition-1;
@@ -100,13 +98,13 @@ public class WordManipulation {
 	        //only change word if selected word is "to"
 	    	if(getWord(caretPosition, txtContent).equalsIgnoreCase(wordToActivateChange) && !this.wordChanged)
 	    	{
-	    		wordChanged = changeWordXWordsInfront(swapWord, 2, caretPosition, txtContent);
+	    		wordChanged = changeWordXWordsInfront(swapWord, numWordsInfront, caretPosition, txtContent);
 	    	}
 	    	
 	        //if we changed a word and the current word selected is same as the word we changed to, change it back!
 	        if(wordChanged && getWord(caretPosition, txtContent).equalsIgnoreCase(swapWord))
 	        {
-	        	wordChanged = swapWordBack(swapWord, 0, caretPosition, txtContent);
+	        	wordChanged = swapWordBack(swapWord, caretPosition, txtContent);
 	        }
         }
 	}

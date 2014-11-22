@@ -85,13 +85,7 @@ public class EyetrackerWordSelection extends JTextArea {
             int caretPosition = getCaretPosition();
             try {
             	String word = wordChanger.getWord(caretPosition, txtContent);
-                System.out.println(""+word+"    "+txtContent.getText(caretPosition,1));
-                if(wordChanged && wordChanger.getWord(caretPosition, txtContent).equalsIgnoreCase(wordChanger.wordToInsert))
-                {
-                	wordChanger.changeWordXWordsInfront(wordChanger.wordToInsert, 0, caretPosition, txtContent);
-                	wordChanged = false;
-                }
-                
+	            wordChanger.ChangeWords(caretPosition,txtContent);
                 DocumentReader.writeToTextFile(fileName+".txt", word+"  "
                 				+ txtContent.getText(caretPosition-1,1)
                 				+ " " +gazeData.timeStampString);

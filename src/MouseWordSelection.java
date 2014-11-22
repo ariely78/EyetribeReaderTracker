@@ -77,18 +77,6 @@ public class MouseWordSelection extends JTextArea {
 	        try {
 	            String word = wordChanger.getWord(caretPosition, this);
 	            wordChanger.ChangeWords(caretPosition,txtContent);
-//	            //only change word if selected word is "to"
-//	        	if(wordChanger.getWord(caretPosition, this).equalsIgnoreCase(wordToActivateChange) && !wordChanged)
-//	        	{
-//	        		wordChanged = wordChanger.changeWordXWordsInfront(swapWord, 2, caretPosition, txtContent);
-//	        	}
-//	        	
-//	            //if we changed a word and the current word selected is same as the word we changed to, change it back!
-//	            if(wordChanged && wordChanger.getWord(caretPosition, this).equalsIgnoreCase(swapWord))
-//	            {
-//	            	wordChanged= wordChanger.swapWordBack(swapWord, 0, caretPosition, txtContent);
-//	            }
-
 	            DocumentReader.writeToTextFile(fileName+".txt", word+"  "
 	            				+ this.getText(caretPosition-1,1)
 	            				+ " " +System.currentTimeMillis());
