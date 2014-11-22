@@ -104,6 +104,7 @@ public class WordManipulation {
 	        //if we changed a word and the current word selected is same as the word we changed to, change it back!
 	        if(wordChanged && getWord(caretPosition, txtContent).equalsIgnoreCase(swapWord))
 	        {
+	        	
 	        	wordChanged = swapWordBack(swapWord, caretPosition, txtContent);
 	        }
         }

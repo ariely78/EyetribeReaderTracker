@@ -22,7 +22,7 @@ public class EyetrackerWordSelection extends JTextArea {
     private int y;
     int textareaX = 0;
     int textareaY = 0;
-    int WordReadingTime = 0;
+    int WordReadingTime = 100;
     int textSize = 50;
     public String fileName;
     JTextArea txtContent;

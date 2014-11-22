@@ -35,10 +35,10 @@ public class MainClass {
         frame.setLayout(new FlowLayout());       
         //Add action listener to button
         startButton.addActionListener(new ActionListener() {
-        	final MouseWordSelection mousetxtContent = new MouseWordSelection(DocumentReader.readTextFile("text.txt"));
 
             public void actionPerformed(ActionEvent e)
             {
+            	final MouseWordSelection mousetxtContent = new MouseWordSelection(DocumentReader.readTextFile("text.txt"));
                 //Execute when button is pressed
                 String reply = JOptionPane.showInputDialog(null, "Please test name",
                 		"Press ok to start test",
@@ -65,10 +65,10 @@ public class MainClass {
         
         //Add action listener to button
         startEyetrackerButton.addActionListener(new ActionListener() {
-        	final EyetrackerWordSelection EyetrackerTxtContent = new EyetrackerWordSelection(DocumentReader.readTextFile("text.txt"));
 
             public void actionPerformed(ActionEvent e)
             {
+            	final EyetrackerWordSelection EyetrackerTxtContent = new EyetrackerWordSelection(DocumentReader.readTextFile("text.txt"));
                 //Execute when button is pressed
                 String reply = JOptionPane.showInputDialog(null, "Please test name",
                 		"Press ok to start test",

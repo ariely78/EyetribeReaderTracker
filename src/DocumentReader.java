@@ -22,18 +22,11 @@ public class DocumentReader {
             while ((line=br.readLine())!=null){
             	
                 System.out.println(line);
-                string+=line+"\n";
+                string+="\n"+line+"\n";
             }
             br.close();
             
-//            BufferedReader lineReader = new BufferedReader(br);
-//            String line;
-//
-//            while ((line = lineReader.readLine()) != null) {
-//                Scanner scanner = new Scanner(line); 
-//                // use scanner here
-//                line += scanner;
-//            }
+
         }       
         catch (Exception e){
             System.out.println(e.toString());

@@ -20,8 +20,8 @@ public class MouseWordSelection extends JTextArea {
     private int y;
     int textareaX = 0;
     int textareaY = 0;
-    int WordReadingTime = 200;
-    int textSize = 30;
+    int WordReadingTime = 100;
+    int textSize = 50;
     public String fileName;
     JTextArea txtContent;
     private Point last;
