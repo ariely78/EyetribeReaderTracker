@@ -1,47 +1,57 @@
 import javax.swing.*;
 import javax.swing.text.BadLocationException;
 
+import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
 import java.awt.Point;
-import java.awt.Toolkit;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-
 /**
  * Gets word from right clicked area
  */
-public class MouseWordSelection extends JTextArea {
+public class MouseWordSelection extends JPanel{
     private int x;
     private int y;
-    int textareaX = 0;
-    int textareaY = 0;
-    int WordReadingTime = 100;
-    int textSize = 50;
-    public String fileName;
-    JTextArea txtContent;
-    private Point last;
 	private long lastTimeStamp = 0;
+    private Point last = new Point(0,0);
 	WordManipulation wordChanger = new WordManipulation();
+    private JTextArea jta = new JTextArea(){
+        @Override
+        protected void paintComponent(Graphics g)
+        {
+          super.paintComponent(g);
+          g.getColor();
+    	  g.setColor(Color.RED);
+          g.fillOval(x, y, 10,10);
+        } 
+    };
+
+    public int wordReadingTime = 0;
+    public int fontSize = 50;
+    public String fileName;
 
 	
     public MouseWordSelection(String text){
-    	last = new Point(0,0);
-    	txtContent =  this;
     	
-    	this.setEditable(false);
-    	this.setText(text);
-    	this.setHighlighter(null);
-    	Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
-    	this.setBounds(0,0, dim.width, dim.height);
-    	Font font = new Font("Verdana", Font.BOLD, textSize);
-    	this.setFont(font);
-    	
-    	this.addMouseMotionListener(new MouseAdapter() {
+    	Font font = new Font("Verdana", Font.BOLD, fontSize);
+    	jta.setFont(font);
+    	jta.setEditable(false);
+    	jta.setHighlighter(null);
+
+    	//... Set textarea's initial text, scrolling, and border.
+        jta.setText(text);
+        JScrollPane scrollingArea = new JScrollPane(jta);
+
+        //... Get the content pane, set layout, add to center
+        this.setLayout(new BorderLayout());
+        this.add(scrollingArea, BorderLayout.CENTER);
+        
+    }
+	
+    public void startMouseListener(){
+    	jta.addMouseMotionListener(new MouseAdapter() {
             @Override
             public void mouseDragged(MouseEvent m) {
                 int dx = m.getX() - last.x;
@@ -49,10 +59,12 @@ public class MouseWordSelection extends JTextArea {
                 x += dx;
                 y += dy;
                 last = m.getPoint();
-                setCaretPoint(viewToModel(m.getPoint()));
+                setCaretPoint(jta.viewToModel(m.getPoint()));
+                jta.repaint();
+
             }
     	});
-    	this.addMouseListener(new MouseAdapter() {
+    	jta.addMouseListener(new MouseAdapter() {
 
             @Override
             public void mousePressed(MouseEvent m) {
@@ -60,25 +72,29 @@ public class MouseWordSelection extends JTextArea {
                 x = last.x;
                 y = last.y;
 
-                repaint();
+                jta.repaint();
             }
             @Override
             public void mouseClicked(MouseEvent e) {
-            	setCaretPoint(txtContent.viewToModel(e.getPoint()));
+            	setCaretPoint(jta.viewToModel(e.getPoint()));
             }
         });
     }
-	
+    
     public void setCaretPoint(int caretPosition)
     {
     	//Give reader a chance to move onto next word
-        if((System.currentTimeMillis() - lastTimeStamp) > WordReadingTime){
+        if((System.currentTimeMillis() - lastTimeStamp) > wordReadingTime){
         	lastTimeStamp = System.currentTimeMillis();
 	        try {
-	            String word = wordChanger.getWord(caretPosition, this);
-	            wordChanger.ChangeWords(caretPosition,txtContent);
+	            String word = wordChanger.getWord(caretPosition, jta);
+	            wordChanger.ChangeWords(caretPosition,jta);
+	            TextLineNumber tln = new TextLineNumber(jta);
+
+	            System.out.println("Word: "+word+" Letter:"+jta.getText(caretPosition,1));
+	            
 	            DocumentReader.writeToTextFile(fileName+".txt", word+"  "
-	            				+ this.getText(caretPosition-1,1)
+	            				+ jta.getText(caretPosition-1,1)
 	            				+ " " +System.currentTimeMillis());
 	        } catch (BadLocationException e1) {
 	            e1.printStackTrace();
@@ -90,9 +106,6 @@ public class MouseWordSelection extends JTextArea {
     protected void paintComponent(Graphics g)
     {
       super.paintComponent(g);
-      g.getColor();
-	  g.setColor(Color.RED);
-      g.fillOval(x, y, 10,10);
     } 
 }
 

@@ -22,7 +22,7 @@ public class DocumentReader {
             while ((line=br.readLine())!=null){
             	
                 System.out.println(line);
-                string+="\n"+line+"\n";
+                string+= "\n"+line+"\n";
             }
             br.close();
             

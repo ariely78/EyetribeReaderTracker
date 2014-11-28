@@ -7,7 +7,7 @@ public class WordManipulation {
 	int startIndex;
     int endIndex;
 	boolean changeWordBack = false;
-	String swapWord = "Ben";
+	String swapWord = "name";
 	String wordToActivateChange = "to";
 	int timeUntilNextWordChange = 0;
 	boolean wordChanged = false;
