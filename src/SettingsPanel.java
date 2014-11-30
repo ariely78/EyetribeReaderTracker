@@ -172,6 +172,9 @@ public class SettingsPanel extends JFrame implements ActionListener{
 	    String name = o.getName();
     	if(name.equalsIgnoreCase("setSettings")) {
     	    setVariables();
+    	    mousetxtContent.repaint();
+    	    eyetrackerTxtContent.repaint();
+
     	} else if(name.equalsIgnoreCase("mouse")) {
 	        //Execute when button is pressed
 	        String reply = JOptionPane.showInputDialog(null, "Please test name",

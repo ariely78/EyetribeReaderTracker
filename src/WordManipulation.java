@@ -1,3 +1,9 @@
+import java.awt.Graphics2D;
+import java.awt.Point;
+import java.awt.Rectangle;
+import java.awt.font.FontRenderContext;
+import java.awt.font.GlyphVector;
+
 import javax.swing.JTextArea;
 import javax.swing.text.BadLocationException;
 
@@ -18,17 +24,62 @@ public class WordManipulation {
         int startIndex;
         int endIndex;
         int i = 0;
-        while (!txtContent.getText(caretPosition + i, 1).equals(" ")
-                && !txtContent.getText(caretPosition + i, 1).equals("\n")) {
+
+        while (Character.isLetter(txtContent.getText(caretPosition + i, 1).charAt(0)))  {
             i++;
         }
         endIndex = caretPosition + i;
         int j = 0;
-        while (j < caretPosition && !txtContent.getText(caretPosition - j - 1, 1).equals(" ")) {
+        while (j < caretPosition && Character.isLetter(txtContent.getText(caretPosition - j - 1, 1).charAt(0))) {
             j++;
         }
         startIndex = caretPosition - j;
         return txtContent.getText(startIndex, endIndex - startIndex);
+    }
+    
+    public int letterTracked(JTextArea txtContent, 
+						    		int caretPosition, 
+						    		Point trackPoint) throws BadLocationException
+    {
+    	Rectangle caretPositionRect = txtContent.modelToView( txtContent.getCaretPosition() );
+    	int newCaretPosition = 0;
+		newCaretPosition = caretPosition;
+
+    	if(isCharALetter(txtContent, caretPosition)){
+    		return newCaretPosition;
+    	}
+    	
+    	Point newTrackPoint;
+    	//if the point is within line above or below the word
+    	if(trackPoint.y <= (caretPositionRect.y + caretPositionRect.height*2)
+    			&& trackPoint.y >= caretPositionRect.y){ //below it
+    		newTrackPoint = new Point(trackPoint.x, trackPoint.y-caretPositionRect.height);
+    		newCaretPosition = txtContent.viewToModel(newTrackPoint);
+
+    	} else if(trackPoint.y <= (caretPositionRect.y-(caretPositionRect.height)) //ABOVE IT?
+    			&& trackPoint.y >= caretPositionRect.y){
+    		newTrackPoint = new Point(trackPoint.x, trackPoint.y+caretPositionRect.height);
+        	newCaretPosition = txtContent.viewToModel(newTrackPoint);
+    	}
+
+    	return newCaretPosition;
+    }
+    
+    public boolean isCharALetter(JTextArea jta, int caretPosition) throws BadLocationException
+    {
+    	return Character.isLetter(charAtPosition(jta,caretPosition));
+    }
+    
+    public char charAtPosition(JTextArea jta, int caretPosition) throws BadLocationException
+    {
+    	char ch = jta.getText(caretPosition,1).charAt(0);
+    	return ch;
+    }
+    private Rectangle getStringBounds(Graphics2D g2, String str, float x,
+            float y) {
+        FontRenderContext frc = g2.getFontRenderContext();
+        GlyphVector gv = g2.getFont().createGlyphVector(frc, str);
+        return gv.getPixelBounds(null, x, y);
     }
     
     public boolean changeWordXWordsInfront(String wordToInsertParam,
