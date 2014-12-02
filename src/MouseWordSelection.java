@@ -78,13 +78,6 @@ public class MouseWordSelection extends JPanel{
         this.add(scrollingArea, BorderLayout.CENTER);
         
     }
-    
-		private Rectangle getStringBounds(Graphics2D g2, String str, float x,
-		  float y) {
-			FontRenderContext frc = g2.getFontRenderContext();
-			GlyphVector gv = g2.getFont().createGlyphVector(frc, str);
-			return gv.getPixelBounds(null, x, y);
-		}
 	
     public void startMouseListener(){
     	jta.addMouseMotionListener(new MouseAdapter() {
@@ -125,14 +118,8 @@ public class MouseWordSelection extends JPanel{
         	lastTimeStamp = System.currentTimeMillis();
         	
 	        try {
-//	            Random r = new Random();
-//	            int Low = 0;
-//	            int High = 255;
-//	            int R = r.nextInt(High-Low) + Low;
-//	            int G = r.nextInt(High-Low) + Low;
-//	            int B = r.nextInt(High-Low) + Low;
-//	            jta.setBackground(new Color(R,G,B));
-	        	caretPosition = wordChanger.letterTracked(jta, caretPosition, new Point(x,y));
+
+	        	caretPosition = wordChanger.letterTracked(jta, caretPosition, new Point(x,y),fm.getHeight());
 	        	char ch = wordChanger.charAtPosition(jta, caretPosition);
         		System.out.println("character returned" +ch);
 
@@ -140,15 +127,12 @@ public class MouseWordSelection extends JPanel{
 	        	{
 	        		System.out.println("character returned2" +ch);
 		            word = wordChanger.getWord(caretPosition, jta);
-		        	
-//		            GlyphVector gv = font.createGlyphVector(fm.getFontRenderContext(), word).getVisualBounds().getHeight();
-//		            Rectangle g = gv.getPixelBounds(null, x, y);
-
+		            
 		            wordChanger.ChangeWords(caretPosition,jta);
 	
 		            System.out.println("Word: "+word+" Letter:"+jta.getText(caretPosition,1));
 		            
-		            DocumentReader.writeToTextFile(fileName+".txt", word+"  "
+		            DocumentReader.writeToTextFile(fileName, word+"  "
 		            				+ ch
 		            				+ " " +System.currentTimeMillis());
 	        	}

@@ -36,11 +36,14 @@ public class EyetrackerWordSelection extends JPanel {
     int wordReadingTime = 0;
     int fontSize = 100;
     public String fileName;
+    FontMetrics metric;
+    Font font;
     JTextArea txtContent = new JTextArea(){
         @Override
         protected void paintComponent(Graphics g)
         {
           super.paintComponent(g);
+          metric = this.getFontMetrics(font);
           g.getColor();
     	  g.setColor(Color.RED);
           g.fillOval(x, y, 10,10);
@@ -55,7 +58,8 @@ public class EyetrackerWordSelection extends JPanel {
     public EyetrackerWordSelection(String text){
     	setLast(new Point(0,0));
     	
-    	Font font = new Font("Courier New", Font.PLAIN, fontSize);
+    	font = new Font("Courier New", Font.PLAIN, fontSize);
+
     	txtContent.setFont(font);
     	txtContent.setEditable(false);
     	txtContent.setHighlighter(null);
@@ -114,7 +118,7 @@ public class EyetrackerWordSelection extends JPanel {
                 int caretPosition = txtContent.viewToModel(pt);
 //        		char ch = txtContent.getText(caretPosition,1).charAt(0);
 
-        		caretPosition = wordChanger.letterTracked(txtContent, caretPosition, new Point(x,y));
+        		caretPosition = wordChanger.letterTracked(txtContent, caretPosition, new Point(x,y),metric.getHeight());
 	        	char ch = wordChanger.charAtPosition(txtContent, caretPosition);
 //        		System.out.println("character returned" +ch);
 
@@ -124,7 +128,7 @@ public class EyetrackerWordSelection extends JPanel {
 //	            	txtContent.setCaretPosition(txtContent.viewToModel(pt));
 	            	String word = wordChanger.getWord(caretPosition, txtContent);
 		            wordChanger.ChangeWords(caretPosition,txtContent);
-	                DocumentReader.writeToTextFile(fileName+".txt", 
+	                DocumentReader.writeToTextFile(fileName, 
 	                				word+" , "+ txtContent.getText(caretPosition,1) + 
 	                				" , " + caretPosition +
 	                				" , " + gazeData.timeStamp + 

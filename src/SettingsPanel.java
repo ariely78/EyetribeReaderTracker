@@ -6,6 +6,9 @@ import java.awt.event.ActionListener;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 public class SettingsPanel extends JFrame implements ActionListener{
 
@@ -35,7 +38,7 @@ public class SettingsPanel extends JFrame implements ActionListener{
 	private JFrame testWindow = new JFrame();
 	MouseWordSelection mousetxtContent = new MouseWordSelection(DocumentReader.readTextFile("text.txt"));
 	EyetrackerWordSelection eyetrackerTxtContent = new EyetrackerWordSelection(DocumentReader.readTextFile("text.txt"));
-
+	CalibrationPane cali = new CalibrationPane();
 	
 	public SettingsPanel() {
 	    super("Settings Panel");
@@ -177,18 +180,21 @@ public class SettingsPanel extends JFrame implements ActionListener{
 
     	} else if(name.equalsIgnoreCase("mouse")) {
 	        //Execute when button is pressed
-	        String reply = JOptionPane.showInputDialog(null, "Please test name",
+	        String reply = JOptionPane.showInputDialog(null, "Please enter your name",
 	        		"Press ok to start test",
 	        		JOptionPane.OK_OPTION);
-	        
-	        Path path = Paths.get(reply+".txt");
-	
+	        mousetxtContent.wordChanger.swapWord = reply;
+	        DateFormat dateFormat = new SimpleDateFormat("yyyy_MM_dd__HH_mm_ss");
+	        Date date = new Date();
+	        Path path = Paths.get(reply+"_"+dateFormat.format(date)+".txt");
+	        System.out.println(reply+"_"+dateFormat.format(date)+".txt");
 	        if (Files.notExists(path) && !reply.isEmpty()) {
 	          // file is not exist
-	        	mousetxtContent.fileName = reply;
+	        	mousetxtContent.fileName = path.toString();
 	        	
 	            //... Set window characteristics.
 	        	testWindow.setContentPane(mousetxtContent);
+	        	
 	        	testWindow.setTitle("Copyright Ben Smith (c) 2014");
 	        	testWindow.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	        	testWindow.pack();
@@ -201,15 +207,17 @@ public class SettingsPanel extends JFrame implements ActionListener{
 	        }
     	} else {
             //Execute when button is pressed
-            String reply = JOptionPane.showInputDialog(null, "Please test name",
+            String reply = JOptionPane.showInputDialog(null, "Please enter your name:",
             		"Press ok to start test",
             		JOptionPane.OK_OPTION);
-            
-            Path path = Paths.get(reply+".txt");
+            mousetxtContent.wordChanger.swapWord = reply;
+	        DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+	        Date date = new Date();
+	        Path path = Paths.get(reply+"-"+dateFormat.format(date)+".txt");
 
             if (Files.notExists(path) && !reply.isEmpty()) {
               // file is not exist
-            	eyetrackerTxtContent.fileName = reply;
+            	eyetrackerTxtContent.fileName = path.toString();
 	            //... Set window characteristics.
 	        	testWindow.setContentPane(eyetrackerTxtContent);
 	        	testWindow.setTitle("Copyright Ben Smith (c) 2014");
@@ -217,8 +225,6 @@ public class SettingsPanel extends JFrame implements ActionListener{
 	        	testWindow.pack();
 	        	testWindow.setVisible(true);
 	    		eyetrackerTxtContent.startEyetracker();
-
-//	    		eyetrackerTxtContent.startCalibration();
 
             } else {
                 if (Files.exists(path)) {

@@ -39,16 +39,16 @@ public class WordManipulation {
     
     public int letterTracked(JTextArea txtContent, 
 						    		int caretPosition, 
-						    		Point trackPoint) throws BadLocationException
+						    		Point trackPoint,
+						    		int fontHeight) throws BadLocationException
     {
-    	Rectangle caretPositionRect = txtContent.modelToView( txtContent.getCaretPosition() );
     	int newCaretPosition = 0;
 		newCaretPosition = caretPosition;
 
     	if(isCharALetter(txtContent, caretPosition)){
     		return newCaretPosition;
     	}
-    	int extraSpace = 40;
+    	int extraSpace = fontHeight/2;
     	Point newTrackPoint = new Point(trackPoint.x, trackPoint.y-extraSpace);
     	newCaretPosition = txtContent.viewToModel(newTrackPoint);
     	if(!isCharALetter(txtContent, newCaretPosition)){
@@ -58,34 +58,6 @@ public class WordManipulation {
 	        	newCaretPosition = txtContent.viewToModel(newTrackPoint);
 	    	}
     	}
-    	//if the point is within line above or below the word
-//    	System.out.println("caretPositionRect.height  "+caretPositionRect.height);
-//    	System.out.println("caretPositionRect.height*2  "+caretPositionRect.height*2);
-//    	System.out.println("caretPositionRect.y  "+caretPositionRect.y);
-//    	System.out.println("trackPoint.y  "+trackPoint.y);
-//    	System.out.println("(caretPositionRect.y-(caretPositionRect.height)  "+(caretPositionRect.y-(caretPositionRect.height)));
-
-//    	if(trackPoint.y <= (caretPositionRect.y + caretPositionRect.height*2)
-//    			&& trackPoint.y >= caretPositionRect.y){ //below it
-//    		newTrackPoint = new Point(trackPoint.x, trackPoint.y-caretPositionRect.height);
-//    		newCaretPosition = txtContent.viewToModel(newTrackPoint);
-//
-//    	} else if(trackPoint.y <= (caretPositionRect.y-(caretPositionRect.height)) //ABOVE IT?
-//    			&& trackPoint.y >= caretPositionRect.y){
-//    		newTrackPoint = new Point(trackPoint.x, trackPoint.y+caretPositionRect.height);
-//        	newCaretPosition = txtContent.viewToModel(newTrackPoint);
-//    	}
-//    	if(trackPoint.y <= (caretPositionRect.height*2)){
-//    			//&& trackPoint.y >= caretPositionRect.y){ //below it
-//    		newTrackPoint = new Point(trackPoint.x, trackPoint.y-caretPositionRect.height);
-//    		newCaretPosition = txtContent.viewToModel(newTrackPoint);
-//
-//    	} else if(trackPoint.y <= caretPositionRect.height){ //ABOVE IT?
-//    			//&& trackPoint.y >= caretPositionRect.y){
-//    		newTrackPoint = new Point(trackPoint.x, trackPoint.y+caretPositionRect.height);
-//        	newCaretPosition = txtContent.viewToModel(newTrackPoint);
-//    	}
-
     	return newCaretPosition;
     }
     
@@ -100,7 +72,7 @@ public class WordManipulation {
     	return ch;
     }
     
-    public boolean changeWordXWordsInfront(String wordToInsertParam,
+	public boolean changeWordXWordsInfront(String wordToInsertParam,
     											int numberOfWordsAhead,
 								    			int caretPosition, 
 								    			JTextArea txtContent) throws BadLocationException {
@@ -117,7 +89,7 @@ public class WordManipulation {
 	            System.out.println(""+txtContent.getText(caretPosition+i,1));
 	            i++;
 	        }
-	        
+        	
 	        //move 2 carets forward to start of next word by adding 1 
 	        //(the space, then next word) assuming there is only one space!
 	        caretPosition+=i+1;
@@ -128,8 +100,16 @@ public class WordManipulation {
 	        //set caret position to endIndex - length of word we are replacing 
 	        //but -1 from that so we get start index of word
 	        endIndex = caretPosition + wordToReplace.length()-1;
-	        this.lastWordChanged = getWord(startIndex,txtContent);
 
+        }
+        
+        //only change the word if the word X words infront is same length as our swapword
+        String temp = getWord(startIndex,txtContent);
+        if(temp.length() == this.swapWord.length())
+        {
+        	this.lastWordChanged = getWord(startIndex,txtContent);
+        } else {
+        	return false;
         }
         
         removeAddSpace(wordToInsertParam, wordToReplace, txtContent);
@@ -164,16 +144,19 @@ public class WordManipulation {
 	{
         if((System.currentTimeMillis() - lastTimeStamp) > timeUntilNextWordChange){
         	lastTimeStamp = System.currentTimeMillis();
+        	
+        	if(!this.wordChanged)
+        		wordChanged = changeWordXWordsInfront(swapWord, numWordsInfront, caretPosition, txtContent);
+
 	        //only change word if selected word is "to"
-	    	if(getWord(caretPosition, txtContent).equalsIgnoreCase(wordToActivateChange) && !this.wordChanged)
-	    	{
-	    		wordChanged = changeWordXWordsInfront(swapWord, numWordsInfront, caretPosition, txtContent);
-	    	}
+//	    	if(getWord(caretPosition, txtContent).equalsIgnoreCase(wordToActivateChange) && !this.wordChanged)
+//	    	{
+//	    		wordChanged = changeWordXWordsInfront(swapWord, numWordsInfront, caretPosition, txtContent);
+//	    	}
 	    	
 	        //if we changed a word and the current word selected is same as the word we changed to, change it back!
 	        if(wordChanged && getWord(caretPosition, txtContent).equalsIgnoreCase(swapWord))
 	        {
-	        	
 	        	wordChanged = swapWordBack(swapWord, caretPosition, txtContent);
 	        }
         }
