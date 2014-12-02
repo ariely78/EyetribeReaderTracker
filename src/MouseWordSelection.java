@@ -43,10 +43,10 @@ public class MouseWordSelection extends JPanel{
 	      try{
 	    	  Rectangle rectangle = jta.modelToView( jta.getCaretPosition() );
 //		      Rectangle bounds = getStringBounds(g2, word, rectangle.x, rectangle.y);
-	          g.fillOval(rectangle.x, rectangle.y-50,10,10);
+	          //g.fillOval(rectangle.x, rectangle.y-50,10,10);
 
 	          g2.setColor(Color.blue);
-//	          g2.draw(rectangle);
+	          g2.draw(rectangle);
 	      }
 	      catch (BadLocationException e1) {
 	            e1.printStackTrace();
@@ -58,13 +58,13 @@ public class MouseWordSelection extends JPanel{
     };
 
     public int wordReadingTime = 0;
-    public int fontSize = 50;
+    public int fontSize = 80;
     public String fileName;
     Font font;
 	
     public MouseWordSelection(String text){
     	
-    	font = new Font("Verdana", Font.BOLD, fontSize);
+    	font = new Font("Courier New", Font.PLAIN, fontSize);
     	jta.setFont(font);
     	jta.setEditable(false);
     	jta.setHighlighter(null);
@@ -136,9 +136,9 @@ public class MouseWordSelection extends JPanel{
 	        	char ch = wordChanger.charAtPosition(jta, caretPosition);
         		System.out.println("character returned" +ch);
 
-        		if(wordChanger.isCharALetter(jta, caretPosition)) //null char 
+        		if(wordChanger.isCharALetter(jta, caretPosition))
 	        	{
-	        		System.out.println("character returned" +ch);
+	        		System.out.println("character returned2" +ch);
 		            word = wordChanger.getWord(caretPosition, jta);
 		        	
 //		            GlyphVector gv = font.createGlyphVector(fm.getFontRenderContext(), word).getVisualBounds().getHeight();

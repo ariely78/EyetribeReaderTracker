@@ -48,19 +48,43 @@ public class WordManipulation {
     	if(isCharALetter(txtContent, caretPosition)){
     		return newCaretPosition;
     	}
-    	
-    	Point newTrackPoint;
-    	//if the point is within line above or below the word
-    	if(trackPoint.y <= (caretPositionRect.y + caretPositionRect.height*2)
-    			&& trackPoint.y >= caretPositionRect.y){ //below it
-    		newTrackPoint = new Point(trackPoint.x, trackPoint.y-caretPositionRect.height);
-    		newCaretPosition = txtContent.viewToModel(newTrackPoint);
-
-    	} else if(trackPoint.y <= (caretPositionRect.y-(caretPositionRect.height)) //ABOVE IT?
-    			&& trackPoint.y >= caretPositionRect.y){
-    		newTrackPoint = new Point(trackPoint.x, trackPoint.y+caretPositionRect.height);
+    	int extraSpace = 40;
+    	Point newTrackPoint = new Point(trackPoint.x, trackPoint.y-extraSpace);
+    	newCaretPosition = txtContent.viewToModel(newTrackPoint);
+    	if(!isCharALetter(txtContent, newCaretPosition)){
+    		newTrackPoint = new Point(trackPoint.x, trackPoint.y+extraSpace);
         	newCaretPosition = txtContent.viewToModel(newTrackPoint);
+	    	if(isCharALetter(txtContent, newCaretPosition)){
+	        	newCaretPosition = txtContent.viewToModel(newTrackPoint);
+	    	}
     	}
+    	//if the point is within line above or below the word
+//    	System.out.println("caretPositionRect.height  "+caretPositionRect.height);
+//    	System.out.println("caretPositionRect.height*2  "+caretPositionRect.height*2);
+//    	System.out.println("caretPositionRect.y  "+caretPositionRect.y);
+//    	System.out.println("trackPoint.y  "+trackPoint.y);
+//    	System.out.println("(caretPositionRect.y-(caretPositionRect.height)  "+(caretPositionRect.y-(caretPositionRect.height)));
+
+//    	if(trackPoint.y <= (caretPositionRect.y + caretPositionRect.height*2)
+//    			&& trackPoint.y >= caretPositionRect.y){ //below it
+//    		newTrackPoint = new Point(trackPoint.x, trackPoint.y-caretPositionRect.height);
+//    		newCaretPosition = txtContent.viewToModel(newTrackPoint);
+//
+//    	} else if(trackPoint.y <= (caretPositionRect.y-(caretPositionRect.height)) //ABOVE IT?
+//    			&& trackPoint.y >= caretPositionRect.y){
+//    		newTrackPoint = new Point(trackPoint.x, trackPoint.y+caretPositionRect.height);
+//        	newCaretPosition = txtContent.viewToModel(newTrackPoint);
+//    	}
+//    	if(trackPoint.y <= (caretPositionRect.height*2)){
+//    			//&& trackPoint.y >= caretPositionRect.y){ //below it
+//    		newTrackPoint = new Point(trackPoint.x, trackPoint.y-caretPositionRect.height);
+//    		newCaretPosition = txtContent.viewToModel(newTrackPoint);
+//
+//    	} else if(trackPoint.y <= caretPositionRect.height){ //ABOVE IT?
+//    			//&& trackPoint.y >= caretPositionRect.y){
+//    		newTrackPoint = new Point(trackPoint.x, trackPoint.y+caretPositionRect.height);
+//        	newCaretPosition = txtContent.viewToModel(newTrackPoint);
+//    	}
 
     	return newCaretPosition;
     }
@@ -74,12 +98,6 @@ public class WordManipulation {
     {
     	char ch = jta.getText(caretPosition,1).charAt(0);
     	return ch;
-    }
-    private Rectangle getStringBounds(Graphics2D g2, String str, float x,
-            float y) {
-        FontRenderContext frc = g2.getFontRenderContext();
-        GlyphVector gv = g2.getFont().createGlyphVector(frc, str);
-        return gv.getPixelBounds(null, x, y);
     }
     
     public boolean changeWordXWordsInfront(String wordToInsertParam,

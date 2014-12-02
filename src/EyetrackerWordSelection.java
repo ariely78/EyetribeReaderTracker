@@ -34,7 +34,7 @@ public class EyetrackerWordSelection extends JPanel {
     int textareaX = 0;
     int textareaY = 0;
     int wordReadingTime = 0;
-    int fontSize = 50;
+    int fontSize = 100;
     public String fileName;
     JTextArea txtContent = new JTextArea(){
         @Override
@@ -54,7 +54,8 @@ public class EyetrackerWordSelection extends JPanel {
 
     public EyetrackerWordSelection(String text){
     	setLast(new Point(0,0));
-    	Font font = new Font("Verdana", Font.BOLD, fontSize);
+    	
+    	Font font = new Font("Courier New", Font.PLAIN, fontSize);
     	txtContent.setFont(font);
     	txtContent.setEditable(false);
     	txtContent.setHighlighter(null);
@@ -111,11 +112,16 @@ public class EyetrackerWordSelection extends JPanel {
         						(int)gazeData.smoothedCoordinates.y-textareaY);
         	try{
                 int caretPosition = txtContent.viewToModel(pt);
-        		char ch = txtContent.getText(caretPosition,1).charAt(0);
+//        		char ch = txtContent.getText(caretPosition,1).charAt(0);
 
-	        	if (Character.isLetter(ch)) 
+        		caretPosition = wordChanger.letterTracked(txtContent, caretPosition, new Point(x,y));
+	        	char ch = wordChanger.charAtPosition(txtContent, caretPosition);
+//        		System.out.println("character returned" +ch);
+
+        		if(wordChanger.isCharALetter(txtContent, caretPosition))
+	        	//if (Character.isLetter(ch)) 
 	        	{
-	            	txtContent.setCaretPosition(txtContent.viewToModel(pt));
+//	            	txtContent.setCaretPosition(txtContent.viewToModel(pt));
 	            	String word = wordChanger.getWord(caretPosition, txtContent);
 		            wordChanger.ChangeWords(caretPosition,txtContent);
 	                DocumentReader.writeToTextFile(fileName+".txt", 
