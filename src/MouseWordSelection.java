@@ -58,12 +58,13 @@ public class MouseWordSelection extends JPanel{
     };
 
     public int wordReadingTime = 0;
-    public int fontSize = 80;
+    public int fontSize = 40;
     public String fileName;
     Font font;
-	
-    public MouseWordSelection(String text){
-    	
+    SettingsPanel settingsPanel;
+    
+    public MouseWordSelection(String text, SettingsPanel settingsPanel){
+    	this.settingsPanel = settingsPanel;
     	font = new Font("Courier New", Font.PLAIN, fontSize);
     	jta.setFont(font);
     	jta.setEditable(false);

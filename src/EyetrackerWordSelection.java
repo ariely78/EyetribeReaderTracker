@@ -34,7 +34,7 @@ public class EyetrackerWordSelection extends JPanel {
     int textareaX = 0;
     int textareaY = 0;
     int wordReadingTime = 0;
-    int fontSize = 100;
+    int fontSize = 40;
     public String fileName;
     FontMetrics metric;
     Font font;
@@ -54,10 +54,12 @@ public class EyetrackerWordSelection extends JPanel {
 	private long lastTimeStamp = 0;
 	boolean wordChanged = false;
 	WordManipulation wordChanger = new WordManipulation();
+	SettingsPanel settingsPanel;
+	
+    public EyetrackerWordSelection(String text, SettingsPanel settingsPanel){
+    	this.settingsPanel = settingsPanel;
 
-    public EyetrackerWordSelection(String text){
     	setLast(new Point(0,0));
-    	
     	font = new Font("Courier New", Font.PLAIN, fontSize);
 
     	txtContent.setFont(font);
