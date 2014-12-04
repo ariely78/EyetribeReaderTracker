@@ -34,7 +34,7 @@ public class MouseWordSelection extends JPanel{
     	  g.setColor(Color.RED);
           g.fillOval(x, y, 10,10);
           fm = g.getFontMetrics(font);
-          
+      
 	      Graphics2D g2 = (Graphics2D) g;
 //	      Rectangle bounds = getStringBounds(g2, word, x, y);
 	      try{
@@ -42,8 +42,8 @@ public class MouseWordSelection extends JPanel{
 //		      Rectangle bounds = getStringBounds(g2, word, rectangle.x, rectangle.y);
 	          //g.fillOval(rectangle.x, rectangle.y-50,10,10);
 
-	          g2.setColor(Color.blue);
-	          g2.draw(rectangle);
+//	          g2.setColor(Color.blue);
+//	          g2.draw(rectangle);
 	      }
 	      catch (BadLocationException e1) {
 	            e1.printStackTrace();

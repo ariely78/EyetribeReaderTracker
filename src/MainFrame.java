@@ -25,29 +25,6 @@ public class MainFrame extends JFrame {
     	
         parentPanel.setLayout(new BorderLayout(10, 10));
 
-//        final JPanel childPanel1 = new JPanel();
-//        childPanel1.setBackground(Color.red);
-//        childPanel1.setPreferredSize(new Dimension(300, 40));
-//
-//        final JPanel childPanel2 = new JPanel();
-//        childPanel2.setBackground(Color.blue);
-//        childPanel2.setPreferredSize(new Dimension(800, 600));
-//        parentPanel.add(calibrationPanel, BorderLayout.CENTER);
-//        calibrationPanel.setPreferredSize(new Dimension(800, 600));
-//        
-////        JButton myButton = new JButton("Add Component ");
-//        myButton.addActionListener(new ActionListener() {
-//
-//            @Override
-//			public void actionPerformed(ActionEvent e) {
-//                parentPanel.remove(calibrationPanel);
-//                parentPanel.add(mousePanel, BorderLayout.CENTER);
-//                parentPanel.revalidate();
-//                parentPanel.repaint();
-//                pack();
-//            }
-//        });
-
     }
     
     public void showNameInputBox()
@@ -71,19 +48,10 @@ public class MainFrame extends JFrame {
         	JOptionPane.showMessageDialog(null, "When you press OK the calibration will start, stare at the dot on the screen, keep your head still and only move your eyes");
             parentPanel.add(calibrationPane, BorderLayout.CENTER);
             setTitle("Copyright Ben Smith (c) 2014");
-            add(parentPanel);
+            this.setContentPane(mousePanel);
             pack();
             setVisible(true);
-            calibrationPane.startCalibration();
-            //... Set window characteristics.
-        	//testWindow.add(cali);
-//        	testWindow.setContentPane(mousetxtContent);
-//        	mousetxtContent.setVisible(false);
-//        	testWindow.setTitle("Copyright Ben Smith (c) 2014");
-//        	testWindow.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-//        	testWindow.pack();
-//        	testWindow.setVisible(true);
-        	//cali.afterCalibration();
+//            calibrationPane.startCalibration();
 
         } else {
             if (Files.exists(path)) {
