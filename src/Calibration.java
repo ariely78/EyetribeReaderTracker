@@ -1,5 +1,10 @@
+import java.awt.Dimension;
+import java.awt.Toolkit;
 import java.util.LinkedList;
 import java.util.Queue;
+
+import java.util.Random;
+
 //import Utilities.Point2D;
 import com.theeyetribe.client.GazeManager;
 import com.theeyetribe.client.GazeManager.ApiVersion;
@@ -21,10 +26,10 @@ public class Calibration implements ICalibrationProcessHandler{
    private final int NUM_MAX_CALIBRATION_ATTEMPTS = 2;
    private final int NUM_MAX_RESAMPLE_POINTS = 4;
 
-   CalibrationPane calibrationPane;
+   CalibrationPane calibrationPanel;
    
-   Calibration(CalibrationPane calibrationPane){
-	  this.calibrationPane = calibrationPane;
+   Calibration(CalibrationPane calibrationPanel){
+	  this.calibrationPanel = calibrationPanel;
       if (GazeManager.getInstance().isActivated()){
          GazeManager.getInstance().deactivate();
       }
@@ -79,7 +84,7 @@ public class Calibration implements ICalibrationProcessHandler{
    }
 
    public void Step(Point2D point){
-	  this.calibrationPane.newPosition((int)point.x, (int)point.y); //Put a new point graphically
+	  this.calibrationPanel.newPosition((int)point.x, (int)point.y); //Put a new point graphically
       
       try{Thread.sleep(500);}catch (Exception e){}; //wait for the gaze to meet the point
       GazeManager.getInstance().calibrationPointStart((int)point.x,(int)point.y); //start the calibration process
@@ -153,6 +158,9 @@ public class Calibration implements ICalibrationProcessHandler{
    private void StopAndClose(String msg){
       System.out.println("Done!");
       //View.end_calibration(msg); //tell the graphics to stop
+      GazeManager.getInstance().calibrationAbort();
+      GazeManager.getInstance().calibrationClear();
+      calibrationPanel.afterCalibration();
       return;
       //View.close(); //close the window
       //System.exit(0);
@@ -178,6 +186,14 @@ public class Calibration implements ICalibrationProcessHandler{
       System.out.println("createPointList()");
       Queue<Point2D> res = new LinkedList<Point2D>();
       //Create the points taking into account the size of the current screen
+      int i = 0;
+      while(i < number_points)
+      {
+    	  int x = randInt(0,(int)calibrationPanel.getHeight());
+    	  int y = randInt(0,(int)calibrationPanel.getWidth());
+    	  res.add(new Point2D(x,y));
+    	  i++;
+      }
       return res;
    }
 
@@ -190,8 +206,30 @@ public class Calibration implements ICalibrationProcessHandler{
 
       return null;
    }
-}
 
+   /**
+    * Returns a pseudo-random number between min and max, inclusive.
+    * The difference between min and max can be at most
+    * <code>Integer.MAX_VALUE - 1</code>.
+    *
+    * @param min Minimum value
+    * @param max Maximum value.  Must be greater than min.
+    * @return Integer between min and max, inclusive.
+    * @see java.util.Random#nextInt(int)
+    */
+   public int randInt(int min, int max) {
+
+       // NOTE: Usually this should be a field rather than a method
+       // variable so that it is not re-seeded every call.
+       Random rand = new Random();
+
+       // nextInt is normally exclusive of the top value,
+       // so add 1 to make it inclusive
+       int randomNum = rand.nextInt((max - min) + 1) + min;
+
+       return randomNum;
+   }
+}
 
 class GazeListener implements IGazeListener
 {

@@ -37,8 +37,7 @@ public class SettingsPanel extends JFrame implements ActionListener{
 
 	MouseWordSelection mousetxtContent = new MouseWordSelection(DocumentReader.readTextFile("text.txt"),this);
 	EyetrackerWordSelection eyetrackerTxtContent = new EyetrackerWordSelection(DocumentReader.readTextFile("text.txt"),this);
-	CalibrationPane cali = new CalibrationPane(this);
-	MainFrame testWindow = new MainFrame(mousetxtContent,eyetrackerTxtContent,cali);
+	MainFrame testWindow = new MainFrame(mousetxtContent,eyetrackerTxtContent);
 
 	
 	public SettingsPanel() {
@@ -177,66 +176,11 @@ public class SettingsPanel extends JFrame implements ActionListener{
 	    String name = o.getName();
     	if(name.equalsIgnoreCase("setSettings")) {
     	    setVariables();
-    	    mousetxtContent.repaint();
-    	    eyetrackerTxtContent.repaint();
+    	    mousetxtContent.jta.repaint();
+    	    eyetrackerTxtContent.txtContent.repaint();
 
-    	} else if(name.equalsIgnoreCase("mouse")) {
-	        //Execute when button is pressed
-	        String reply = JOptionPane.showInputDialog(null, "Please enter your name",
-	        		"Press ok to start test",
-	        		JOptionPane.OK_OPTION);
-	        mousetxtContent.wordChanger.swapWord = reply;
-
-	        DateFormat dateFormat = new SimpleDateFormat("yyyy_MM_dd__HH_mm_ss");
-	        Date date = new Date();
-	        Path path = Paths.get(reply+"_"+dateFormat.format(date)+".txt");
-
-	        if (Files.notExists(path) && !reply.isEmpty()) {
-	          // file is not exist
-	        	mousetxtContent.fileName = path.toString();
-	        	
-	            //... Set window characteristics.
-	        	//testWindow.add(cali);
-	        	testWindow.setContentPane(mousetxtContent);
-//	        	mousetxtContent.setVisible(false);
-	        	testWindow.setTitle("Copyright Ben Smith (c) 2014");
-	        	testWindow.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-	        	testWindow.pack();
-	        	testWindow.setVisible(true);
-	        	//cali.afterCalibration();
-
-	        } else {
-	            if (Files.exists(path)) {
-	            	JOptionPane.showMessageDialog(null, "File exists with this name try again");
-	            }
-	        }
     	} else {
-            //Execute when button is pressed
-            String reply = JOptionPane.showInputDialog(null, "Please enter your name:",
-            		"Press ok to start test",
-            		JOptionPane.OK_OPTION);
-            eyetrackerTxtContent.wordChanger.swapWord = reply;
-	        DateFormat dateFormat = new SimpleDateFormat("yyyy_MM_dd__HH_mm_ss");
-	        Date date = new Date();
-	        Path path = Paths.get(reply+"-"+dateFormat.format(date)+".txt");
-
-            if (Files.notExists(path) && !reply.isEmpty()) {
-            	// file is not exist
-            	eyetrackerTxtContent.fileName = path.toString();
-	            //... Set window characteristics.
-            	testWindow.add(eyetrackerTxtContent);
-	        	testWindow.setContentPane(cali);
-	        	testWindow.setTitle("Copyright Ben Smith (c) 2014");
-	        	testWindow.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-//	        	testWindow.pack();
-	        	testWindow.setVisible(true);
-	    		eyetrackerTxtContent.startEyetracker();
-
-            } else {
-                if (Files.exists(path)) {
-                	JOptionPane.showMessageDialog(null, "File exists with this name try again");
-                }
-            }
+    		testWindow.showNameInputBox();
     	}
     }
     

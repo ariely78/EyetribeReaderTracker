@@ -3,19 +3,26 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Toolkit;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 public class CalibrationPane extends JPanel{
-	
+	Calibration calibrationController = new Calibration(this);
 	private int x,y;
-	SettingsPanel controlPanel;
+	MainFrame mainFrame;
 	
-	CalibrationPane(SettingsPanel controlPanel)
+	CalibrationPane(MainFrame mainFrame)
 	{
-		this.controlPanel = controlPanel;
+		this.mainFrame = mainFrame;
 	    Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
-	    this.setBounds(0,0, dim.width, dim.height);
+	    this.setPreferredSize(dim);
         this.setLayout(new BorderLayout());
 		this.setBackground(Color.BLACK);
 	}
@@ -29,14 +36,12 @@ public class CalibrationPane extends JPanel{
 	
     public void afterCalibration()
     {
-    	try{Thread.sleep(5000);}catch (Exception e){};
-    	int result = JOptionPane.showConfirmDialog(null, "Start Test","Click ok to start",JOptionPane.OK_CANCEL_OPTION, JOptionPane.INFORMATION_MESSAGE);
-    	if (result == JOptionPane.OK_OPTION)
-    	{
-    		this.setVisible(false);
-    		controlPanel.mousetxtContent.setVisible(true);
-    		controlPanel.mousetxtContent.startMouseListener();
-    	}
+    	mainFrame.loadTestScreen();
+    }
+    
+    public void startCalibration()
+    {
+    	calibrationController.StartCalibration();
     }
 	
     @Override

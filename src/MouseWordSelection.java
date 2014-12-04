@@ -25,7 +25,7 @@ public class MouseWordSelection extends JPanel{
 	FontMetrics fm;
 	Rectangle bounds;
 	String word = "";
-    private JTextArea jta = new JTextArea(){
+    JTextArea jta = new JTextArea(){
         @Override
         protected void paintComponent(Graphics g)
         {
