@@ -1,29 +1,16 @@
 import javax.swing.*;
-import javax.swing.text.BadLocationException;
-
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.FontMetrics;
 import java.awt.Graphics;
 import java.awt.Point;
-import java.awt.Toolkit;
-import java.util.Random;
-
-import com.theeyetribe.client.ICalibrationResultListener;
 import com.theeyetribe.client.IGazeListener;
 import com.theeyetribe.client.GazeManager;
 import com.theeyetribe.client.GazeManager.ApiVersion;
 import com.theeyetribe.client.GazeManager.ClientMode;
 import com.theeyetribe.client.data.CalibrationResult;
 import com.theeyetribe.client.data.GazeData;
-import com.theeyetribe.client.ICalibrationProcessHandler;
-
-import java.awt.Graphics2D;
-import java.awt.Rectangle;
-import java.awt.font.FontRenderContext;
-import java.awt.font.GlyphVector;
 
 /**
  * Gets word from right clicked area
@@ -97,7 +84,8 @@ public class EyetrackerWordSelection extends JPanel {
 
 	private class GazeListener implements IGazeListener
     {
-        public void onGazeUpdate(GazeData gazeData)
+        @Override
+		public void onGazeUpdate(GazeData gazeData)
         {   
             x = (int)gazeData.smoothedCoordinates.x-textareaX;
             y = (int)gazeData.smoothedCoordinates.y-textareaY;
@@ -105,8 +93,8 @@ public class EyetrackerWordSelection extends JPanel {
        	 	repaint(x,y,10,10);
        	 	
             if((gazeData.timeStamp - lastTimeStamp) > wordReadingTime 
-            		&& gazeData.state != gazeData.STATE_TRACKING_FAIL
-            		&& gazeData.state != gazeData.STATE_TRACKING_LOST){
+            		&& gazeData.state != GazeData.STATE_TRACKING_FAIL
+            		&& gazeData.state != GazeData.STATE_TRACKING_LOST){
             	lastTimeStamp = gazeData.timeStamp;
                 this.setCaretPoint(gazeData);
             }

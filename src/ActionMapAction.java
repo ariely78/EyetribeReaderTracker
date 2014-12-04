@@ -51,6 +51,7 @@ public class ActionMapAction extends AbstractAction
 	 *  Invoke the original Action using the original component as the source
 	 *  of the event.
 	 */
+	@Override
 	public void actionPerformed(ActionEvent e)
 	{
 		e = new ActionEvent(

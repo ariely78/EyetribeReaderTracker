@@ -1,7 +1,5 @@
 import java.util.LinkedList;
 import java.util.Queue;
-import javax.swing.JComponent;
-
 //import Utilities.Point2D;
 import com.theeyetribe.client.GazeManager;
 import com.theeyetribe.client.GazeManager.ApiVersion;

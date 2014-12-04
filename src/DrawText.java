@@ -35,12 +35,14 @@ class DrawText extends JPanel
         return m_text;
     }
 
-    public Dimension getPreferredSize()
+    @Override
+	public Dimension getPreferredSize()
     {
         return new Dimension(m_width, m_height);
     }
 
-    public void paint(Graphics g)
+    @Override
+	public void paint(Graphics g)
     {
         super.paintComponent(g);
 

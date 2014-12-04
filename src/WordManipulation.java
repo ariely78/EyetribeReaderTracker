@@ -1,9 +1,4 @@
-import java.awt.Graphics2D;
 import java.awt.Point;
-import java.awt.Rectangle;
-import java.awt.font.FontRenderContext;
-import java.awt.font.GlyphVector;
-
 import javax.swing.JTextArea;
 import javax.swing.text.BadLocationException;
 

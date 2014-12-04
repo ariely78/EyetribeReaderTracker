@@ -35,10 +35,11 @@ public class SettingsPanel extends JFrame implements ActionListener{
     JTextField textareaYTF = new JTextField( 20 );
 
 
-	JFrame testWindow = new JFrame();
 	MouseWordSelection mousetxtContent = new MouseWordSelection(DocumentReader.readTextFile("text.txt"),this);
 	EyetrackerWordSelection eyetrackerTxtContent = new EyetrackerWordSelection(DocumentReader.readTextFile("text.txt"),this);
 	CalibrationPane cali = new CalibrationPane(this);
+	MainFrame testWindow = new MainFrame(mousetxtContent,eyetrackerTxtContent,cali);
+
 	
 	public SettingsPanel() {
 	    super("Settings Panel");
@@ -169,7 +170,8 @@ public class SettingsPanel extends JFrame implements ActionListener{
 		eyetrackerTxtContent.textareaY = Integer.parseInt(textareaYTF.getText());
 	}
 	
-    public void actionPerformed(ActionEvent e)
+    @Override
+	public void actionPerformed(ActionEvent e)
     {
 	    JButton o = (JButton)e.getSource();
 	    String name = o.getName();
