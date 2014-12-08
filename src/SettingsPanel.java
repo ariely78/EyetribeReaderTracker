@@ -180,7 +180,7 @@ public class SettingsPanel extends JFrame implements ActionListener{
     	    eyetrackerTxtContent.txtContent.repaint();
 
     	} else {
-    		testWindow.showNameInputBox();
+    		testWindow.showNameInputBox(name);
     	}
     }
     

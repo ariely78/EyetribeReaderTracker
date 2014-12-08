@@ -1,5 +1,3 @@
-import java.awt.Dimension;
-import java.awt.Toolkit;
 import java.util.LinkedList;
 import java.util.Queue;
 
@@ -30,32 +28,29 @@ public class Calibration implements ICalibrationProcessHandler{
    
    Calibration(CalibrationPane calibrationPanel){
 	  this.calibrationPanel = calibrationPanel;
-      if (GazeManager.getInstance().isActivated()){
-         GazeManager.getInstance().deactivate();
-      }
-
-      GazeManager.getInstance().activate(ApiVersion.VERSION_1_0, ClientMode.PUSH);
-
-      this.number_points = 9;
-
-      final GazeListener gazeListener = new GazeListener();
-      GazeManager.getInstance().addGazeListener(gazeListener);
-
-      Runtime.getRuntime().addShutdownHook(new Thread()
-      {
-         @Override
-         public void run()
-         {
-            GazeManager.getInstance().removeGazeListener(gazeListener);
-            GazeManager.getInstance().deactivate();
-         }
-      });
-
-
    }
 
    public void StartCalibration(){
+      if (GazeManager.getInstance().isActivated()){
+          GazeManager.getInstance().deactivate();
+       }
 
+       GazeManager.getInstance().activate(ApiVersion.VERSION_1_0, ClientMode.PUSH);
+
+       this.number_points = 9;
+
+       final GazeListener gazeListener = new GazeListener();
+       GazeManager.getInstance().addGazeListener(gazeListener);
+
+       Runtime.getRuntime().addShutdownHook(new Thread()
+       {
+          @Override
+          public void run()
+          {
+             GazeManager.getInstance().removeGazeListener(gazeListener);
+             GazeManager.getInstance().deactivate();
+          }
+       });
       System.out.println("Start");      
 
       //Checking if Eye Tracker is OK -> ITrackerStateListener

@@ -40,16 +40,13 @@ public class MouseWordSelection extends JPanel{
 	      try{
 	    	  Rectangle rectangle = jta.modelToView( jta.getCaretPosition() );
 //		      Rectangle bounds = getStringBounds(g2, word, rectangle.x, rectangle.y);
-	          //g.fillOval(rectangle.x, rectangle.y-50,10,10);
-
+//	          g.fillOval(rectangle.x, rectangle.y-50,10,10);
 //	          g2.setColor(Color.blue);
 //	          g2.draw(rectangle);
 	      }
 	      catch (BadLocationException e1) {
 	            e1.printStackTrace();
-	        }
-
-
+	      }
           g2.dispose();
         } 
     };

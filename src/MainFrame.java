@@ -27,7 +27,7 @@ public class MainFrame extends JFrame {
 
     }
     
-    public void showNameInputBox()
+	public void showNameInputBox(String textReadingWindow)
     {
     	//Execute when button is pressed
         String reply = JOptionPane.showInputDialog(null, "Please enter your name",
@@ -48,11 +48,16 @@ public class MainFrame extends JFrame {
         	JOptionPane.showMessageDialog(null, "When you press OK the calibration will start, stare at the dot on the screen, keep your head still and only move your eyes");
             parentPanel.add(calibrationPane, BorderLayout.CENTER);
             setTitle("Copyright Ben Smith (c) 2014");
-            this.setContentPane(mousePanel);
+            
+            if(textReadingWindow.equalsIgnoreCase("mouse")){
+        		this.setContentPane(mousePanel);
+            	mousePanel.startMouseListener();
+            } else {
+            	this.setContentPane(calibrationPane);
+                calibrationPane.startCalibration();	
+            }
             pack();
             setVisible(true);
-//            calibrationPane.startCalibration();
-
         } else {
             if (Files.exists(path)) {
             	JOptionPane.showMessageDialog(null, "File exists with this name try again");
@@ -67,6 +72,8 @@ public class MainFrame extends JFrame {
      parentPanel.add(eyetrackerPanel, BorderLayout.CENTER);
      parentPanel.revalidate();
      parentPanel.repaint();
-     pack();
+     mousePanel.startMouseListener();
+     eyetrackerPanel.startEyetracker();
+//     pack();
    }
 }

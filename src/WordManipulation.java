@@ -20,14 +20,20 @@ public class WordManipulation {
         int endIndex;
         int i = 0;
 
-        while (Character.isLetter(txtContent.getText(caretPosition + i, 1).charAt(0)))  {
-            i++;
+        while(isCharALetter(txtContent, caretPosition+i)){
+        	i++;
         }
+//        while (Character.isLetter(txtContent.getText(caretPosition + i, 1).charAt(0)))  {
+//            i++;
+//        }
         endIndex = caretPosition + i;
         int j = 0;
-        while (j < caretPosition && Character.isLetter(txtContent.getText(caretPosition - j - 1, 1).charAt(0))) {
+        while (j < caretPosition && isCharALetter(txtContent, caretPosition - j - 1)) {
             j++;
         }
+//        while (j < caretPosition && Character.isLetter(txtContent.getText(caretPosition - j - 1, 1).charAt(0))) {
+//            j++;
+//        }
         startIndex = caretPosition - j;
         return txtContent.getText(startIndex, endIndex - startIndex);
     }
@@ -76,11 +82,8 @@ public class WordManipulation {
     	String wordToReplace= "";
 
         while (currentWord < numberOfWordsAhead) {
-
+        	//while(isCharALetter(txtContent, caretPosition + i)){
 	        while (!txtContent.getText(caretPosition + i, 1).equals(" ")){
-	        	//come across newline then just return, dont change words between lines
-	        	if(txtContent.getText(caretPosition + i, 1).equals("\n"))
-	        		return false;
 	            System.out.println(""+txtContent.getText(caretPosition+i,1));
 	            i++;
 	        }
@@ -97,6 +100,9 @@ public class WordManipulation {
 	        endIndex = caretPosition + wordToReplace.length()-1;
 
         }
+    	//come across newline then just return, dont change words between lines
+    	if(txtContent.getText(caretPosition + i, 1).equals("\n"))
+    		return false;
         
         //only change the word if the word X words infront is same length as our swapword
         String temp = getWord(startIndex,txtContent);
@@ -117,8 +123,8 @@ public class WordManipulation {
 			JTextArea txtContent) throws BadLocationException
     {
         int i = 0;
-
-        while (!txtContent.getText(caretPosition + i, 1).equals(" ")){
+    	while(isCharALetter(txtContent, caretPosition + i)){
+//        while (!txtContent.getText(caretPosition + i, 1).equals(" ")){
         	//come across newline then just return, dont change words between lines
         	if(txtContent.getText(caretPosition + i, 1).equals("\n"))
         		return false;
