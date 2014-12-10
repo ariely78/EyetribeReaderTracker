@@ -1,10 +1,12 @@
 import javax.swing.*;
+
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.FontMetrics;
 import java.awt.Graphics;
 import java.awt.Point;
+
 import com.theeyetribe.client.IGazeListener;
 import com.theeyetribe.client.GazeManager;
 import com.theeyetribe.client.GazeManager.ApiVersion;
@@ -46,7 +48,7 @@ public class EyetrackerWordSelection extends JPanel {
     public EyetrackerWordSelection(String text, SettingsPanel settingsPanel){
     	this.settingsPanel = settingsPanel;
 
-    	setLast(new Point(0,0));
+    	this.last = new Point(0,0);
     	font = new Font("Courier New", Font.PLAIN, fontSize);
 
     	txtContent.setFont(font);
@@ -60,26 +62,63 @@ public class EyetrackerWordSelection extends JPanel {
         //... Get the content pane, set layout, add to center
         this.setLayout(new BorderLayout());
         this.add(scrollingArea, BorderLayout.CENTER);
-
     }
     
 	public void startEyetracker() {
-        final GazeManager gm = GazeManager.getInstance();
-        boolean success = gm.activate(ApiVersion.VERSION_1_0, ClientMode.PUSH);
-        final GazeListener gazeListener = new GazeListener();
-        gm.addGazeListener(gazeListener);
-        CalibrationResult result = gm.getLastCalibrationResult();
-        //TODO: Do awesome gaze control wizardry
-        
-        Runtime.getRuntime().addShutdownHook(new Thread()
-        {
-            @Override
-            public void run()
-            {
-                gm.removeGazeListener(gazeListener);
-                gm.deactivate();
-            }
-        });
+
+		final GazeManager gm = GazeManager.getInstance();
+		//to check if the connection is ok
+		boolean success = gm.activate(ApiVersion.VERSION_1_0, ClientMode.PUSH, "localhost", 6555);
+		System.out.println("success: " + success);
+		//to create a listener so to catch any information from the
+		//eye tracker
+		final GazeListener gazeListener = new GazeListener();	
+		gm.addGazeListener(gazeListener);
+		Runtime.getRuntime().addShutdownHook(new Thread()
+		{
+			@Override
+			public void run()
+			{
+				gm.removeGazeListener(gazeListener);
+				gm.deactivate();
+			}
+		});
+		
+//		if (GazeManager.getInstance().isActivated()){
+//			GazeManager.getInstance().deactivate();
+//		}
+//		
+//		GazeManager.getInstance().activate(ApiVersion.VERSION_1_0, ClientMode.PUSH, "localhost", 6555);
+//		
+//		final GazeListener gazeListener = new GazeListener();
+//		GazeManager.getInstance().addGazeListener(gazeListener);
+//		Runtime.getRuntime().addShutdownHook(new Thread()
+//		{
+//			@Override
+//			public void run()
+//			{
+//				GazeManager.getInstance().removeGazeListener(gazeListener);
+//				GazeManager.getInstance().deactivate();
+//			}
+//		});
+		
+		
+//        final GazeManager gm = GazeManager.getInstance();
+//        boolean success = gm.activate(ApiVersion.VERSION_1_0, ClientMode.PUSH);
+//        final GazeListener gazeListener = new GazeListener();
+//        gm.addGazeListener(gazeListener);
+//        CalibrationResult result = gm.getLastCalibrationResult();
+//        //TODO: Do awesome gaze control wizardry
+//        
+//        Runtime.getRuntime().addShutdownHook(new Thread()
+//        {
+//            @Override
+//            public void run()
+//            {
+//                gm.removeGazeListener(gazeListener);
+//                gm.deactivate();
+//            }
+//        });
 	}
 
 	private class GazeListener implements IGazeListener
@@ -132,25 +171,25 @@ public class EyetrackerWordSelection extends JPanel {
     }
 	
 
-    
-    @Override
-    protected void paintComponent(Graphics g)
-    {
-      super.paintComponent(g);
-      g.getColor();
-      g.setColor(Color.RED);
-      g.fillOval(x, y, 10,10);
-      
-
-    }
-
-	public Point getLast() {
-		return last;
-	}
-
-	public void setLast(Point last) {
-		this.last = last;
-	} 
-	
+//    
+//    @Override
+//    protected void paintComponent(Graphics g)
+//    {
+//      super.paintComponent(g);
+//      g.getColor();
+//      g.setColor(Color.RED);
+//      g.fillOval(x, y, 10,10);
+//      
+//
+//    }
+//
+//	public Point getLast() {
+//		return last;
+//	}
+//
+//	public void setLast(Point last) {
+//		this.last = last;
+//	} 
+//	
 
 }

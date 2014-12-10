@@ -23,7 +23,7 @@ public class CalibrationPane extends JPanel{
 		this.mainFrame = mainFrame;
 	    Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
 	    this.setPreferredSize(dim);
-        this.setLayout(new BorderLayout());
+//        this.setLayout(new BorderLayout());
 		this.setBackground(Color.BLACK);
 	}
 	

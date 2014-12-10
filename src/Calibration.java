@@ -1,9 +1,7 @@
 import java.util.LinkedList;
 import java.util.Queue;
-
 import java.util.Random;
 
-//import Utilities.Point2D;
 import com.theeyetribe.client.GazeManager;
 import com.theeyetribe.client.GazeManager.ApiVersion;
 import com.theeyetribe.client.GazeManager.ClientMode;

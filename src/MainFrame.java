@@ -14,16 +14,19 @@ public class MainFrame extends JFrame {
     private static final long serialVersionUID = 1L;
     final MouseWordSelection mousePanel;
     final EyetrackerWordSelection eyetrackerPanel;
-    final CalibrationPane calibrationPane = new CalibrationPane(this);
-    final JPanel parentPanel = new JPanel();
+    final GraphicsLogic graphicsLogicPane = new GraphicsLogic(this, Toolkit.getDefaultToolkit().getScreenSize());
+    //final JPanel parentPanel = new JPanel();
+	Process calibrationProcess = new Process(9, graphicsLogicPane);
 
     public MainFrame(final MouseWordSelection mousePanel, 
     		final EyetrackerWordSelection eyetrackerPanel) {
+	    Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
+	    this.setPreferredSize(dim);
 
-    	this.mousePanel = mousePanel;
+	    this.mousePanel = mousePanel;
     	this.eyetrackerPanel = eyetrackerPanel;
-    	
-        parentPanel.setLayout(new BorderLayout(10, 10));
+//    	this.setContentPane(parentPanel);
+//        parentPanel.setLayout(new BorderLayout(10, 10));
 
     }
     
@@ -46,15 +49,24 @@ public class MainFrame extends JFrame {
         	this.eyetrackerPanel.fileName = path.toString();
 
         	JOptionPane.showMessageDialog(null, "When you press OK the calibration will start, stare at the dot on the screen, keep your head still and only move your eyes");
-            parentPanel.add(calibrationPane, BorderLayout.CENTER);
+//            add(graphicsLogicPane, BorderLayout.CENTER);
             setTitle("Copyright Ben Smith (c) 2014");
             
             if(textReadingWindow.equalsIgnoreCase("mouse")){
-        		this.setContentPane(mousePanel);
+            	add(mousePanel);
             	mousePanel.startMouseListener();
             } else {
-            	this.setContentPane(calibrationPane);
-                calibrationPane.startCalibration();	
+//            	//set fullscreen
+//            	GraphicsDevice gd =
+//        	            GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
+//        		setUndecorated(true);
+//        		gd.setFullScreenWindow(this);
+        		
+        		//add our calibration graphics window
+            	add(graphicsLogicPane);
+            	//create and start a calibration process
+        		calibrationProcess = new Process(9, graphicsLogicPane);
+        		calibrationProcess.StartCalibration();
             }
             pack();
             setVisible(true);
@@ -65,15 +77,22 @@ public class MainFrame extends JFrame {
         }
     }
     
-    
    public void loadTestScreen()
    {
-     parentPanel.remove(calibrationPane);
-     parentPanel.add(eyetrackerPanel, BorderLayout.CENTER);
-     parentPanel.revalidate();
-     parentPanel.repaint();
-     mousePanel.startMouseListener();
-     eyetrackerPanel.startEyetracker();
-//     pack();
+	   //perfect calibration
+	if (calibrationProcess.result < 0.5 || calibrationProcess.result < 0.7)
+	{
+		 remove(graphicsLogicPane);
+		 add(eyetrackerPanel);//, BorderLayout.CENTER);
+		 revalidate();
+		 repaint();
+//		 parentPanel.add(mousePanel);
+//	     mousePanel.startMouseListener();
+	     eyetrackerPanel.startEyetracker();
+	} else { 	   //bad calibration, do again
+
+		calibrationProcess.StartCalibration();
+
+	}
    }
 }
