@@ -67,11 +67,11 @@ public class EyetrackerWordSelection extends JPanel {
 	public void startEyetracker() {
 
 		final GazeManager gm = GazeManager.getInstance();
-		//to check if the connection is ok
+//		to check if the connection is ok
 		boolean success = gm.activate(ApiVersion.VERSION_1_0, ClientMode.PUSH, "localhost", 6555);
 		System.out.println("success: " + success);
-		//to create a listener so to catch any information from the
-		//eye tracker
+//		to create a listener so to catch any information from the
+//		eye tracker
 		final GazeListener gazeListener = new GazeListener();	
 		gm.addGazeListener(gazeListener);
 		Runtime.getRuntime().addShutdownHook(new Thread()

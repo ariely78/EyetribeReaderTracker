@@ -11,18 +11,18 @@ import javax.swing.JPanel;
 import com.theeyetribe.client.data.Point2D;
 
 @SuppressWarnings("serial")
-public class GraphicsLogic extends JPanel{
+public class GraphicsLogicEyetracker extends JPanel{
 	
 	public boolean p = false;
 	//private Rectangle2D.Float ball; //figure to look at
 	private Ellipse2D.Float ball; //figure to look at
 	private Point2D pos = new Point2D(0,0); //position to put the figure
-	MainFrame mp;
+	ParentPanel pp;
 	
-	public GraphicsLogic(MainFrame mp, Dimension dim){
+	public GraphicsLogicEyetracker(ParentPanel pp, Dimension dim){
 	    this.setPreferredSize(dim);
 	    this.setSize(dim);
-		this.mp = mp;
+		this.pp = pp;
 		System.out.println("height:"+this.getHeight()+" width:"+this.getWidth());
 		ball = new Ellipse2D.Float();
 		ball.setFrame(0, 0, 50, 50);
@@ -77,7 +77,9 @@ public class GraphicsLogic extends JPanel{
 	}*/
 
 	public void end_calibration(String msg){
-		mp.loadTestScreen();
+		CardLayout cl = (CardLayout) (pp.getLayout());
+		cl.show(pp, "Eyetracker");
+		pp.stop_calibration(msg);
 	}
 
 }

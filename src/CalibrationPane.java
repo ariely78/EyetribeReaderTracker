@@ -16,9 +16,9 @@ import javax.swing.JPanel;
 public class CalibrationPane extends JPanel{
 	Calibration calibrationController = new Calibration(this);
 	private int x,y;
-	MainFrame mainFrame;
+	MainEyeTrackerFrame mainFrame;
 	
-	CalibrationPane(MainFrame mainFrame)
+	CalibrationPane(MainEyeTrackerFrame mainFrame)
 	{
 		this.mainFrame = mainFrame;
 	    Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();

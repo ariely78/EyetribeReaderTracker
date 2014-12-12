@@ -16,14 +16,14 @@ import com.theeyetribe.client.data.CalibrationResult;
 import com.theeyetribe.client.data.CalibrationResult.CalibrationPoint;
 import com.theeyetribe.client.data.GazeData;
 
-public class Process implements ICalibrationProcessHandler, IConnectionStateListener, ITrackerStateListener{  
+public class ProcessEyeTracker implements ICalibrationProcessHandler, IConnectionStateListener, ITrackerStateListener{  
 
 	public boolean p = true;
 	private int number_points;
 	private int reSamplingCount;
 	private String hostname;
 	private int port;
-	static GraphicsLogic View;
+	static GraphicsLogicEyetracker View;
 	Queue<Point2D> calibrationPoints;
 	Point2D currentPoint;
 	private boolean trackeStateOK = true;
@@ -36,8 +36,7 @@ public class Process implements ICalibrationProcessHandler, IConnectionStateList
 	public double result;
 	private boolean mirror;
 
-
-	Process(int number_points, GraphicsLogic SC){
+	ProcessEyeTracker(int number_points, GraphicsLogicEyetracker SC){
 		this.mirror = false;//mirror;
 		this.hostname = "localhost";//hostname;
 		this.port = 6555;//port;
@@ -50,7 +49,7 @@ public class Process implements ICalibrationProcessHandler, IConnectionStateList
 		
 		this.number_points = number_points;
 
-		final GazeListener2 gazeListener = new GazeListener2();
+		final GazeListener gazeListener = new GazeListener();
 		GazeManager.getInstance().addGazeListener(gazeListener);
 		
 		View = SC;

@@ -37,7 +37,7 @@ public class SettingsPanel extends JFrame implements ActionListener{
 
 	MouseWordSelection mousetxtContent = new MouseWordSelection(DocumentReader.readTextFile("text.txt"),this);
 	EyetrackerWordSelection eyetrackerTxtContent = new EyetrackerWordSelection(DocumentReader.readTextFile("text.txt"),this);
-	MainFrame testWindow = new MainFrame(mousetxtContent,eyetrackerTxtContent);
+	MainEyeTrackerFrame testWindow = new MainEyeTrackerFrame(mousetxtContent,eyetrackerTxtContent);
 
 	
 	public SettingsPanel() {
@@ -176,11 +176,30 @@ public class SettingsPanel extends JFrame implements ActionListener{
 	    String name = o.getName();
     	if(name.equalsIgnoreCase("setSettings")) {
     	    setVariables();
-    	    mousetxtContent.jta.repaint();
-    	    eyetrackerTxtContent.txtContent.repaint();
-
-    	} else {
-    		testWindow.showNameInputBox(name);
+    	    //TEST CODE:
+    	   //set fullscreen
+//        	GraphicsDevice gd =
+//    	            GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
+//        	testWindow.setUndecorated(true);
+//    		gd.setFullScreenWindow(testWindow);
+    	    testWindow.pack();
+    	    testWindow.setVisible(true);
+    	    CardLayout cl = (CardLayout) (testWindow.parentPanel.getLayout());
+			cl.show(testWindow.parentPanel, "Calibrate");
+			testWindow.parentPanel.init_calibration_process(false);
+        	
+    	} else if(name.equalsIgnoreCase("mouse")) {
+    		testWindow.parentPanel.showNameInputBox(name);
+    		testWindow.pack();
+    	    testWindow.setVisible(true);
+    	    CardLayout cl = (CardLayout) (testWindow.parentPanel.getLayout());
+			cl.show(testWindow.parentPanel, "MouseTracker");
+    	} else { //eyetracker pressed
+			testWindow.parentPanel.showNameInputBox(name);
+    		testWindow.pack();
+    	    testWindow.setVisible(true);
+    	    CardLayout cl = (CardLayout) (testWindow.parentPanel.getLayout());
+			cl.show(testWindow.parentPanel, "Eyetracker");
     	}
     }
     
