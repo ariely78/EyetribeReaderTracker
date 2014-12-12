@@ -47,11 +47,9 @@ public class EyetrackerWordSelection extends JPanel {
 	WordManipulation wordChanger = new WordManipulation();
 	final SettingsPanel settingsPanel;
     private int testNumber;
-    private String text;
 
-    public EyetrackerWordSelection(final String text, final SettingsPanel settingsPanel){
+    public EyetrackerWordSelection(final SettingsPanel settingsPanel){
     	this.settingsPanel = settingsPanel;
-    	this.text = text;
     	testNumber = 1;
     	this.last = new Point(0,0);
     	font = new Font("Courier New", Font.PLAIN, fontSize);
@@ -60,8 +58,6 @@ public class EyetrackerWordSelection extends JPanel {
     	txtContent.setEditable(false);
     	txtContent.setHighlighter(null);
 
-    	//... Set textarea's initial text, scrolling, and border.
-    	txtContent.setText(text);
 //        JScrollPane scrollingArea = new JScrollPane(txtContent);
 
         //... Get the content pane, set layout, add to center
@@ -73,10 +69,13 @@ public class EyetrackerWordSelection extends JPanel {
             public void keyPressed(KeyEvent ke){ 
 
                  if(ke.getKeyCode()==KeyEvent.VK_SPACE){
+                	 GazeManager.getInstance().deactivate();
                 	 wordChanged = false;
                 	 testNumber += 1;
                 	 settingsPanel.testWindow.parentPanel.calibrateAfterTest(testNumber);
-                	 txtContent.setText(DocumentReader.readTextFile("text"+(testNumber)+".txt"));
+                	 setTextAreaText();
+                	 DocumentReader.writeToTextFile(fileName, 
+                			 "\nNEXT TEST:" + fileName +"\n" );
                  }
             }
  
@@ -92,6 +91,12 @@ public class EyetrackerWordSelection extends JPanel {
 				
 			}
         });
+    }
+    
+    public void setTextAreaText()
+    {
+    	//... Set textarea's initial text, scrolling, and border.
+    	txtContent.setText(DocumentReader.readTextFile("text"+(testNumber)+".txt"));
     }
     
 	public void startEyetracker() {
@@ -113,42 +118,6 @@ public class EyetrackerWordSelection extends JPanel {
 				gm.deactivate();
 			}
 		});
-		
-//		if (GazeManager.getInstance().isActivated()){
-//			GazeManager.getInstance().deactivate();
-//		}
-//		
-//		GazeManager.getInstance().activate(ApiVersion.VERSION_1_0, ClientMode.PUSH, "localhost", 6555);
-//		
-//		final GazeListener gazeListener = new GazeListener();
-//		GazeManager.getInstance().addGazeListener(gazeListener);
-//		Runtime.getRuntime().addShutdownHook(new Thread()
-//		{
-//			@Override
-//			public void run()
-//			{
-//				GazeManager.getInstance().removeGazeListener(gazeListener);
-//				GazeManager.getInstance().deactivate();
-//			}
-//		});
-		
-		
-//        final GazeManager gm = GazeManager.getInstance();
-//        boolean success = gm.activate(ApiVersion.VERSION_1_0, ClientMode.PUSH);
-//        final GazeListener gazeListener = new GazeListener();
-//        gm.addGazeListener(gazeListener);
-//        CalibrationResult result = gm.getLastCalibrationResult();
-//        //TODO: Do awesome gaze control wizardry
-//        
-//        Runtime.getRuntime().addShutdownHook(new Thread()
-//        {
-//            @Override
-//            public void run()
-//            {
-//                gm.removeGazeListener(gazeListener);
-//                gm.deactivate();
-//            }
-//        });
 	}
 
 	private class GazeListener implements IGazeListener
@@ -175,16 +144,12 @@ public class EyetrackerWordSelection extends JPanel {
         						(int)gazeData.smoothedCoordinates.y-textareaY);
         	try{
                 int caretPosition = txtContent.viewToModel(pt);
-//        		char ch = txtContent.getText(caretPosition,1).charAt(0);
 
         		caretPosition = wordChanger.letterTracked(txtContent, caretPosition, new Point(x,y),metric.getHeight());
 	        	char ch = wordChanger.charAtPosition(txtContent, caretPosition);
-//        		System.out.println("character returned" +ch);
 
         		if(wordChanger.isCharALetter(txtContent, caretPosition))
-	        	//if (Character.isLetter(ch)) 
 	        	{
-//	            	txtContent.setCaretPosition(txtContent.viewToModel(pt));
 	            	String word = wordChanger.getWord(caretPosition, txtContent);
 		            wordChanger.ChangeWords(caretPosition,txtContent);
 	                DocumentReader.writeToTextFile(fileName, 
@@ -199,27 +164,4 @@ public class EyetrackerWordSelection extends JPanel {
             }
         }
     }
-	
-
-//    
-//    @Override
-//    protected void paintComponent(Graphics g)
-//    {
-//      super.paintComponent(g);
-//      g.getColor();
-//      g.setColor(Color.RED);
-//      g.fillOval(x, y, 10,10);
-//      
-//
-//    }
-//
-//	public Point getLast() {
-//		return last;
-//	}
-//
-//	public void setLast(Point last) {
-//		this.last = last;
-//	} 
-//	
-
 }
