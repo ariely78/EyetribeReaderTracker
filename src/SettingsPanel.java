@@ -35,7 +35,7 @@ public class SettingsPanel extends JFrame implements ActionListener{
     JTextField textareaYTF = new JTextField( 20 );
 
 
-	MouseWordSelection mousetxtContent = new MouseWordSelection(DocumentReader.readTextFile("text1.txt"),this);
+	MouseWordSelection mousetxtContent = new MouseWordSelection(this);
 	EyetrackerWordSelection eyetrackerTxtContent = new EyetrackerWordSelection(this);
 	MainEyeTrackerFrame testWindow = new MainEyeTrackerFrame(mousetxtContent,eyetrackerTxtContent);
 
@@ -193,6 +193,7 @@ public class SettingsPanel extends JFrame implements ActionListener{
     		testWindow.parentPanel.showNameInputBox(name);
     		testWindow.pack();
     	    testWindow.setVisible(true);
+    	    this.mousetxtContent.setTextAreaText();
     	    CardLayout cl = (CardLayout) (testWindow.parentPanel.getLayout());
 			cl.show(testWindow.parentPanel, "MouseTracker");
     	} else { //eyetracker pressed

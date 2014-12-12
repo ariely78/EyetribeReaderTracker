@@ -52,13 +52,6 @@ public class EyetrackerWordSelection extends JPanel {
     	this.settingsPanel = settingsPanel;
     	testNumber = 1;
     	this.last = new Point(0,0);
-    	font = new Font("Courier New", Font.PLAIN, fontSize);
-
-    	txtContent.setFont(font);
-    	txtContent.setEditable(false);
-    	txtContent.setHighlighter(null);
-
-//        JScrollPane scrollingArea = new JScrollPane(txtContent);
 
         //... Get the content pane, set layout, add to center
         this.setLayout(new BorderLayout());
@@ -95,6 +88,10 @@ public class EyetrackerWordSelection extends JPanel {
     
     public void setTextAreaText()
     {
+    	font = new Font("Courier New", Font.PLAIN, fontSize);
+    	txtContent.setFont(font);
+    	txtContent.setEditable(false);
+    	txtContent.setHighlighter(null);
     	//... Set textarea's initial text, scrolling, and border.
     	txtContent.setText(DocumentReader.readTextFile("text"+(testNumber)+".txt"));
     }

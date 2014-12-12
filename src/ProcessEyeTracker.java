@@ -5,6 +5,8 @@ import java.util.LinkedList;
 import java.util.Queue;
 import java.util.Random;
 
+import javax.swing.JOptionPane;
+
 import com.theeyetribe.client.GazeManager;
 import com.theeyetribe.client.GazeManager.ApiVersion;
 import com.theeyetribe.client.GazeManager.ClientMode;
@@ -40,6 +42,10 @@ public class ProcessEyeTracker implements ICalibrationProcessHandler, IConnectio
 		this.mirror = false;//mirror;
 		this.hostname = "localhost";//hostname;
 		this.port = 6555;//port;
+    	JOptionPane.showMessageDialog(SC.pp, "Tracker State:"+GazeManager.getInstance().getTrackerState().toString());
+		System.out.println("GazeManager.getInstance().getTrackerState().toString(): "+GazeManager.getInstance().getTrackerState().toString());
+//		if(GazeManager.getInstance().getTrackerState().toString() != null)
+//			return;
 		
 		if (GazeManager.getInstance().isActivated()){
 			GazeManager.getInstance().deactivate();

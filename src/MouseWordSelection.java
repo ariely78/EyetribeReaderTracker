@@ -4,6 +4,8 @@ import java.awt.FontMetrics;
 
 import javax.swing.text.BadLocationException;
 
+import com.theeyetribe.client.GazeManager;
+
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Font;
@@ -11,6 +13,8 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.Rectangle;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 /**
@@ -55,23 +59,51 @@ public class MouseWordSelection extends JPanel{
     public int fontSize = 40;
     public String fileName;
     Font font;
-    SettingsPanel settingsPanel;
-    
-    public MouseWordSelection(String text, SettingsPanel settingsPanel){
+    final SettingsPanel settingsPanel;
+    private int testNumber;
+
+    public MouseWordSelection(final SettingsPanel settingsPanel){
     	this.settingsPanel = settingsPanel;
+    	testNumber = 1;
+        jta.requestFocus();
+        jta.addKeyListener(new KeyListener(){ 
+            public void keyPressed(KeyEvent ke){ 
+
+                 if(ke.getKeyCode()==KeyEvent.VK_SPACE){
+                	 testNumber += 1;
+                	 settingsPanel.testWindow.parentPanel.calibrateAfterTest(testNumber);
+                	 setTextAreaText();
+                	 DocumentReader.writeToTextFile(fileName, 
+                			 "\nNEXT TEST:" + fileName +"\n" );
+                 }
+            }
+ 
+			@Override
+			public void keyTyped(KeyEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+
+			@Override
+			public void keyReleased(KeyEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+        });
+    }
+    
+    public void setTextAreaText()
+    {
     	font = new Font("Courier New", Font.PLAIN, fontSize);
     	jta.setFont(font);
     	jta.setEditable(false);
     	jta.setHighlighter(null);
-
     	//... Set textarea's initial text, scrolling, and border.
-        jta.setText(text);
+    	jta.setText(DocumentReader.readTextFile("text"+(testNumber)+".txt"));
         JScrollPane scrollingArea = new JScrollPane(jta);
-
         //... Get the content pane, set layout, add to center
         this.setLayout(new BorderLayout());
         this.add(scrollingArea, BorderLayout.CENTER);
-        
     }
 	
     public void startMouseListener(){
