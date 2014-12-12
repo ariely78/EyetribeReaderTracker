@@ -77,8 +77,7 @@ public class GraphicsLogicEyetracker extends JPanel{
 	}*/
 
 	public void end_calibration(String msg){
-		CardLayout cl = (CardLayout) (pp.getLayout());
-		cl.show(pp, "Eyetracker");
+
 		pp.stop_calibration(msg);
 	}
 

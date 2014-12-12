@@ -13,6 +13,8 @@ import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
+import com.theeyetribe.client.GazeManager;
+
 
 public class ParentPanel extends JPanel{
 
@@ -20,6 +22,7 @@ public class ParentPanel extends JPanel{
 	final EyetrackerWordSelection eyetrackerPanel;
     final MouseWordSelection mousePanel;
     GraphicsLogicEyetracker graphicsLogicPane;
+    ProcessEyeTracker calibrationProcess;
 	private int width;
 	private int height;
 	
@@ -45,24 +48,47 @@ public class ParentPanel extends JPanel{
 	}
 	
 	public void init_calibration_process(boolean mirror){
-		ProcessEyeTracker c = new ProcessEyeTracker(9,this.graphicsLogicPane);
-		c.StartCalibration();
+		ProcessEyeTracker calibrationProcess = new ProcessEyeTracker(9,this.graphicsLogicPane);
+		calibrationProcess.StartCalibration();
 	}
 	
 	public void stop_calibration(String msg){
-    	JOptionPane.showMessageDialog(null, "Calibration:" + msg);
-		eyetrackerPanel.startEyetracker();
+    	JOptionPane.showMessageDialog(this, "Calibration:" + msg);
+    	startEyetracker();
 
-//		panel1.calibrate.setVisible(true);
-//		panel1.exit.setVisible(true);
-//		panel1.msg.setVisible(true);
-//		panel1.msg.setText(msg);
+ 	   //perfect calibration
+    	if (calibrationProcess.result < 0.5 || calibrationProcess.result < 0.7)
+    	{
+        	startEyetracker();
+    	} else { 	   //bad calibration, do again
+
+    	}
+	}
+	
+	public void calibrateAfterTest(int testNumber)
+	{
+		if(testNumber > 4) {
+	    	JOptionPane.showMessageDialog(this, "Test Over Thankyou:");
+	    	System.exit(1);
+		} else {
+	    	JOptionPane.showMessageDialog(this, "You will need to recalibrate, please look at the white dot as it appears");
+			CardLayout cl = (CardLayout) (this.getLayout());
+			cl.show(this, "Calibrate");
+			init_calibration_process(false);
+		}
+	}
+	
+	public void startEyetracker()
+	{
+		CardLayout cl = (CardLayout) (this.getLayout());
+		cl.show(this, "Eyetracker");
+		this.eyetrackerPanel.startEyetracker();
 	}
 	
 	public void showNameInputBox(String textReadingWindow)
     {
     	//Execute when button is pressed
-        String reply = JOptionPane.showInputDialog(null, "Please enter your name",
+        String reply = JOptionPane.showInputDialog(this, "Please enter your name",
         		"Press ok to start test",
         		JOptionPane.OK_OPTION);
         this.mousePanel.wordChanger.swapWord = reply;
@@ -77,7 +103,7 @@ public class ParentPanel extends JPanel{
         	this.mousePanel.fileName = path.toString();
         	this.eyetrackerPanel.fileName = path.toString();
 
-        	JOptionPane.showMessageDialog(null, "When you press OK the calibration will start, stare at the dot on the screen, keep your head still and only move your eyes");
+        	JOptionPane.showMessageDialog(this, "When you press OK the calibration will start, stare at the dot on the screen, keep your head still and only move your eyes");
             
             if(textReadingWindow.equalsIgnoreCase("mouse")){
             	mousePanel.startMouseListener();
@@ -86,19 +112,9 @@ public class ParentPanel extends JPanel{
             }
         } else {
             if (Files.exists(path)) {
-            	JOptionPane.showMessageDialog(null, "File exists with this name try again");
+            	JOptionPane.showMessageDialog(this, "File exists with this name try again");
             }
         }
     }
 	
-   public void loadTestScreen()
-   {
-	   //perfect calibration
-//	if (calibrsationProcess.result < 0.5 || calibrationProcess.result < 0.7)
-//	{
-//		
-//	} else { 	   //bad calibration, do again
-//
-//	}
-   }
 }

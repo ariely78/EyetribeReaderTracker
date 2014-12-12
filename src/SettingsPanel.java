@@ -36,7 +36,7 @@ public class SettingsPanel extends JFrame implements ActionListener{
 
 
 	MouseWordSelection mousetxtContent = new MouseWordSelection(DocumentReader.readTextFile("text.txt"),this);
-	EyetrackerWordSelection eyetrackerTxtContent = new EyetrackerWordSelection(DocumentReader.readTextFile("text.txt"),this);
+	EyetrackerWordSelection eyetrackerTxtContent = new EyetrackerWordSelection(DocumentReader.readTextFile("text1.txt"),this);
 	MainEyeTrackerFrame testWindow = new MainEyeTrackerFrame(mousetxtContent,eyetrackerTxtContent);
 
 	
@@ -63,8 +63,8 @@ public class SettingsPanel extends JFrame implements ActionListener{
         startEyetrackerButton.setSize(100, 50);
         startEyetrackerButton.addActionListener(this);
         
-        setSettings = new JButton("Set settings");
-        setSettings.setName("setSettings");
+        setSettings = new JButton("Start Experiment");
+        setSettings.setName("start");
         setSettings.setSize(100, 50);
         setSettings.addActionListener(this);
         // Create the layout
@@ -174,14 +174,14 @@ public class SettingsPanel extends JFrame implements ActionListener{
     {
 	    JButton o = (JButton)e.getSource();
 	    String name = o.getName();
-    	if(name.equalsIgnoreCase("setSettings")) {
+    	if(name.equalsIgnoreCase("start")) {
     	    setVariables();
-    	    //TEST CODE:
-    	   //set fullscreen
-//        	GraphicsDevice gd =
-//    	            GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
-//        	testWindow.setUndecorated(true);
-//    		gd.setFullScreenWindow(testWindow);
+    	    testWindow.parentPanel.showNameInputBox(name);
+    	    //set fullscreen
+        	GraphicsDevice gd =
+    	            GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
+        	testWindow.setUndecorated(true);
+    		gd.setFullScreenWindow(testWindow);
     	    testWindow.pack();
     	    testWindow.setVisible(true);
     	    CardLayout cl = (CardLayout) (testWindow.parentPanel.getLayout());

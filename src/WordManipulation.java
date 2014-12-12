@@ -113,7 +113,7 @@ public class WordManipulation {
         	return false;
         }
         
-        removeAddSpace(wordToInsertParam, wordToReplace, txtContent);
+         removeAddSpace(wordToInsertParam, wordToReplace, txtContent);
 
         return true;
     }

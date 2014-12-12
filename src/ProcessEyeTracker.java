@@ -51,6 +51,7 @@ public class ProcessEyeTracker implements ICalibrationProcessHandler, IConnectio
 
 		final GazeListener gazeListener = new GazeListener();
 		GazeManager.getInstance().addGazeListener(gazeListener);
+//		GazeManager.getInstance().addTrackerStateListener(new ITrackerStateListener(GazeManager.TrackerState));
 		
 		View = SC;
 
@@ -201,6 +202,7 @@ public class ProcessEyeTracker implements ICalibrationProcessHandler, IConnectio
 
 	private void StopAndClose(String msg){
 		System.out.println("Done!");
+		GazeManager.getInstance().deactivate();
 		View.end_calibration(msg);
 		return;
 		//View.close(); //close the window
@@ -210,6 +212,7 @@ public class ProcessEyeTracker implements ICalibrationProcessHandler, IConnectio
 	@Override
 	public void onConnectionStateChanged(boolean isConnected) {
 		System.out.println("onConnectionStateChanged: " + isConnected);
+		View.pp.startEyetracker();
 	}
 
 	public String RatingFunction(double accuracy){

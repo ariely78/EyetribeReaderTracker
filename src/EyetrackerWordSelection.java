@@ -6,6 +6,8 @@ import java.awt.Font;
 import java.awt.FontMetrics;
 import java.awt.Graphics;
 import java.awt.Point;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 
 import com.theeyetribe.client.IGazeListener;
 import com.theeyetribe.client.GazeManager;
@@ -43,11 +45,14 @@ public class EyetrackerWordSelection extends JPanel {
 	private long lastTimeStamp = 0;
 	boolean wordChanged = false;
 	WordManipulation wordChanger = new WordManipulation();
-	SettingsPanel settingsPanel;
-	
-    public EyetrackerWordSelection(String text, SettingsPanel settingsPanel){
-    	this.settingsPanel = settingsPanel;
+	final SettingsPanel settingsPanel;
+    private int testNumber;
+    private String text;
 
+    public EyetrackerWordSelection(final String text, final SettingsPanel settingsPanel){
+    	this.settingsPanel = settingsPanel;
+    	this.text = text;
+    	testNumber = 1;
     	this.last = new Point(0,0);
     	font = new Font("Courier New", Font.PLAIN, fontSize);
 
@@ -57,11 +62,36 @@ public class EyetrackerWordSelection extends JPanel {
 
     	//... Set textarea's initial text, scrolling, and border.
     	txtContent.setText(text);
-        JScrollPane scrollingArea = new JScrollPane(txtContent);
+//        JScrollPane scrollingArea = new JScrollPane(txtContent);
 
         //... Get the content pane, set layout, add to center
         this.setLayout(new BorderLayout());
-        this.add(scrollingArea, BorderLayout.CENTER);
+        this.add(txtContent, BorderLayout.CENTER);
+        
+        txtContent.addKeyListener(new KeyListener(){ 
+
+            public void keyPressed(KeyEvent ke){ 
+
+                 if(ke.getKeyCode()==KeyEvent.VK_SPACE){
+                	 wordChanged = false;
+                	 testNumber += 1;
+                	 settingsPanel.testWindow.parentPanel.calibrateAfterTest(testNumber);
+                	 txtContent.setText(DocumentReader.readTextFile("text"+(testNumber)+".txt"));
+                 }
+            }
+ 
+			@Override
+			public void keyTyped(KeyEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+
+			@Override
+			public void keyReleased(KeyEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+        });
     }
     
 	public void startEyetracker() {
