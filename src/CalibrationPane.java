@@ -36,7 +36,6 @@ public class CalibrationPane extends JPanel{
 	
     public void afterCalibration()
     {
-    	mainFrame.loadTestScreen();
     }
     
     public void startCalibration()

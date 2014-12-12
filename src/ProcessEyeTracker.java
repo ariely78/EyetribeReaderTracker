@@ -23,7 +23,7 @@ public class ProcessEyeTracker implements ICalibrationProcessHandler, IConnectio
 	private int reSamplingCount;
 	private String hostname;
 	private int port;
-	static GraphicsLogicEyetracker View;
+	static CalibrationPanel View;
 	Queue<Point2D> calibrationPoints;
 	Point2D currentPoint;
 	private boolean trackeStateOK = true;
@@ -36,7 +36,7 @@ public class ProcessEyeTracker implements ICalibrationProcessHandler, IConnectio
 	public double result;
 	private boolean mirror;
 
-	ProcessEyeTracker(int number_points, GraphicsLogicEyetracker SC){
+	ProcessEyeTracker(int number_points, CalibrationPanel SC){
 		this.mirror = false;//mirror;
 		this.hostname = "localhost";//hostname;
 		this.port = 6555;//port;
@@ -51,7 +51,6 @@ public class ProcessEyeTracker implements ICalibrationProcessHandler, IConnectio
 
 		final GazeListener gazeListener = new GazeListener();
 		GazeManager.getInstance().addGazeListener(gazeListener);
-//		GazeManager.getInstance().addTrackerStateListener(new ITrackerStateListener(GazeManager.TrackerState));
 		
 		View = SC;
 
@@ -212,7 +211,7 @@ public class ProcessEyeTracker implements ICalibrationProcessHandler, IConnectio
 	@Override
 	public void onConnectionStateChanged(boolean isConnected) {
 		System.out.println("onConnectionStateChanged: " + isConnected);
-		View.pp.startEyetracker();
+//		View.pp.startEyetracker();
 	}
 
 	public String RatingFunction(double accuracy){

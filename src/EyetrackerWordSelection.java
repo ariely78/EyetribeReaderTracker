@@ -67,7 +67,7 @@ public class EyetrackerWordSelection extends JPanel {
         //... Get the content pane, set layout, add to center
         this.setLayout(new BorderLayout());
         this.add(txtContent, BorderLayout.CENTER);
-        
+        txtContent.requestFocus();
         txtContent.addKeyListener(new KeyListener(){ 
 
             public void keyPressed(KeyEvent ke){ 

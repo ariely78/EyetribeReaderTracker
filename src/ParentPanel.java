@@ -21,7 +21,7 @@ public class ParentPanel extends JPanel{
 	public JFrame mf;
 	final EyetrackerWordSelection eyetrackerPanel;
     final MouseWordSelection mousePanel;
-    GraphicsLogicEyetracker graphicsLogicPane;
+    CalibrationPanel calibrationPane;
     ProcessEyeTracker calibrationProcess;
 	private int width;
 	private int height;
@@ -38,30 +38,30 @@ public class ParentPanel extends JPanel{
 
 	public void addComponentToPane(Container pane){
 		Dimension dim = new Dimension(width,height);
-    	graphicsLogicPane = new GraphicsLogicEyetracker(this,dim);
+		calibrationPane = new CalibrationPanel(this,dim);
 
 		add(this.eyetrackerPanel,"Eyetracker");
-		add(this.graphicsLogicPane,"Calibrate");
+		add(this.calibrationPane,"Calibrate");
 		add(this.mousePanel,"MouseTracker");
 
 		pane.add(this, BorderLayout.CENTER);
 	}
 	
 	public void init_calibration_process(boolean mirror){
-		ProcessEyeTracker calibrationProcess = new ProcessEyeTracker(9,this.graphicsLogicPane);
+		calibrationProcess = new ProcessEyeTracker(9,this.calibrationPane);
 		calibrationProcess.StartCalibration();
 	}
 	
 	public void stop_calibration(String msg){
-    	JOptionPane.showMessageDialog(this, "Calibration:" + msg);
+    	JOptionPane.showMessageDialog(this, "CalibrationResult:"+calibrationProcess.result+ " " + msg);
     	startEyetracker();
 
  	   //perfect calibration
     	if (calibrationProcess.result < 0.5 || calibrationProcess.result < 0.7)
     	{
-        	startEyetracker();
+//        	startEyetracker();
     	} else { 	   //bad calibration, do again
-
+//    		calibrationProcess.StartCalibration();
     	}
 	}
 	

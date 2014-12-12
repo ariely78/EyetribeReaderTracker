@@ -11,7 +11,7 @@ import javax.swing.JPanel;
 import com.theeyetribe.client.data.Point2D;
 
 @SuppressWarnings("serial")
-public class GraphicsLogicEyetracker extends JPanel{
+public class CalibrationPanel extends JPanel{
 	
 	public boolean p = false;
 	//private Rectangle2D.Float ball; //figure to look at
@@ -19,7 +19,7 @@ public class GraphicsLogicEyetracker extends JPanel{
 	private Point2D pos = new Point2D(0,0); //position to put the figure
 	ParentPanel pp;
 	
-	public GraphicsLogicEyetracker(ParentPanel pp, Dimension dim){
+	public CalibrationPanel(ParentPanel pp, Dimension dim){
 	    this.setPreferredSize(dim);
 	    this.setSize(dim);
 		this.pp = pp;
