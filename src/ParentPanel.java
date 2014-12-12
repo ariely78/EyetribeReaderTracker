@@ -82,6 +82,7 @@ public class ParentPanel extends JPanel{
 	{
 		CardLayout cl = (CardLayout) (this.getLayout());
 		cl.show(this, "Eyetracker");
+		this.eyetrackerPanel.txtContent.requestFocus();
 		this.eyetrackerPanel.startEyetracker();
 	}
 	

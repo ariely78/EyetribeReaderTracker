@@ -36,7 +36,7 @@ public class SettingsPanel extends JFrame implements ActionListener{
 
 
 	MouseWordSelection mousetxtContent = new MouseWordSelection(DocumentReader.readTextFile("text1.txt"),this);
-	EyetrackerWordSelection eyetrackerTxtContent = new EyetrackerWordSelection(DocumentReader.readTextFile("text1.txt"),this);
+	EyetrackerWordSelection eyetrackerTxtContent = new EyetrackerWordSelection(this);
 	MainEyeTrackerFrame testWindow = new MainEyeTrackerFrame(mousetxtContent,eyetrackerTxtContent);
 
 	
@@ -181,9 +181,10 @@ public class SettingsPanel extends JFrame implements ActionListener{
     	            GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
         	testWindow.setUndecorated(true);
     		gd.setFullScreenWindow(testWindow);
+    	    testWindow.parentPanel.showNameInputBox(name);
+    	    this.eyetrackerTxtContent.setTextAreaText();
     	    testWindow.pack();
     	    testWindow.setVisible(true);
-    	    testWindow.parentPanel.showNameInputBox(name);
     	    CardLayout cl = (CardLayout) (testWindow.parentPanel.getLayout());
 			cl.show(testWindow.parentPanel, "Calibrate");
 			testWindow.parentPanel.init_calibration_process(false);
