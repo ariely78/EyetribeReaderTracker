@@ -1,3 +1,4 @@
+import java.awt.Point;
 import javax.swing.JTextArea;
 import javax.swing.text.BadLocationException;
 
@@ -7,7 +8,7 @@ public class WordManipulation {
 	int startIndex;
     int endIndex;
 	boolean changeWordBack = false;
-	String swapWord = "Ben";
+	String swapWord = "name";
 	String wordToActivateChange = "to";
 	int timeUntilNextWordChange = 0;
 	boolean wordChanged = false;
@@ -18,20 +19,61 @@ public class WordManipulation {
         int startIndex;
         int endIndex;
         int i = 0;
-        while (!txtContent.getText(caretPosition + i, 1).equals(" ")
-                && !txtContent.getText(caretPosition + i, 1).equals("\n")) {
-            i++;
+
+        while(isCharALetter(txtContent, caretPosition+i)){
+        	i++;
         }
+//        while (Character.isLetter(txtContent.getText(caretPosition + i, 1).charAt(0)))  {
+//            i++;
+//        }
         endIndex = caretPosition + i;
         int j = 0;
-        while (j < caretPosition && !txtContent.getText(caretPosition - j - 1, 1).equals(" ")) {
+        while (j < caretPosition && isCharALetter(txtContent, caretPosition - j - 1)) {
             j++;
         }
+//        while (j < caretPosition && Character.isLetter(txtContent.getText(caretPosition - j - 1, 1).charAt(0))) {
+//            j++;
+//        }
         startIndex = caretPosition - j;
         return txtContent.getText(startIndex, endIndex - startIndex);
     }
     
-    public boolean changeWordXWordsInfront(String wordToInsertParam,
+    public int letterTracked(JTextArea txtContent, 
+						    		int caretPosition, 
+						    		Point trackPoint,
+						    		int fontHeight) throws BadLocationException
+    {
+    	int newCaretPosition = 0;
+		newCaretPosition = caretPosition;
+
+    	if(isCharALetter(txtContent, caretPosition)){
+    		return newCaretPosition;
+    	}
+    	int extraSpace = fontHeight/2;
+    	Point newTrackPoint = new Point(trackPoint.x, trackPoint.y-extraSpace);
+    	newCaretPosition = txtContent.viewToModel(newTrackPoint);
+    	if(!isCharALetter(txtContent, newCaretPosition)){
+    		newTrackPoint = new Point(trackPoint.x, trackPoint.y+extraSpace);
+        	newCaretPosition = txtContent.viewToModel(newTrackPoint);
+	    	if(isCharALetter(txtContent, newCaretPosition)){
+	        	newCaretPosition = txtContent.viewToModel(newTrackPoint);
+	    	}
+    	}
+    	return newCaretPosition;
+    }
+    
+    public boolean isCharALetter(JTextArea jta, int caretPosition) throws BadLocationException
+    {
+    	return Character.isLetter(charAtPosition(jta,caretPosition));
+    }
+    
+    public char charAtPosition(JTextArea jta, int caretPosition) throws BadLocationException
+    {
+    	char ch = jta.getText(caretPosition,1).charAt(0);
+    	return ch;
+    }
+    
+	public boolean changeWordXWordsInfront(String wordToInsertParam,
     											int numberOfWordsAhead,
 								    			int caretPosition, 
 								    			JTextArea txtContent) throws BadLocationException {
@@ -40,15 +82,12 @@ public class WordManipulation {
     	String wordToReplace= "";
 
         while (currentWord < numberOfWordsAhead) {
-
+        	//while(isCharALetter(txtContent, caretPosition + i)){
 	        while (!txtContent.getText(caretPosition + i, 1).equals(" ")){
-	        	//come across newline then just return, dont change words between lines
-	        	if(txtContent.getText(caretPosition + i, 1).equals("\n"))
-	        		return false;
 	            System.out.println(""+txtContent.getText(caretPosition+i,1));
 	            i++;
 	        }
-	        
+        	
 	        //move 2 carets forward to start of next word by adding 1 
 	        //(the space, then next word) assuming there is only one space!
 	        caretPosition+=i+1;
@@ -59,11 +98,22 @@ public class WordManipulation {
 	        //set caret position to endIndex - length of word we are replacing 
 	        //but -1 from that so we get start index of word
 	        endIndex = caretPosition + wordToReplace.length()-1;
-	        this.lastWordChanged = getWord(startIndex,txtContent);
 
         }
+    	//come across newline then just return, dont change words between lines
+    	if(txtContent.getText(caretPosition + i, 1).equals("\n"))
+    		return false;
         
-        removeAddSpace(wordToInsertParam, wordToReplace, txtContent);
+        //only change the word if the word X words infront is same length as our swapword
+        String temp = getWord(startIndex,txtContent);
+        if(temp.length() == this.swapWord.length())
+        {
+        	this.lastWordChanged = getWord(startIndex,txtContent);
+        } else {
+        	return false;
+        }
+        
+         removeAddSpace(wordToInsertParam, wordToReplace, txtContent);
 
         return true;
     }
@@ -73,8 +123,8 @@ public class WordManipulation {
 			JTextArea txtContent) throws BadLocationException
     {
         int i = 0;
-
-        while (!txtContent.getText(caretPosition + i, 1).equals(" ")){
+    	while(isCharALetter(txtContent, caretPosition + i)){
+//        while (!txtContent.getText(caretPosition + i, 1).equals(" ")){
         	//come across newline then just return, dont change words between lines
         	if(txtContent.getText(caretPosition + i, 1).equals("\n"))
         		return false;
@@ -95,16 +145,19 @@ public class WordManipulation {
 	{
         if((System.currentTimeMillis() - lastTimeStamp) > timeUntilNextWordChange){
         	lastTimeStamp = System.currentTimeMillis();
+        	
+        	if(!this.wordChanged)
+        		wordChanged = changeWordXWordsInfront(swapWord, numWordsInfront, caretPosition, txtContent);
+
 	        //only change word if selected word is "to"
-	    	if(getWord(caretPosition, txtContent).equalsIgnoreCase(wordToActivateChange) && !this.wordChanged)
-	    	{
-	    		wordChanged = changeWordXWordsInfront(swapWord, numWordsInfront, caretPosition, txtContent);
-	    	}
+//	    	if(getWord(caretPosition, txtContent).equalsIgnoreCase(wordToActivateChange) && !this.wordChanged)
+//	    	{
+//	    		wordChanged = changeWordXWordsInfront(swapWord, numWordsInfront, caretPosition, txtContent);
+//	    	}
 	    	
 	        //if we changed a word and the current word selected is same as the word we changed to, change it back!
 	        if(wordChanged && getWord(caretPosition, txtContent).equalsIgnoreCase(swapWord))
 	        {
-	        	
 	        	wordChanged = swapWordBack(swapWord, caretPosition, txtContent);
 	        }
         }
