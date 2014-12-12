@@ -174,8 +174,8 @@ public class SettingsPanel extends JFrame implements ActionListener{
     {
 	    JButton o = (JButton)e.getSource();
 	    String name = o.getName();
+	    setVariables();
     	if(name.equalsIgnoreCase("start")) {
-    	    setVariables();
     	    //set fullscreen
         	GraphicsDevice gd =
     	            GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
