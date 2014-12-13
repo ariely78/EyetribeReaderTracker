@@ -10,7 +10,7 @@ public class WordManipulation {
 	boolean changeWordBack = false;
 	String swapWord = "name";
 	String wordToActivateChange = "to";
-	int timeUntilNextWordChange = 0;
+	int timeUntilNextWordChange = 500;
 	boolean wordChanged = false;
 	private long lastTimeStamp = 0;
 	int numWordsInfront = 2;
@@ -145,7 +145,7 @@ public class WordManipulation {
 	{
         if((System.currentTimeMillis() - lastTimeStamp) > timeUntilNextWordChange){
         	lastTimeStamp = System.currentTimeMillis();
-        	
+        }	
         	if(!this.wordChanged)
         		wordChanged = changeWordXWordsInfront(swapWord, numWordsInfront, caretPosition, txtContent);
 
@@ -160,7 +160,7 @@ public class WordManipulation {
 	        {
 	        	wordChanged = swapWordBack(swapWord, caretPosition, txtContent);
 	        }
-        }
+        
 	}
 	
 	public void removeAddSpace(String wordToInsertParam, String wordToReplaceParam,JTextArea txtContent)

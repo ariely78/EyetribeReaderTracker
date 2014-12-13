@@ -42,7 +42,9 @@ public class ProcessEyeTracker implements ICalibrationProcessHandler, IConnectio
 		this.mirror = false;//mirror;
 		this.hostname = "localhost";//hostname;
 		this.port = 6555;//port;
-    	JOptionPane.showMessageDialog(SC.pp, "Tracker State:"+GazeManager.getInstance().getTrackerState().toString());
+		if(Settings.hideMessages)
+			JOptionPane.showMessageDialog(Settings.gd.getFullScreenWindow(), 
+						"Tracker State:"+GazeManager.getInstance().getTrackerState().toString());
 		System.out.println("GazeManager.getInstance().getTrackerState().toString(): "+GazeManager.getInstance().getTrackerState().toString());
 //		if(GazeManager.getInstance().getTrackerState().toString() != null)
 //			return;
@@ -55,7 +57,7 @@ public class ProcessEyeTracker implements ICalibrationProcessHandler, IConnectio
 		
 		this.number_points = number_points;
 
-		final GazeListener gazeListener = new GazeListener();
+		final GazeListener2 gazeListener = new GazeListener2();
 		GazeManager.getInstance().addGazeListener(gazeListener);
 		
 		View = SC;
@@ -105,11 +107,11 @@ public class ProcessEyeTracker implements ICalibrationProcessHandler, IConnectio
 		currentPoint = PickNextPoint();		
 
 		if (GazeManager.getInstance().isCalibrating()){
-		System.out.println("==> Abort");
+			System.out.println("==> Abort");
 		GazeManager.getInstance().calibrationAbort();
-		System.out.println("==> Clear");
+			System.out.println("==> Clear");
 		GazeManager.getInstance().calibrationClear();
-		System.out.println("==> Ready to Go");
+			System.out.println("==> Ready to Go");
 		}
 		
 		// Signal tracker server that we're about to start a calibration
@@ -120,14 +122,14 @@ public class ProcessEyeTracker implements ICalibrationProcessHandler, IConnectio
 	public void Step(Point2D point, int i){
 		System.out.println("--------------Step ("+point.getX()+","+point.getY()+"): " + i);
 		View.newPos((int)point.getX(),(int)point.getY());
-		try{Thread.sleep(500);}catch (Exception e){}; //wait for the gaze to meet the point
+		try{Thread.sleep(Settings.timeToMoveToGaze);}catch (Exception e){}; //wait for the gaze to meet the point
 		if (mirror){
 			GazeManager.getInstance().calibrationPointStart((int)get_mirror(point.getX()),(int)point.getY()); //start the calibration process
 		}else{
 			GazeManager.getInstance().calibrationPointStart((int)point.getX(),(int)point.getY()); //start the calibration process
 		}
 
-		try{Thread.sleep(500);}catch (Exception e){}; //wait for the calibration process to take the data
+		try{Thread.sleep(Settings.calibrateTime);}catch (Exception e){}; //wait for the calibration process to take the data
 		GazeManager.getInstance().calibrationPointEnd(); //end the calibration process
 	}
 

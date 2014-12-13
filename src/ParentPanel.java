@@ -48,13 +48,16 @@ public class ParentPanel extends JPanel{
 	}
 	
 	public void init_calibration_process(boolean mirror){
+		calibrationPane.requestFocus();
 		calibrationProcess = new ProcessEyeTracker(9,this.calibrationPane);
 		calibrationProcess.StartCalibration();
 	}
 	
 	public void stop_calibration(String msg){
-    	JOptionPane.showMessageDialog(this, "CalibrationResult:"+calibrationProcess.result+ " " + msg);
+		//if (Settings.hideMessages)
+			JOptionPane.showMessageDialog(Settings.gd.getFullScreenWindow(),"PRESS RETURN \n "+ msg);
     	startEyetracker();
+    	this.eyetrackerPanel.txtContent.requestFocus();
 
  	   //perfect calibration
     	if (calibrationProcess.result < 0.5 || calibrationProcess.result < 0.7)
@@ -68,10 +71,11 @@ public class ParentPanel extends JPanel{
 	public void calibrateAfterTest(int testNumber)
 	{
 		if(testNumber > 4) {
-	    	JOptionPane.showMessageDialog(this, "Test Over Thankyou:");
+			if(Settings.hideMessages)
+				JOptionPane.showMessageDialog(Settings.gd.getFullScreenWindow(), "Test Over Thankyou:");
 	    	System.exit(1);
 		} else {
-	    	JOptionPane.showMessageDialog(this, "You will need to recalibrate, please look at the white dot as it appears");
+	    	JOptionPane.showMessageDialog(Settings.gd.getFullScreenWindow(), "You will need to recalibrate, please look at the white dot as it appears");
 			CardLayout cl = (CardLayout) (this.getLayout());
 			cl.show(this, "Calibrate");
 			init_calibration_process(false);
@@ -89,7 +93,7 @@ public class ParentPanel extends JPanel{
 	public void showNameInputBox(String textReadingWindow)
     {
     	//Execute when button is pressed
-        String reply = JOptionPane.showInputDialog(this, "Please enter your name",
+        String reply = JOptionPane.showInputDialog(null, "Please enter your name",
         		"Press ok to start test",
         		JOptionPane.OK_OPTION);
         this.mousePanel.wordChanger.swapWord = reply;
@@ -104,7 +108,7 @@ public class ParentPanel extends JPanel{
         	this.mousePanel.fileName = path.toString();
         	this.eyetrackerPanel.fileName = path.toString();
 
-        	JOptionPane.showMessageDialog(this, "When you press OK the calibration will start, stare at the dot on the screen, keep your head still and only move your eyes");
+        	JOptionPane.showMessageDialog(Settings.gd.getFullScreenWindow(), "When you press OK the calibration will start, stare at the dot on the screen, keep your head still and only move your eyes");
             
             if(textReadingWindow.equalsIgnoreCase("mouse")){
             	mousePanel.startMouseListener();
@@ -113,7 +117,7 @@ public class ParentPanel extends JPanel{
             }
         } else {
             if (Files.exists(path)) {
-            	JOptionPane.showMessageDialog(this, "File exists with this name try again");
+            	JOptionPane.showMessageDialog(Settings.gd.getFullScreenWindow(), "File exists with this name try again");
             }
         }
     }

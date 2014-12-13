@@ -43,7 +43,6 @@ public class EyetrackerWordSelection extends JPanel {
     
     private Point last;
 	private long lastTimeStamp = 0;
-	boolean wordChanged = false;
 	WordManipulation wordChanger = new WordManipulation();
 	final SettingsPanel settingsPanel;
     private int testNumber;
@@ -56,6 +55,8 @@ public class EyetrackerWordSelection extends JPanel {
         //... Get the content pane, set layout, add to center
         this.setLayout(new BorderLayout());
         this.add(txtContent, BorderLayout.CENTER);
+        txtContent.setLineWrap( true );
+        txtContent.setWrapStyleWord( true );
         txtContent.requestFocus();
         txtContent.addKeyListener(new KeyListener(){ 
 
@@ -63,12 +64,15 @@ public class EyetrackerWordSelection extends JPanel {
 
                  if(ke.getKeyCode()==KeyEvent.VK_SPACE){
                 	 GazeManager.getInstance().deactivate();
-                	 wordChanged = false;
+                	 DocumentReader.writeToTextFile(fileName, 
+                			 "\nNEXT TEST:" + fileName +"\n" );
+                	 wordChanger.wordChanged = false;
                 	 testNumber += 1;
                 	 settingsPanel.testWindow.parentPanel.calibrateAfterTest(testNumber);
                 	 setTextAreaText();
-                	 DocumentReader.writeToTextFile(fileName, 
-                			 "\nNEXT TEST:" + fileName +"\n" );
+                 }
+                 if(ke.getKeyCode()==KeyEvent.VK_ESCAPE){
+                	 System.exit(1);
                  }
             }
  

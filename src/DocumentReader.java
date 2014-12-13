@@ -21,6 +21,8 @@ public class DocumentReader {
             	
                 System.out.println(line);
                 string+= "\n"+line+"\n";
+//                string+= line;
+
             }
             br.close();
             

@@ -9,6 +9,8 @@ import java.util.Date;
 
 import javax.swing.*;
 
+import com.theeyetribe.client.GazeManager;
+
 public class MainEyeTrackerFrame extends JFrame {
 
     private static final long serialVersionUID = 1L;
@@ -34,8 +36,6 @@ public class MainEyeTrackerFrame extends JFrame {
 //		setUndecorated(true);
 //		gd.setFullScreenWindow(this);
 		//Display the window.
-	
-
     }
    
 }

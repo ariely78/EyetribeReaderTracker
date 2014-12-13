@@ -3,6 +3,8 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -24,6 +26,9 @@ public class SettingsPanel extends JFrame implements ActionListener{
     JLabel wordReadingTimeLabel = new JLabel( "Time to read word:" );
     JLabel textareaXLabel = new JLabel( "X offset for text area:" );
     JLabel textareaYLabel = new JLabel( "Y Offset for text area:" );
+    JLabel messagesLabel = new JLabel( "Switch messages on:" );
+    JLabel calibratePointTimeLabel = new JLabel( "Time for Calibration point:" );
+    JLabel moveToCalibratePointTimeLabel = new JLabel( "Time for Calibration point:" );
 
     JTextField wordActivateTF = new JTextField( 20 );
     JTextField wordToSwapTF = new JTextField( 20 );
@@ -33,7 +38,10 @@ public class SettingsPanel extends JFrame implements ActionListener{
     JTextField wordReadingTimeTF = new JTextField( 20 );
     JTextField textareaXTF = new JTextField( 20 );
     JTextField textareaYTF = new JTextField( 20 );
+    JTextField calibratePointTime = new JTextField( 20 );
+    JTextField moveToCalibratePointTime = new JTextField(20);
 
+    public JCheckBox messagesCheckBox = new JCheckBox("Turn On Messages");;
 
 	MouseWordSelection mousetxtContent = new MouseWordSelection(this);
 	EyetrackerWordSelection eyetrackerTxtContent = new EyetrackerWordSelection(this);
@@ -52,6 +60,7 @@ public class SettingsPanel extends JFrame implements ActionListener{
 	{
 	    JPanel result = new JPanel();
 	    result.setBorder( BorderFactory.createEmptyBorder( 10, 10, 10, 10 ) );
+	    messagesCheckBox.addItemListener(new CheckBoxListener());
 
 	    startMouseButton = new JButton("Start Mouse");
 	    startMouseButton.setName("mouse");
@@ -84,6 +93,9 @@ public class SettingsPanel extends JFrame implements ActionListener{
 	                                                          .addComponent( wordReadingTimeLabel ) 
 	                                                          .addComponent( textareaXLabel ) 
 	                                                          .addComponent( textareaYLabel ) 
+	                                                          .addComponent( messagesLabel )
+	                                                          .addComponent(calibratePointTimeLabel)
+	                                                          .addComponent(moveToCalibratePointTimeLabel)
 	                                                          .addComponent(startMouseButton)
 	                                                          .addComponent(setSettings))
 	                                       .addGroup( layout.createParallelGroup( GroupLayout.Alignment.LEADING )
@@ -95,6 +107,9 @@ public class SettingsPanel extends JFrame implements ActionListener{
 	                                                          .addComponent( wordReadingTimeTF )
 	                                                          .addComponent( textareaXTF )
 	                                                          .addComponent( textareaYTF )
+	                                                          .addComponent( messagesCheckBox )
+	                                                          .addComponent(calibratePointTime)
+	                                                          .addComponent(moveToCalibratePointTime)
 	                                                          .addComponent(startEyetrackerButton)
 	                                                          .addComponent(setSettings))
 	    );
@@ -125,7 +140,16 @@ public class SettingsPanel extends JFrame implements ActionListener{
 	                                                        .addComponent( textareaXTF ) )
 	                                     .addGroup( layout.createParallelGroup( GroupLayout.Alignment.BASELINE )
 	                                                        .addComponent( textareaYLabel )
-	                                                        .addComponent( textareaYTF ) )	                                                        
+	                                                        .addComponent( textareaYTF ) )	   
+	                                     .addGroup( layout.createParallelGroup( GroupLayout.Alignment.BASELINE )
+	                                                        .addComponent( messagesLabel )
+	                                                        .addComponent( messagesCheckBox ) )	
+	                                     .addGroup( layout.createParallelGroup( GroupLayout.Alignment.BASELINE )
+	                                                        .addComponent( calibratePointTimeLabel )
+	                                                        .addComponent( calibratePointTime ) )
+	                                     .addGroup( layout.createParallelGroup( GroupLayout.Alignment.BASELINE )
+	                                                        .addComponent( moveToCalibratePointTimeLabel )
+	                                                        .addComponent( moveToCalibratePointTime ) )
 	                                     .addGroup( layout.createParallelGroup( GroupLayout.Alignment.BASELINE )
 	                                                        .addComponent( startMouseButton )
 	                                                        .addComponent( startEyetrackerButton ) )
@@ -147,7 +171,8 @@ public class SettingsPanel extends JFrame implements ActionListener{
 		wordReadingTimeTF.setText(eyetrackerTxtContent.wordReadingTime+"");
 		textareaXTF.setText(eyetrackerTxtContent.textareaX+"");
 		textareaYTF.setText(eyetrackerTxtContent.textareaY+"");
-
+		moveToCalibratePointTime.setText(Settings.timeToMoveToGaze+"");
+		calibratePointTime.setText(Settings.calibrateTime+"");
 	}
 
 	public void setVariables()
@@ -167,6 +192,11 @@ public class SettingsPanel extends JFrame implements ActionListener{
 		eyetrackerTxtContent.wordReadingTime = Integer.parseInt(wordReadingTimeTF.getText());
 		eyetrackerTxtContent.textareaX = Integer.parseInt(textareaXTF.getText());
 		eyetrackerTxtContent.textareaY = Integer.parseInt(textareaYTF.getText());
+		
+		Settings.calibrateTime = Integer.parseInt(calibratePointTime.getText());
+		Settings.timeToMoveToGaze = Integer.parseInt(moveToCalibratePointTime.getText());
+//		moveToCalibratePointTimeLabel.setText(Settings.timeToMoveToGaze+"");
+//		calibratePointTime.setText(Settings.calibrateTime+"");
 	}
 	
     @Override
@@ -176,12 +206,12 @@ public class SettingsPanel extends JFrame implements ActionListener{
 	    String name = o.getName();
 	    setVariables();
     	if(name.equalsIgnoreCase("start")) {
-    	    //set fullscreen
-        	GraphicsDevice gd =
-    	            GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
-        	testWindow.setUndecorated(true);
-    		gd.setFullScreenWindow(testWindow);
+    		//set fullscreen
     	    testWindow.parentPanel.showNameInputBox(name);
+    	    GraphicsDevice gd = 
+					GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
+			testWindow.setUndecorated(true);
+			gd.setFullScreenWindow(testWindow);
     	    this.eyetrackerTxtContent.setTextAreaText();
     	    testWindow.pack();
     	    testWindow.setVisible(true);
@@ -191,13 +221,14 @@ public class SettingsPanel extends JFrame implements ActionListener{
         	
     	} else if(name.equalsIgnoreCase("mouse")) {
     		testWindow.parentPanel.showNameInputBox(name);
+    	    this.mousetxtContent.setTextAreaText();
     		testWindow.pack();
     	    testWindow.setVisible(true);
-    	    this.mousetxtContent.setTextAreaText();
     	    CardLayout cl = (CardLayout) (testWindow.parentPanel.getLayout());
 			cl.show(testWindow.parentPanel, "MouseTracker");
     	} else { //eyetracker pressed
 			testWindow.parentPanel.showNameInputBox(name);
+    	    this.eyetrackerTxtContent.setTextAreaText();
     		testWindow.pack();
     	    testWindow.setVisible(true);
     	    CardLayout cl = (CardLayout) (testWindow.parentPanel.getLayout());
@@ -205,5 +236,18 @@ public class SettingsPanel extends JFrame implements ActionListener{
     	}
     }
     
+    private class CheckBoxListener implements ItemListener{
+        public void itemStateChanged(ItemEvent e) {
+            if(e.getSource()==messagesCheckBox){
+                if(messagesCheckBox.isSelected()) {
+                	Settings.hideMessages = true;
+                } else {
+                	Settings.hideMessages = false;
+
+                	System.out.println("nothing");
+                	}
+            }
+        }
+    }
 }
 	      

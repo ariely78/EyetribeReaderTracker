@@ -34,24 +34,10 @@ public class MouseWordSelection extends JPanel{
         protected void paintComponent(Graphics g)
         {
           super.paintComponent(g);
+          fm = this.getFontMetrics(font);
           g.getColor();
     	  g.setColor(Color.RED);
           g.fillOval(x, y, 10,10);
-          fm = g.getFontMetrics(font);
-      
-	      Graphics2D g2 = (Graphics2D) g;
-//	      Rectangle bounds = getStringBounds(g2, word, x, y);
-	      try{
-	    	  Rectangle rectangle = jta.modelToView( jta.getCaretPosition() );
-//		      Rectangle bounds = getStringBounds(g2, word, rectangle.x, rectangle.y);
-//	          g.fillOval(rectangle.x, rectangle.y-50,10,10);
-//	          g2.setColor(Color.blue);
-//	          g2.draw(rectangle);
-	      }
-	      catch (BadLocationException e1) {
-	            e1.printStackTrace();
-	      }
-          g2.dispose();
         } 
     };
 
@@ -71,10 +57,10 @@ public class MouseWordSelection extends JPanel{
 
                  if(ke.getKeyCode()==KeyEvent.VK_SPACE){
                 	 testNumber += 1;
-                	 settingsPanel.testWindow.parentPanel.calibrateAfterTest(testNumber);
-                	 setTextAreaText();
                 	 DocumentReader.writeToTextFile(fileName, 
                 			 "\nNEXT TEST:" + fileName +"\n" );
+                	 settingsPanel.testWindow.parentPanel.calibrateAfterTest(testNumber);
+                	 setTextAreaText();
                  }
             }
  
