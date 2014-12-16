@@ -48,7 +48,7 @@ public class SettingsPanel extends JFrame implements ActionListener{
 	MainEyeTrackerFrame testWindow = new MainEyeTrackerFrame(mousetxtContent,eyetrackerTxtContent);
 
 	// Retrieve the user preference node for the package com.mycompany
-	Preferences prefs = Preferences.userNodeForPackage(this.getClass());
+	Preferences prefs = Preferences.userRoot().node(this.getClass().getName());
 	// Preference key name
 	final String FONT_SIZE = "fontSize";
 	
@@ -168,7 +168,12 @@ public class SettingsPanel extends JFrame implements ActionListener{
 	{
 		wordActivateTF.setText(eyetrackerTxtContent.wordChanger.wordToActivateChange);
 		wordToSwapTF.setText(eyetrackerTxtContent.wordChanger.swapWord);
-		prefs.putInt(FONT_SIZE, eyetrackerTxtContent.fontSize);
+		
+		//set font size in textfield
+		fontSizeTF.setText(prefs.getInt(FONT_SIZE, 50)+"");
+		//set font size variable in preferences
+//		prefs.putInt(FONT_SIZE, eyetrackerTxtContent.fontSize);
+		
 		timeNextChangeTF.setText(eyetrackerTxtContent.wordChanger.timeUntilNextWordChange+"");
 		numWordsInfrontTF.setText(eyetrackerTxtContent.wordChanger.numWordsInfront+"");
 		wordReadingTimeTF.setText(eyetrackerTxtContent.wordReadingTime+"");
@@ -182,14 +187,24 @@ public class SettingsPanel extends JFrame implements ActionListener{
 	{
 		mousetxtContent.wordChanger.wordToActivateChange = wordActivateTF.getText();
 		mousetxtContent.wordChanger.swapWord = wordToSwapTF.getText();
-		mousetxtContent.fontSize = 	Integer.parseInt(prefs.get(FONT_SIZE, fontSizeTF.getText()));
+		
+		//get font size from text field, set variable in mouse view
+		mousetxtContent.fontSize = Integer.parseInt(fontSizeTF.getText());
+		//Set the font size in preferences
+		prefs.putInt(FONT_SIZE, mousetxtContent.fontSize);
+		
 		mousetxtContent.wordChanger.timeUntilNextWordChange = Integer.parseInt(timeNextChangeTF.getText());
 		mousetxtContent.wordChanger.numWordsInfront = Integer.parseInt(numWordsInfrontTF.getText());
 		mousetxtContent.wordReadingTime = Integer.parseInt(wordReadingTimeTF.getText());
 		
 		eyetrackerTxtContent.wordChanger.wordToActivateChange = wordActivateTF.getText();
 		eyetrackerTxtContent.wordChanger.swapWord = wordToSwapTF.getText();
-		eyetrackerTxtContent.fontSize = Integer.parseInt(prefs.get(FONT_SIZE, fontSizeTF.getText()));
+		
+		//get font size from text field, set it in eyetracker
+		eyetrackerTxtContent.fontSize = Integer.parseInt(fontSizeTF.getText());
+		//set font size in preferences from this variable
+		prefs.putInt(FONT_SIZE, eyetrackerTxtContent.fontSize);
+		
 		eyetrackerTxtContent.wordChanger.timeUntilNextWordChange = Integer.parseInt(timeNextChangeTF.getText());
 		eyetrackerTxtContent.wordChanger.numWordsInfront = Integer.parseInt(numWordsInfrontTF.getText());
 		eyetrackerTxtContent.wordReadingTime = Integer.parseInt(wordReadingTimeTF.getText());
