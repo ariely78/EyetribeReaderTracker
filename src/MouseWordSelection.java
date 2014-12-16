@@ -7,6 +7,7 @@ import javax.swing.text.BadLocationException;
 import com.theeyetribe.client.GazeManager;
 
 import java.awt.BorderLayout;
+import java.awt.CardLayout;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
@@ -52,6 +53,8 @@ public class MouseWordSelection extends JPanel{
     	this.settingsPanel = settingsPanel;
     	testNumber = 1;
         jta.requestFocus();
+        jta.setLineWrap( true );
+        jta.setWrapStyleWord( true );
         jta.addKeyListener(new KeyListener(){ 
             public void keyPressed(KeyEvent ke){ 
 
@@ -61,7 +64,9 @@ public class MouseWordSelection extends JPanel{
                 	 {
 	                	 DocumentReader.writeToTextFile(fileName, 
 	                			 "\nNEXT TEST:" + fileName +"\n" );
-	                	 settingsPanel.testWindow.parentPanel.calibrateAfterTest(true);
+                    	 wordChanger.wordChanged = false;
+                    	 CardLayout cl = (CardLayout) (settingsPanel.testWindow.parentPanel.getLayout());
+             			 cl.show(settingsPanel.testWindow.parentPanel, "MouseTracker");
 	                	 setTextAreaText();
                 	 } else {
                     	 settingsPanel.testWindow.parentPanel.calibrateAfterTest(false);
@@ -91,10 +96,13 @@ public class MouseWordSelection extends JPanel{
     	jta.setHighlighter(null);
     	//... Set textarea's initial text, scrolling, and border.
     	jta.setText(DocumentReader.readTextFile("text"+(testNumber)+".txt"));
-        JScrollPane scrollingArea = new JScrollPane(jta);
+//        JScrollPane scrollingArea = new JScrollPane(jta);
         //... Get the content pane, set layout, add to center
         this.setLayout(new BorderLayout());
-        this.add(scrollingArea, BorderLayout.CENTER);
+        this.add(jta, BorderLayout.CENTER);
+        jta.repaint();
+         jta.requestFocus();
+
     }
 	
     public void startMouseListener(){
