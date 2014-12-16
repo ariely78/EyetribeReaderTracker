@@ -68,9 +68,9 @@ public class ParentPanel extends JPanel{
     	}
 	}
 	
-	public void calibrateAfterTest(int testNumber)
+	public void calibrateAfterTest(boolean calibrate)
 	{
-		if(testNumber > 4) {
+		if(!calibrate) {
 			if(Settings.hideMessages)
 				JOptionPane.showMessageDialog(Settings.gd.getFullScreenWindow(), "Test Over Thankyou:");
 	    	System.exit(1);

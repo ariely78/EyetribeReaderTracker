@@ -5,15 +5,14 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Date;
+
 
 public class SettingsPanel extends JFrame implements ActionListener{
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private JButton startMouseButton;
 	private JButton startEyetrackerButton;
 	private JButton setSettings;
@@ -50,7 +49,6 @@ public class SettingsPanel extends JFrame implements ActionListener{
 	
 	public SettingsPanel() {
 	    super("Settings Panel");
-	    Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
 	    setContentPane(createContent());
 	    setTextFields();
 	    setVisible(true);

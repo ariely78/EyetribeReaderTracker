@@ -8,6 +8,7 @@ import java.awt.Graphics;
 import java.awt.Point;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.io.File;
 
 import com.theeyetribe.client.IGazeListener;
 import com.theeyetribe.client.GazeManager;
@@ -64,12 +65,19 @@ public class EyetrackerWordSelection extends JPanel {
 
                  if(ke.getKeyCode()==KeyEvent.VK_SPACE){
                 	 GazeManager.getInstance().deactivate();
-                	 DocumentReader.writeToTextFile(fileName, 
-                			 "\nNEXT TEST:" + fileName +"\n" );
-                	 wordChanger.wordChanged = false;
                 	 testNumber += 1;
-                	 settingsPanel.testWindow.parentPanel.calibrateAfterTest(testNumber);
-                	 setTextAreaText();
+                	
+                	 if(DocumentReader.doesFilePathExist("text"+(testNumber)+".txt"))
+                	 {
+                		 DocumentReader.writeToTextFile(fileName, 
+                    			 "\nNEXT TEST :" + testNumber +"\n" );
+                    	 wordChanger.wordChanged = false;
+                    	 settingsPanel.testWindow.parentPanel.calibrateAfterTest(true);
+                    	 setTextAreaText(); 
+                	 } else {
+                    	 settingsPanel.testWindow.parentPanel.calibrateAfterTest(false);
+                	 }
+                	 
                  }
                  if(ke.getKeyCode()==KeyEvent.VK_ESCAPE){
                 	 System.exit(1);

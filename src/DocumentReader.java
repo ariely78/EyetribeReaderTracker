@@ -1,4 +1,5 @@
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileWriter;
 import java.io.InputStream;
@@ -59,6 +60,15 @@ public class DocumentReader {
 //        catch (Exception e){
 //            System.out.println(e.toString());
 //        }  
+	}
+	
+	public static boolean doesFilePathExist(String filePath)
+	{
+		
+		File f = new File(filePath);
+		String path = f.getAbsolutePath();
+		File f2 = new File(path);
+   	 	return f.exists();
 	}
 	
 

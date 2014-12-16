@@ -57,10 +57,15 @@ public class MouseWordSelection extends JPanel{
 
                  if(ke.getKeyCode()==KeyEvent.VK_SPACE){
                 	 testNumber += 1;
-                	 DocumentReader.writeToTextFile(fileName, 
-                			 "\nNEXT TEST:" + fileName +"\n" );
-                	 settingsPanel.testWindow.parentPanel.calibrateAfterTest(testNumber);
-                	 setTextAreaText();
+                	 if(DocumentReader.doesFilePathExist("text"+(testNumber)+".txt"))
+                	 {
+	                	 DocumentReader.writeToTextFile(fileName, 
+	                			 "\nNEXT TEST:" + fileName +"\n" );
+	                	 settingsPanel.testWindow.parentPanel.calibrateAfterTest(true);
+	                	 setTextAreaText();
+                	 } else {
+                    	 settingsPanel.testWindow.parentPanel.calibrateAfterTest(false);
+                	 }
                  }
             }
  
