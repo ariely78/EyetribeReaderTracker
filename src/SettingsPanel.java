@@ -28,7 +28,7 @@ public class SettingsPanel extends JFrame implements ActionListener{
     JLabel textareaYLabel = new JLabel( "Y Offset for text area:" );
     JLabel messagesLabel = new JLabel( "Switch messages on:" );
     JLabel calibratePointTimeLabel = new JLabel( "Time for Calibration point:" );
-    JLabel moveToCalibratePointTimeLabel = new JLabel( "Time for Calibration point:" );
+    JLabel moveToCalibratePointTimeLabel = new JLabel( "Time to MOVE to Calibration point:" );
 
     JTextField wordActivateTF = new JTextField( 20 );
     JTextField wordToSwapTF = new JTextField( 20 );
@@ -88,8 +88,6 @@ public class SettingsPanel extends JFrame implements ActionListener{
 	    // along the left (LEADING) edge
 	    layout.setHorizontalGroup( layout.createSequentialGroup()
 	                                       .addGroup( layout.createParallelGroup( GroupLayout.Alignment.LEADING )
-	                                                          .addComponent( wordActivatelabel )
-	                                                          .addComponent( wordToSwapLabel )
 	                                                          .addComponent( fontSizeLabel ) 
 	                                                          .addComponent( timeNextChangeLabel ) 
 	                                                          .addComponent( numWordsInfrontLabel ) 
@@ -102,8 +100,6 @@ public class SettingsPanel extends JFrame implements ActionListener{
 	                                                          .addComponent(startMouseButton)
 	                                                          .addComponent(setSettings))
 	                                       .addGroup( layout.createParallelGroup( GroupLayout.Alignment.LEADING )
-	                                                          .addComponent( wordActivateTF )
-	                                                          .addComponent( wordToSwapTF )
 	                                                          .addComponent( fontSizeTF )
 	                                                          .addComponent( timeNextChangeTF )
 	                                                          .addComponent( numWordsInfrontTF )
@@ -120,12 +116,6 @@ public class SettingsPanel extends JFrame implements ActionListener{
 	    // Vertically, we want to align each label with his textfield
 	    // on the baseline of the components
 	    layout.setVerticalGroup( layout.createSequentialGroup()
-	                                     .addGroup( layout.createParallelGroup( GroupLayout.Alignment.BASELINE )
-	                                                        .addComponent( wordActivatelabel )
-	                                                        .addComponent( wordActivateTF ) )
-	                                     .addGroup( layout.createParallelGroup( GroupLayout.Alignment.BASELINE )
-	                                                        .addComponent( wordToSwapLabel )
-	                                                        .addComponent( wordToSwapTF ) )
 	                                     .addGroup( layout.createParallelGroup( GroupLayout.Alignment.BASELINE )
 	                                                        .addComponent( fontSizeLabel )
 	                                                        .addComponent( fontSizeTF ) )
