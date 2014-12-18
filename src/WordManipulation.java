@@ -150,27 +150,36 @@ public class WordManipulation {
         if((System.currentTimeMillis() - lastTimeStamp) > timeUntilNextWordChange){
         	lastTimeStamp = System.currentTimeMillis();
         }	
+		if(isCharALetter(txtContent, caretPosition)) {
+
         	if(!this.wordChanged)
         	{
         		wordChanged = changeWordXWordsInfront(swapWord, numWordsInfront, caretPosition, txtContent);
         		if (wordChanged){
-        			DocumentReader.writeToTextFile(Settings.fileName, "WORD CHANGED: "+this.lastWordChanged+" Time:" +System.currentTimeMillis());
+        			DocumentReader.writeToTextFile(Settings.fileName, "WORD CHANGED: "+this.lastWordChanged+" , Time:" +System.currentTimeMillis());
         		}
         	}
 	    	
 	        //if we changed a word and the gaze has moved onto the next word
 	        if(wordChanged && !getWord(caretPosition, txtContent).equalsIgnoreCase(this.currentWord))
 	        {
-	        	//swaps word that was changed back
-	        	double d = Math.random();
-	        	if (d < 0.5){
-	        	    // 50% chance of being here
-	        		swapWord = new StringBuilder(swapWord).reverse().toString();
-	        	}
-	        	wordChanged = swapWordBack(swapWord, startIndex, txtContent);
-        		DocumentReader.writeToTextFile(Settings.fileName, "WORD SWAPPED BACK: "+swapWord+" Time:" +System.currentTimeMillis());
+	        	chooseWordToSwap(txtContent);
 	        }
+		} else if (wordChanged) { //if we have a non character (whitespace) but the word has been swapped swap it back!
+        	chooseWordToSwap(txtContent);
+		}
         
+	}
+	
+	public void chooseWordToSwap(JTextArea txtContent) throws BadLocationException{
+    	//swaps word that was changed back
+    	double d = Math.random();
+    	if (d < 0.5){
+    	    // 50% chance of being here
+    		swapWord = new StringBuilder(swapWord).reverse().toString();
+    	}
+    	wordChanged = swapWordBack(swapWord, startIndex, txtContent);
+		DocumentReader.writeToTextFile(Settings.fileName, "WORD SWAPPED BACK: "+swapWord+" , Time:" +System.currentTimeMillis());
 	}
 	
 	public void removeAddSpace(String wordToInsertParam, String wordToReplaceParam,JTextArea txtContent)

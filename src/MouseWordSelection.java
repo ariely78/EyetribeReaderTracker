@@ -148,7 +148,7 @@ public class MouseWordSelection extends JPanel{
 	        	char ch = wordChanger.charAtPosition(jta, caretPosition);
         		System.out.println("character returned" +ch);
 
-        		if(wordChanger.isCharALetter(jta, caretPosition))
+//        		if(wordChanger.isCharALetter(jta, caretPosition))
 	        	{
 	        		System.out.println("character returned2" +ch);
 		            word = wordChanger.getWord(caretPosition, jta);
