@@ -105,8 +105,7 @@ public class ParentPanel extends JPanel{
 
         if (Files.notExists(path) && !reply.isEmpty()) {
           // file is not exist
-        	this.mousePanel.fileName = path.toString();
-        	this.eyetrackerPanel.fileName = path.toString();
+        	Settings.fileName = path.toString();
 
         	JOptionPane.showMessageDialog(Settings.gd.getFullScreenWindow(), "When you press OK the calibration will start, stare at the dot on the screen, keep your head still and only move your eyes");
             

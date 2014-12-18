@@ -1,4 +1,5 @@
 import java.awt.Point;
+
 import javax.swing.JTextArea;
 import javax.swing.text.BadLocationException;
 
@@ -7,9 +8,12 @@ public class WordManipulation {
 	String lastWordChanged;
 	int startIndex;
     int endIndex;
+
 	boolean changeWordBack = false;
 	String swapWord = "name";
 	String wordToActivateChange = "to";
+	String currentWord = "";
+
 	int timeUntilNextWordChange = 500;
 	boolean wordChanged = false;
 	private long lastTimeStamp = 0;
@@ -77,11 +81,11 @@ public class WordManipulation {
     											int numberOfWordsAhead,
 								    			int caretPosition, 
 								    			JTextArea txtContent) throws BadLocationException {
-        int currentWord = 0;
+        int currentWordInt = 0;
         int i = 0;
     	String wordToReplace= "";
-
-        while (currentWord < numberOfWordsAhead) {
+    	this.currentWord = getWord(caretPosition,txtContent);
+        while (currentWordInt < numberOfWordsAhead) {
         	//while(isCharALetter(txtContent, caretPosition + i)){
 	        while (!txtContent.getText(caretPosition + i, 1).equals(" ")){
 	            System.out.println(""+txtContent.getText(caretPosition+i,1));
@@ -91,7 +95,7 @@ public class WordManipulation {
 	        //move 2 carets forward to start of next word by adding 1 
 	        //(the space, then next word) assuming there is only one space!
 	        caretPosition+=i+1;
-	        currentWord++;
+	        currentWordInt++;
 	        i = 0;
 	        startIndex = caretPosition;
 	        wordToReplace = getWord(startIndex,txtContent);
@@ -147,18 +151,24 @@ public class WordManipulation {
         	lastTimeStamp = System.currentTimeMillis();
         }	
         	if(!this.wordChanged)
+        	{
         		wordChanged = changeWordXWordsInfront(swapWord, numWordsInfront, caretPosition, txtContent);
-
-	        //only change word if selected word is "to"
-//	    	if(getWord(caretPosition, txtContent).equalsIgnoreCase(wordToActivateChange) && !this.wordChanged)
-//	    	{
-//	    		wordChanged = changeWordXWordsInfront(swapWord, numWordsInfront, caretPosition, txtContent);
-//	    	}
+        		if (wordChanged){
+        			DocumentReader.writeToTextFile(Settings.fileName, "WORD CHANGED: "+this.lastWordChanged+" Time:" +System.currentTimeMillis());
+        		}
+        	}
 	    	
-	        //if we changed a word and the current word selected is same as the word we changed to, change it back!
-	        if(wordChanged && getWord(caretPosition, txtContent).equalsIgnoreCase(swapWord))
+	        //if we changed a word and the gaze has moved onto the next word
+	        if(wordChanged && !getWord(caretPosition, txtContent).equalsIgnoreCase(this.currentWord))
 	        {
-	        	wordChanged = swapWordBack(swapWord, caretPosition, txtContent);
+	        	//swaps word that was changed back
+	        	double d = Math.random();
+	        	if (d < 0.5){
+	        	    // 50% chance of being here
+	        		swapWord = new StringBuilder(swapWord).reverse().toString();
+	        	}
+	        	wordChanged = swapWordBack(swapWord, startIndex, txtContent);
+        		DocumentReader.writeToTextFile(Settings.fileName, "WORD SWAPPED BACK: "+swapWord+" Time:" +System.currentTimeMillis());
 	        }
         
 	}

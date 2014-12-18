@@ -8,4 +8,6 @@ public class Settings {
 	public static int calibrateTime = 500;
 	public static int timeToMoveToGaze = 500;
 	public static GraphicsDevice gd = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
+    public static String fileName;
+
 }

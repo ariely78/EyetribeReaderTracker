@@ -44,7 +44,6 @@ public class MouseWordSelection extends JPanel{
 
     public int wordReadingTime = 0;
     public int fontSize = 40;
-    public String fileName;
     Font font;
     final SettingsPanel settingsPanel;
     private int testNumber;
@@ -62,8 +61,8 @@ public class MouseWordSelection extends JPanel{
                 	 testNumber += 1;
                 	 if(DocumentReader.doesFilePathExist("text"+(testNumber)+".txt"))
                 	 {
-	                	 DocumentReader.writeToTextFile(fileName, 
-	                			 "\nNEXT TEST:" + fileName +"\n" );
+	                	 DocumentReader.writeToTextFile(Settings.fileName, 
+	                			 "\nNEXT TEST:" + Settings.fileName +"\n" );
                     	 wordChanger.wordChanged = false;
                     	 CardLayout cl = (CardLayout) (settingsPanel.testWindow.parentPanel.getLayout());
              			 cl.show(settingsPanel.testWindow.parentPanel, "MouseTracker");
@@ -158,7 +157,7 @@ public class MouseWordSelection extends JPanel{
 	
 		            System.out.println("Word: "+word+" Letter:"+jta.getText(caretPosition,1));
 		            
-		            DocumentReader.writeToTextFile(fileName, word+"  "
+		            DocumentReader.writeToTextFile(Settings.fileName, word+"  "
 		            				+ ch
 		            				+ " " +System.currentTimeMillis());
 	        	}

@@ -27,7 +27,6 @@ public class EyetrackerWordSelection extends JPanel {
     int textareaY = 0;
     int wordReadingTime = 0;
     int fontSize = 40;
-    public String fileName;
     FontMetrics metric;
     Font font;
     JTextArea txtContent = new JTextArea(){
@@ -69,7 +68,7 @@ public class EyetrackerWordSelection extends JPanel {
                 	
                 	 if(DocumentReader.doesFilePathExist("text"+(testNumber)+".txt"))
                 	 {
-                		 DocumentReader.writeToTextFile(fileName, 
+                		 DocumentReader.writeToTextFile(Settings.fileName, 
                     			 "\nNEXT TEST :" + testNumber +"\n" );
                     	 wordChanger.wordChanged = false;
                     	 settingsPanel.testWindow.parentPanel.calibrateAfterTest(true);
@@ -161,7 +160,7 @@ public class EyetrackerWordSelection extends JPanel {
 	        	{
 	            	String word = wordChanger.getWord(caretPosition, txtContent);
 		            wordChanger.ChangeWords(caretPosition,txtContent);
-	                DocumentReader.writeToTextFile(fileName, 
+	                DocumentReader.writeToTextFile(Settings.fileName, 
 	                				word+" , "+ txtContent.getText(caretPosition,1) + 
 	                				" , " + caretPosition +
 	                				" , " + gazeData.timeStamp + 
