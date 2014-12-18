@@ -1,4 +1,7 @@
 import javax.swing.*;
+import javax.swing.text.MutableAttributeSet;
+import javax.swing.text.SimpleAttributeSet;
+import javax.swing.text.StyleConstants;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -29,7 +32,7 @@ public class EyetrackerWordSelection extends JPanel {
     int fontSize = 40;
     FontMetrics metric;
     Font font;
-    JTextArea txtContent = new JTextArea(){
+    JTextPane txtContent = new JTextPane(){
         @Override
         protected void paintComponent(Graphics g)
         {
@@ -55,8 +58,12 @@ public class EyetrackerWordSelection extends JPanel {
         //... Get the content pane, set layout, add to center
         this.setLayout(new BorderLayout());
         this.add(txtContent, BorderLayout.CENTER);
-        txtContent.setLineWrap( true );
-        txtContent.setWrapStyleWord( true );
+//        txtContent.setLineWrap( true );
+//        txtContent.setWrapStyleWord( true );
+        MutableAttributeSet set = new SimpleAttributeSet(txtContent.getParagraphAttributes());
+
+        StyleConstants.setLineSpacing(set, 15);
+
         txtContent.requestFocus();
         txtContent.addKeyListener(new KeyListener(){ 
 

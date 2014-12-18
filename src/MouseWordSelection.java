@@ -3,6 +3,9 @@ import javax.swing.*;
 import java.awt.FontMetrics;
 
 import javax.swing.text.BadLocationException;
+import javax.swing.text.MutableAttributeSet;
+import javax.swing.text.SimpleAttributeSet;
+import javax.swing.text.StyleConstants;
 
 import com.theeyetribe.client.GazeManager;
 
@@ -30,7 +33,7 @@ public class MouseWordSelection extends JPanel{
 	FontMetrics fm;
 	Rectangle bounds;
 	String word = "";
-    JTextArea jta = new JTextArea(){
+    JTextPane jta = new JTextPane(){
         @Override
         protected void paintComponent(Graphics g)
         {
@@ -52,8 +55,12 @@ public class MouseWordSelection extends JPanel{
     	this.settingsPanel = settingsPanel;
     	testNumber = 1;
         jta.requestFocus();
-        jta.setLineWrap( true );
-        jta.setWrapStyleWord( true );
+//        jta.setLineWrap( true );
+//        jta.setWrapStyleWord( true );
+        MutableAttributeSet set = new SimpleAttributeSet(jta.getParagraphAttributes());
+        StyleConstants.setLineSpacing(set, 1);
+        jta.setParagraphAttributes(set, false);
+        
         jta.addKeyListener(new KeyListener(){ 
             public void keyPressed(KeyEvent ke){ 
 

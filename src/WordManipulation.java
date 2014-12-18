@@ -1,7 +1,9 @@
 import java.awt.Point;
 
 import javax.swing.JTextArea;
+import javax.swing.JTextPane;
 import javax.swing.text.BadLocationException;
+import javax.swing.text.StyledDocument;
 
 
 public class WordManipulation {
@@ -19,7 +21,7 @@ public class WordManipulation {
 	private long lastTimeStamp = 0;
 	int numWordsInfront = 2;
 	
-    public String getWord(int caretPosition, JTextArea txtContent) throws BadLocationException {
+    public String getWord(int caretPosition, JTextPane txtContent) throws BadLocationException {
         int startIndex;
         int endIndex;
         int i = 0;
@@ -42,7 +44,7 @@ public class WordManipulation {
         return txtContent.getText(startIndex, endIndex - startIndex);
     }
     
-    public int letterTracked(JTextArea txtContent, 
+    public int letterTracked(JTextPane txtContent, 
 						    		int caretPosition, 
 						    		Point trackPoint,
 						    		int fontHeight) throws BadLocationException
@@ -66,12 +68,12 @@ public class WordManipulation {
     	return newCaretPosition;
     }
     
-    public boolean isCharALetter(JTextArea jta, int caretPosition) throws BadLocationException
+    public boolean isCharALetter(JTextPane jta, int caretPosition) throws BadLocationException
     {
     	return Character.isLetter(charAtPosition(jta,caretPosition));
     }
     
-    public char charAtPosition(JTextArea jta, int caretPosition) throws BadLocationException
+    public char charAtPosition(JTextPane jta, int caretPosition) throws BadLocationException
     {
     	char ch = jta.getText(caretPosition,1).charAt(0);
     	return ch;
@@ -80,7 +82,7 @@ public class WordManipulation {
 	public boolean changeWordXWordsInfront(String wordToInsertParam,
     											int numberOfWordsAhead,
 								    			int caretPosition, 
-								    			JTextArea txtContent) throws BadLocationException {
+								    			JTextPane txtContent) throws BadLocationException {
         int currentWordInt = 0;
         int i = 0;
     	String wordToReplace= "";
@@ -124,7 +126,7 @@ public class WordManipulation {
 
     public boolean swapWordBack(String wordToSwap,
 			int caretPosition, 
-			JTextArea txtContent) throws BadLocationException
+			JTextPane txtContent) throws BadLocationException
     {
         int i = 0;
     	while(isCharALetter(txtContent, caretPosition + i)){
@@ -145,7 +147,7 @@ public class WordManipulation {
         return false;
     }
 
-	public void ChangeWords(int caretPosition, JTextArea txtContent) throws BadLocationException
+	public void ChangeWords(int caretPosition, JTextPane txtContent) throws BadLocationException
 	{
         if((System.currentTimeMillis() - lastTimeStamp) > timeUntilNextWordChange){
         	lastTimeStamp = System.currentTimeMillis();
@@ -171,7 +173,7 @@ public class WordManipulation {
         
 	}
 	
-	public void chooseWordToSwap(JTextArea txtContent) throws BadLocationException{
+	public void chooseWordToSwap(JTextPane txtContent) throws BadLocationException{
     	//swaps word that was changed back
     	double d = Math.random();
     	if (d < 0.5){
@@ -182,8 +184,10 @@ public class WordManipulation {
 		DocumentReader.writeToTextFile(Settings.fileName, "WORD SWAPPED BACK: "+swapWord+" , Time:" +System.currentTimeMillis());
 	}
 	
-	public void removeAddSpace(String wordToInsertParam, String wordToReplaceParam,JTextArea txtContent)
+	public void removeAddSpace(String wordToInsertParam, String wordToReplaceParam,JTextPane txtContent)
 	{
+		StyledDocument doc = txtContent.getStyledDocument();
+
 		int i = 0;
         if(wordToReplaceParam.length() < wordToInsertParam.length()){
         	int charsToAdd = wordToInsertParam.length() - wordToReplaceParam.length();
@@ -193,7 +197,7 @@ public class WordManipulation {
         		i++;
         	}
             //then insert our new word
-            txtContent.replaceRange(wordToInsertParam, startIndex, startIndex + wordToInsertParam.length());//endIndex - startIndex);
+//            txtContent.replaceRange(wordToInsertParam, startIndex, startIndex + wordToInsertParam.length());//endIndex - startIndex);
 
         } else {
         	//if the word we are replacing is longer than the word we are
@@ -201,11 +205,11 @@ public class WordManipulation {
         	int charsToRemove = wordToReplaceParam.length() - wordToInsertParam.length();
         	i = 0;
         	while(i < charsToRemove){
-        		txtContent.insert("", startIndex + wordToInsertParam.length() + i);
+//        		txtContent.insert("", startIndex + wordToInsertParam.length() + i);
         		i++;
         	}
             //then insert our new word
-            txtContent.replaceRange(wordToInsertParam, startIndex, startIndex+wordToReplaceParam.length());//endIndex - startIndex);
+//            txtContent.replaceRange(wordToInsertParam, startIndex, startIndex+wordToReplaceParam.length());//endIndex - startIndex);
         }
 	}
 }

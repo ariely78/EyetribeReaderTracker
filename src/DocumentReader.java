@@ -21,8 +21,8 @@ public class DocumentReader {
             while ((line=br.readLine())!=null){
             	
                 System.out.println(line);
-                string+= "\n"+line+"\n";
-//                string+= line;
+//                string+= "\n"+line+"\n";
+                string+= line;
 
             }
             br.close();
