@@ -55,10 +55,6 @@ public class MouseWordSelection extends JPanel{
     	this.settingsPanel = settingsPanel;
     	testNumber = 1;
         jta.requestFocus();
-        MutableAttributeSet set = new SimpleAttributeSet(jta.getParagraphAttributes());
-        StyleConstants.setLineSpacing(set, Settings.lineSpacing);
-        jta.setParagraphAttributes(set, false);
-        
         jta.addKeyListener(new KeyListener(){ 
             public void keyPressed(KeyEvent ke){ 
 
@@ -94,6 +90,10 @@ public class MouseWordSelection extends JPanel{
     
     public void setTextAreaText()
     {
+        MutableAttributeSet set = new SimpleAttributeSet(jta.getParagraphAttributes());
+        StyleConstants.setLineSpacing(set, Settings.lineSpacing);
+        jta.setParagraphAttributes(set, false);
+        
     	font = new Font("Courier New", Font.PLAIN, fontSize);
     	jta.setFont(font);
     	jta.setEditable(false);

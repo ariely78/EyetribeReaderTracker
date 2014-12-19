@@ -58,9 +58,6 @@ public class EyetrackerWordSelection extends JPanel {
         //... Get the content pane, set layout, add to center
         this.setLayout(new BorderLayout());
         this.add(txtContent, BorderLayout.CENTER);
-        MutableAttributeSet set = new SimpleAttributeSet(txtContent.getParagraphAttributes());
-        StyleConstants.setLineSpacing(set, Settings.lineSpacing);
-        txtContent.setParagraphAttributes(set, false);
 
         txtContent.requestFocus();
         txtContent.addKeyListener(new KeyListener(){ 
@@ -104,6 +101,9 @@ public class EyetrackerWordSelection extends JPanel {
     
     public void setTextAreaText()
     {
+        MutableAttributeSet set = new SimpleAttributeSet(txtContent.getParagraphAttributes());
+        StyleConstants.setLineSpacing(set, Settings.lineSpacing);
+        txtContent.setParagraphAttributes(set, false);
     	font = new Font("Courier New", Font.PLAIN, fontSize);
     	txtContent.setFont(font);
     	txtContent.setEditable(false);
