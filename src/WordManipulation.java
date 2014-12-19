@@ -184,32 +184,10 @@ public class WordManipulation {
 		DocumentReader.writeToTextFile(Settings.fileName, "WORD SWAPPED BACK: "+swapWord+" , Time:" +System.currentTimeMillis());
 	}
 	
-	public void removeAddSpace(String wordToInsertParam, String wordToReplaceParam,JTextPane txtContent)
+	public void removeAddSpace(String wordToInsertParam, String wordToReplaceParam,JTextPane txtContent) throws BadLocationException
 	{
 		StyledDocument doc = txtContent.getStyledDocument();
-
-		int i = 0;
-        if(wordToReplaceParam.length() < wordToInsertParam.length()){
-        	int charsToAdd = wordToInsertParam.length() - wordToReplaceParam.length();
-        	i = 1;
-        	while(i <= charsToAdd){
-        		txtContent.insert(" ", endIndex + i);
-        		i++;
-        	}
-            //then insert our new word
-//            txtContent.replaceRange(wordToInsertParam, startIndex, startIndex + wordToInsertParam.length());//endIndex - startIndex);
-
-        } else {
-        	//if the word we are replacing is longer than the word we are
-        	//inserting then remove the extra space
-        	int charsToRemove = wordToReplaceParam.length() - wordToInsertParam.length();
-        	i = 0;
-        	while(i < charsToRemove){
-//        		txtContent.insert("", startIndex + wordToInsertParam.length() + i);
-        		i++;
-        	}
-            //then insert our new word
-//            txtContent.replaceRange(wordToInsertParam, startIndex, startIndex+wordToReplaceParam.length());//endIndex - startIndex);
-        }
+    	doc.remove(startIndex, wordToReplaceParam.length());
+    	doc.insertString(startIndex, wordToInsertParam, null);
 	}
 }
