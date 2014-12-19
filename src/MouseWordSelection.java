@@ -56,7 +56,7 @@ public class MouseWordSelection extends JPanel{
     	testNumber = 1;
         jta.requestFocus();
         MutableAttributeSet set = new SimpleAttributeSet(jta.getParagraphAttributes());
-        StyleConstants.setLineSpacing(set, 1);//Settings.lineSpacing);
+        StyleConstants.setLineSpacing(set, Settings.lineSpacing);
         jta.setParagraphAttributes(set, false);
         
         jta.addKeyListener(new KeyListener(){ 

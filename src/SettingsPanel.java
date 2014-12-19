@@ -161,8 +161,8 @@ public class SettingsPanel extends JFrame implements ActionListener{
 		//set font size in textfield
 		fontSizeTF.setText(prefs.getInt(Settings.FONT_SIZE, 50)+"");
 		
-//		//set font size variable in preferences
-//		lineSpacingTF.setText(prefs.getFloat(Settings.Line_Spacing, Settings.lineSpacing)+"");
+		//set font size variable in preferences
+		lineSpacingTF.setText(prefs.getFloat(Settings.Line_Spacing, Settings.lineSpacing)+"");
 		
 		timeNextChangeTF.setText(eyetrackerTxtContent.wordChanger.timeUntilNextWordChange+"");
 		numWordsInfrontTF.setText(eyetrackerTxtContent.wordChanger.numWordsInfront+"");
@@ -182,9 +182,9 @@ public class SettingsPanel extends JFrame implements ActionListener{
 		prefs.putInt(Settings.FONT_SIZE, mousetxtContent.fontSize);
 		
 //		//get font size from text field, set variable in mouse view
-//		Settings.lineSpacing = Float.parseFloat(lineSpacingTF.getText());
+		Settings.lineSpacing = Float.parseFloat(lineSpacingTF.getText());
 //		//Set the font size in preferences
-//		prefs.putFloat(Settings.Line_Spacing, Settings.lineSpacing);
+		prefs.putFloat(Settings.Line_Spacing, Settings.lineSpacing);
 		
 		mousetxtContent.wordChanger.timeUntilNextWordChange = Integer.parseInt(timeNextChangeTF.getText());
 		mousetxtContent.wordChanger.numWordsInfront = Integer.parseInt(numWordsInfrontTF.getText());
