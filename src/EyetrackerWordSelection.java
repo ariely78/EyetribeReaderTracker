@@ -58,11 +58,9 @@ public class EyetrackerWordSelection extends JPanel {
         //... Get the content pane, set layout, add to center
         this.setLayout(new BorderLayout());
         this.add(txtContent, BorderLayout.CENTER);
-//        txtContent.setLineWrap( true );
-//        txtContent.setWrapStyleWord( true );
         MutableAttributeSet set = new SimpleAttributeSet(txtContent.getParagraphAttributes());
-
-        StyleConstants.setLineSpacing(set, 15);
+        StyleConstants.setLineSpacing(set, Settings.lineSpacing);
+        txtContent.setParagraphAttributes(set, false);
 
         txtContent.requestFocus();
         txtContent.addKeyListener(new KeyListener(){ 

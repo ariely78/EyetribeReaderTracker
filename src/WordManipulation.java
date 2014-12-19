@@ -119,7 +119,7 @@ public class WordManipulation {
         	return false;
         }
         
-         removeAddSpace(wordToInsertParam, wordToReplace, txtContent);
+        changeWordsInDocument(wordToInsertParam, wordToReplace, txtContent);
 
         return true;
     }
@@ -142,7 +142,7 @@ public class WordManipulation {
         startIndex = caretPosition - wordToSwap.length();
         endIndex = caretPosition-1;
 	    
-        removeAddSpace(this.lastWordChanged, wordToSwap, txtContent);
+        changeWordsInDocument(this.lastWordChanged, wordToSwap, txtContent);
 
         return false;
     }
@@ -184,7 +184,7 @@ public class WordManipulation {
 		DocumentReader.writeToTextFile(Settings.fileName, "WORD SWAPPED BACK: "+swapWord+" , Time:" +System.currentTimeMillis());
 	}
 	
-	public void removeAddSpace(String wordToInsertParam, String wordToReplaceParam,JTextPane txtContent) throws BadLocationException
+	public void changeWordsInDocument(String wordToInsertParam, String wordToReplaceParam,JTextPane txtContent) throws BadLocationException
 	{
 		StyledDocument doc = txtContent.getStyledDocument();
     	doc.remove(startIndex, wordToReplaceParam.length());
