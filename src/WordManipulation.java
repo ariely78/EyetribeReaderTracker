@@ -52,14 +52,19 @@ public class WordManipulation {
     	int newCaretPosition = 0;
 		newCaretPosition = caretPosition;
 
-    	if(isCharALetter(txtContent, caretPosition)){
-    		return newCaretPosition;
-    	}
-    	int extraSpace = fontHeight/2;
-    	Point newTrackPoint = new Point(trackPoint.x, trackPoint.y-extraSpace);
+    	//calcualte s extra space
+    	int extraSpace = ((int)(Settings.lineSpacing) * fontHeight)/2;
+    	
+    	//get new trackpoing taking off the extra space
+    	Point newTrackPoint = new Point(trackPoint.x, trackPoint.y+extraSpace);
+    	System.out.println("newTrackPoint"+newTrackPoint);
+    	//get new caret position according to new trackpoint
     	newCaretPosition = txtContent.viewToModel(newTrackPoint);
+    	//if we find a letter at the caret position then
     	if(!isCharALetter(txtContent, newCaretPosition)){
-    		newTrackPoint = new Point(trackPoint.x, trackPoint.y+extraSpace);
+    		newTrackPoint = new Point(trackPoint.x, trackPoint.y-extraSpace);
+        	System.out.println("newTrackPoint2"+newTrackPoint);
+
         	newCaretPosition = txtContent.viewToModel(newTrackPoint);
 	    	if(isCharALetter(txtContent, newCaretPosition)){
 	        	newCaretPosition = txtContent.viewToModel(newTrackPoint);

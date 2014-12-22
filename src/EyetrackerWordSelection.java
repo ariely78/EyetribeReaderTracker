@@ -38,9 +38,12 @@ public class EyetrackerWordSelection extends JPanel {
         {
           super.paintComponent(g);
           metric = this.getFontMetrics(font);
-          g.getColor();
-    	  g.setColor(Color.RED);
-          g.fillOval(x, y, 10,10);
+          if(testNumber <= 1)
+          {
+	          g.getColor();
+	    	  g.setColor(Color.RED);
+	          g.fillOval(x, y, 10,10);
+          }
         } 
     };
     
